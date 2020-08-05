@@ -73,7 +73,7 @@
   ciena.saos10.saos10_command:
     commands:
     - software show
-    - port show
+    - show logical-ports
 ```
 
 ```yml
@@ -81,7 +81,7 @@
   ciena.saos10.saos10_command:
     commands:
     - software show
-    - port show
+    - show logical-ports
     wait_for:
     - result[0] contains Installed
     - result[1] contains Port

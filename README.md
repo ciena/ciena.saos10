@@ -58,9 +58,7 @@ The following example task replaces configuration changes in the existing config
   - name: Execute SAOS 10 commands
     ciena.saos10.saos10_command:
       commands:
-      - port set port 2 description foo
-      - port set port 3 description bar
-      - config save
+      - software show
 ```
 
 **NOTE**: For Ansible 2.9, you may not see deprecation warnings when you run your playbooks with this collection. Use this documentation to track when a module is deprecated.
