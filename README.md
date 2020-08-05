@@ -4,7 +4,7 @@
 
 The Ansible Ciena SAOS collection includes a variety of Ansible content to help automate the management of Ciena SAOS 10.x network appliances.
 
-This collection has been tested against Ciena 6-4
+This collection has been tested against Ciena 10-4
 
 <!--start requires_ansible-->
 ## Ansible version compatibility
