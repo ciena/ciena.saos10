@@ -1,0 +1,5 @@
+.tox
+__pycache__
+*.py[cod]
+env
+*.tar.gz

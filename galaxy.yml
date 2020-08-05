@@ -1,0 +1,12 @@
+---
+authors:
+  - Jeff Groom
+dependencies:
+  ansible.netcommon: '>=1.0.0'
+license_file: LICENSE
+version: 1.0.0
+name: saos10
+namespace: ciena
+readme: README.md
+repository: https://github.com/ciena/ciena.saos10
+tags: [ciena, saos, networking, ethernet]
