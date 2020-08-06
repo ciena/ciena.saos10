@@ -68,7 +68,7 @@ class Cliconf(CliconfBase):
         return out
 
     def edit_config(self, command):
-        for cmd in chain(to_list(command)):
+        for cmd in chain(['config'], to_list(command), ['exit']):
             self.send_command(cmd)
 
     def get_capabilities(self):
