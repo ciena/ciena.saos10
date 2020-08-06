@@ -86,3 +86,12 @@
     - result[0] contains Installed
     - result[1] contains Port
 ```
+
+```yml
+- name: Config a port
+  ciena.saos10.saos10_command:
+    commands:
+    - config
+    - oc-if:interfaces interface 2 config name 2 description myport
+    - exit
+```

@@ -1,5 +1,11 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.0.4
+
+### Fix
+
+- docs
+
 ## v1.0.3
 
 ### Fix

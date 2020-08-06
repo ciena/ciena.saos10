@@ -142,7 +142,7 @@ def parse_commands(module, warnings):
 def contains_change(commands):
     result = False
     for command in list(commands):
-        if ('config' in command['command']):
+        if "config" in command["command"]:
             result = True
     return result
 
@@ -188,7 +188,7 @@ def main():
         failed_conditions = [item.raw for item in conditionals]
         msg = "One or more conditional statements have not been satisfied"
         module.fail_json(msg=msg, failed_conditions=failed_conditions)
-    result['changed'] = contains_change(commands)
+    result["changed"] = contains_change(commands)
     result.update(
         {"stdout": responses, "stdout_lines": list(to_lines(responses))}
     )

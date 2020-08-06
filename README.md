@@ -6,17 +6,12 @@ The Ansible Ciena SAOS collection includes a variety of Ansible content to help 
 
 This collection has been tested against Ciena 10-4
 
-<!--start requires_ansible-->
 ## Ansible version compatibility
 
 This collection has been tested against following Ansible versions: **>=2.9.10,<2.11**.
 
-Plugins and modules within a collection may be tested with only specific Ansible versions.
-A collection may contain metadata that identifies these versions.
-PEP440 is the schema used to describe the versions of Ansible.
-<!--end requires_ansible-->
-
 ### Supported connections
+
 The Ciena SAOS 10 collection supports ``network_cli``  connections.
 
 ## Included content
@@ -32,9 +27,11 @@ Name | Description
 <!--end collection content-->
 ## Installing this collection
 
-You can install the Ciena SAOS 10 collection with the Ansible Galaxy CLI:
+Install the Ciena SAOS 10 collection with the Ansible Galaxy CLI:
 
-    ansible-galaxy collection install ciena.saos10
+```bash
+ansible-galaxy collection install ciena.saos10
+```
 
 You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
 
@@ -59,9 +56,13 @@ The following example task replaces configuration changes in the existing config
     ciena.saos10.saos10_command:
       commands:
       - software show
+  - name: Set port config
+    ciena.saos10.saos10_command:
+      commands:
+      - config
+      - oc-if:interfaces interface 2 config name 2 description myport
+      - exit
 ```
-
-**NOTE**: For Ansible 2.9, you may not see deprecation warnings when you run your playbooks with this collection. Use this documentation to track when a module is deprecated.
 
 ## Contributing to this collection
 
@@ -75,7 +76,7 @@ Release is done automatically use Github Actions as part of merging to master.
 
 ## Roadmap
 
-<!-- Optional. Include the roadmap for this collection, and the proposed release/versioning strategy so users can anticipate the upgrade/update cycle. -->
+* Netconf calls
 
 ## More information
 
