@@ -30,7 +30,7 @@ description:
 
 import re
 import json
-
+import time
 from itertools import chain
 
 from ansible.errors import AnsibleConnectionFailure
@@ -52,7 +52,7 @@ class Cliconf(CliconfBase):
         match = re.search(r"Running package version +\: (\S+)", data)
         if match:
             device_info["network_os_version"] = match.group(1).strip(",")
-
+        time.sleep(0.2)
         reply = self.get("show system components")
         data = to_text(reply, errors="surrogate_or_strict").strip()
 
