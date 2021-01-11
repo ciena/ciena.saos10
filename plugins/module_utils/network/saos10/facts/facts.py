@@ -15,14 +15,11 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.f
 )
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.legacy.base import (
     Default,
-    Neighbors,
-    Interfaces,
     Config,
 )
 
-
 FACT_LEGACY_SUBSETS = dict(
-    default=Default, neighbors=Neighbors, config=Config, interfaces=Interfaces
+    default=Default, config=Config
 )
 
 

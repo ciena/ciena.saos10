@@ -18,9 +18,6 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10
     run_commands,
     get_capabilities,
 )
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.utils import (
-    parse_cli_textfsm,
-)
 
 
 class FactsBase(object):
@@ -83,71 +80,3 @@ class Config(FactsBase):
     def populate(self):
         super(Config, self).populate()
         self.facts["config"] = self.responses[0]
-
-
-class Interfaces(FactsBase):
-
-    COMMANDS = ["show logical-ports state"]
-
-    def populate(self):
-        super(Interfaces, self).populate()
-
-        fsm = r"""#
-Value port (\S+)
-Value AdminState (\S+)
-Value MTU (\S+)
-Value Description (\S+)
-Value MacAddress (\S+)
-Value OperState (\S+)
-
-Start
-  ^\| *Name *\| ${port}
-  ^\| *Admin State *\| ${AdminState}
-  ^\| *MTU *\| ${MTU}
-  ^\| *Description *\| ${Description}
-  ^\| *Mac Address *\| ${MacAddress}
-  ^\| *Oper State *\| ${OperState} -> Record
-
-EOF
-"""
-        interfaces = []
-        ports = re.findall(
-            r"^\| (\S+) +\| +[updown]+ +\|", self.responses[0], re.M
-        )
-        for port in ports:
-            command = "show logical-ports logical-port %s" % port
-            port_response = self.run([command])
-            interface = parse_cli_textfsm(port_response[0], fsm)
-            interfaces.append(interface[0])
-        self.facts["interfaces"] = interfaces
-
-
-class Neighbors(FactsBase):
-
-    COMMANDS = ["show lldp", "show lldp neighbors"]
-
-    def populate(self):
-        super(Neighbors, self).populate()
-
-        fsm = r"""#
-Value localPort (\S+)
-Value chassisId (\S+)
-Value remotePort (\S+)
-Value systemDesc (.+)
-Value systemName (\S+)
-Value mgmtAddr (\S+)
-
-Start
-  ^\| interface +\| ${localPort} +\|
-  ^\| chassis\-id  +\| ${chassisId} +\|
-  ^\| port\-id  +\| ${remotePort} +\|
-  ^\| system\-description  +\| ${systemDesc} +\|
-  ^\| system\-name  +\| ${systemName} +\|
-  ^\| man\-address  +\| ${mgmtAddr} +\|
-  ^\+[-]+ -> Record
-"""
-
-        show_lldp = self.responses[0]
-        if "True" in show_lldp:
-            neighbors = parse_cli_textfsm(self.responses[1], fsm)
-            self.facts["neighbors"] = neighbors

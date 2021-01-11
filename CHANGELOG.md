@@ -1,5 +1,11 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.0.6
+
+### Fix
+
+- remove lldp and interfaces from legacy facts
+
 ## v1.0.5
 
 ### Fix

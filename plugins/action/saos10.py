@@ -26,9 +26,6 @@ import copy
 from ansible_collections.ansible.netcommon.plugins.action.network import (
     ActionModule as ActionNetworkModule,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    load_provider,
-)
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10 import (
     saos10_provider_spec,
 )
