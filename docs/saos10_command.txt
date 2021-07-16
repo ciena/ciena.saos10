@@ -1,0 +1,121 @@
+SAOS10_COMMAND    
+
+        Sends arbitrary commands to a saos node and returns the
+        results read from the device. This module includes an argument
+        that will cause the module to wait for a specific condition
+        before returning or timing out if the condition is not met.
+
+OPTIONS (= is mandatory):
+
+= commands
+        List of commands to send to the remote saos device over the
+        configured provider. The resulting output from the command is
+        returned. If the `wait_for' argument is provided, the module
+        is not returned until the condition is satisfied or the number
+        of retries has expired. If a command sent to the device
+        requires answering a prompt, it is possible to pass a dict
+        containing `command', `answer' and `prompt'. Common answers
+        are 'y' or "\r" (carriage return, must be double quotes). See
+        examples.
+
+
+- interval
+        Configures the interval in seconds to wait between retries of
+        the command. If the command does not pass the specified
+        conditions, the interval indicates how long to wait before
+        trying the command again.
+        [Default: 1]
+
+- match
+        The `match' argument is used in conjunction with the
+        `wait_for' argument to specify the match policy.  Valid values
+        are `all' or `any'.  If the value is set to `all' then all
+        conditionals in the wait_for must be satisfied.  If the value
+        is set to `any' then only one of the values must be satisfied.
+        (Choices: any, all)[Default: all]
+
+- retries
+        Specifies the number of retries a command should by tried
+        before it is considered failed. The command is run on the
+        target device every retry and evaluated against the `wait_for'
+        conditions.
+        [Default: 10]
+
+- wait_for
+        List of conditions to evaluate against the output of the
+        command. The task will wait for each condition to be true
+        before moving forward. If the conditional is not true within
+        the configured number of retries, the task fails. See
+        examples.
+        (Aliases: waitfor)[Default: (null)]
+
+
+NOTES:
+      * Tested against SAOS 10-4
+
+
+AUTHOR: Jeff Groom
+
+EXAMPLES:
+
+- name: run software show on remote devices
+  ciena.saos10.saos10_command:
+    commands: software show
+
+- name: run software show and check to see if output contains Installed
+  ciena.saos10.saos10_command:
+    commands: software show
+    wait_for: result[0] contains Installed
+
+- name: run multiple commands on remote nodes
+  ciena.saos10.saos10_command:
+    commands:
+    - software show
+    - show logical-ports
+
+- name: run multiple commands and evaluate the output
+  ciena.saos10.saos10_command:
+    commands:
+    - software show
+    - show logical-ports
+    wait_for:
+    - result[0] contains Installed
+    - result[1] contains Port
+
+- name: run commands that require answering a prompt
+  ciena.saos10.saos10_command:
+    commands:
+    - command: clear counters GigabitEthernet0/1
+      prompt: Clear "show interface" counters on this interface [confirm]
+      answer: y
+    - command: clear counters GigabitEthernet0/2
+      prompt: '[confirm]'
+      answer: ''
+
+
+RETURN VALUES:
+- failed_conditions
+        The list of conditionals that have failed
+
+        returned: failed
+        sample: ..., ...
+        type: list
+
+- stdout
+        The set of responses from the commands
+
+        returned: always apart from low level errors (such as action plugin)
+        sample: ..., ...
+        type: list
+
+- stdout_lines
+        The value of stdout split into a list
+
+        returned: always apart from low level errors (such as action plugin)
+        sample:
+        - - '...'
+          - '...'
+        - - '...'
+        - - '...'
+        
+        type: list

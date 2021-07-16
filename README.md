@@ -21,8 +21,9 @@ The Ciena SAOS 10 collection supports ``network_cli``  connections.
 ### Modules
 Name | Description
 --- | ---
-[ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/main/docs/saos10_command.md)|Run commands on remote devices running Ciena SAOS 10
-[ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/main/docs/saos10_facts.md)|Collect facts from remote devices running Ciena SAOS 10
+[ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/main/docs/saos10_command.txt)|Run commands on remote devices running Ciena SAOS 10
+[ciena.saos10.saos10_format_xml](https://github.com/ciena/ciena.saos10/blob/main/docs/saos10_format_xml.txt)|Convert a retrieved running config to a config that can be applied
+[ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/main/docs/saos10_facts.txt)|Collect facts from remote devices running Ciena SAOS 10
 
 <!--end collection content-->
 ## Installing this collection
@@ -69,6 +70,14 @@ The following example task replaces configuration changes in the existing config
 We welcome community contributions to this collection. If you find problems, please open an issue or create a PR against the [Ciena SAOS 10 collection repository](https://github.com/ciena/ciena.saos10).
 
 Release is done automatically use Github Actions as part of merging to master.
+
+### Documentation generation
+
+```bash
+ansible-doc -M ./plugins/modules/ saos10_facts | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_facts.txt
+ansible-doc -M ./plugins/modules/ saos10_command | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_command.txt
+ansible-doc -M ./plugins/modules/ saos10_format_xml | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_format_xml.txt
+```
 
 ## Changelogs
 

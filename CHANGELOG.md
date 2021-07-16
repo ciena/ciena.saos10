@@ -1,5 +1,11 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.0.7
+
+### Added
+
+- Add saos10_format_xml module
+
 ## v1.0.6
 
 ### Fix
