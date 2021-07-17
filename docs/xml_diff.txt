@@ -1,0 +1,78 @@
+XMLDIFF    
+
+        return diff for a pair of xml inputs
+
+OPTIONS (= is mandatory):
+
+= new
+        xml string of config
+
+        type: str
+
+= old
+        xml string of config
+
+        type: str
+
+
+AUTHOR: Jeff Groom (@jgroom33)
+
+EXAMPLES:
+
+# Consider the following
+# OLD XML string:
+# <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <agg-global xmlns="urn:ietf:params:xml:ns:yang:ciena-ieee-lag">
+#     <global-admin-state>enabled</global-admin-state>
+#     <marker-timeout xmlns="urn:ietf:params:xml:ns:yang:ciena-ext-lag">50</marker-timeout>
+#   </agg-global>
+#   <alarms xmlns="urn:ietf:params:xml:ns:yang:ietf-alarms">
+#     <control>
+#       <max-alarm-status-changes>16</max-alarm-status-changes>
+#       <notify-status-changes>false</notify-status-changes>
+#     </control>
+#   </alarms>
+#   <system xmlns="http://openconfig.net/yang/system">
+#     <config>
+#       <hostname>5162-1</hostname>
+#       <contact xmlns="http://www.ciena.com/ns/yang/ciena-system">Customer Support, Ciena</contact>
+#       <description xmlns="http://www.ciena.com/ns/yang/ciena-system">5162</description>
+#       <location xmlns="http://www.ciena.com/ns/yang/ciena-system">Not Specified</location>
+#     </config>
+#   </system>
+# </config>
+
+# NEW XML string:
+# <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <agg-global xmlns="urn:ietf:params:xml:ns:yang:ciena-ieee-lag">
+#     <global-admin-state>enabled</global-admin-state>
+#     <marker-timeout xmlns="urn:ietf:params:xml:ns:yang:ciena-ext-lag">50</marker-timeout>
+#   </agg-global>
+#   <alarms xmlns="urn:ietf:params:xml:ns:yang:ietf-alarms">
+#     <control>
+#       <max-alarm-status-changes>16</max-alarm-status-changes>
+#       <notify-status-changes>false</notify-status-changes>
+#     </control>
+#   </alarms>
+#   <system xmlns="http://openconfig.net/yang/system">
+#     <config>
+#       <hostname>5162-1</hostname>
+#       <contact xmlns="http://www.ciena.com/ns/yang/ciena-system">Customer Support, Ciena</contact>
+#       <description xmlns="http://www.ciena.com/ns/yang/ciena-system">5162</description>
+#       <location xmlns="http://www.ciena.com/ns/yang/ciena-system">34.8908084,-40.820916</location>
+#     </config>
+#   </system>
+# </config>
+
+- name: Remove the 'subjective' attribute of the 'rating' element
+  ciena.saos10.saos10_xmldiff:
+    new: {{ new_xml }}
+    old: {{ old_xml }}
+
+
+RETURN VALUES:
+- diff
+        An XML string of the resulting differences
+
+        returned: always
+        type: str

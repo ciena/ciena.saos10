@@ -79,16 +79,16 @@ def run_module():
     regex = re.compile(r'<data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns:ncx="http://netconfcentral.org/ns/yuma-ncx">(.*)<\/data>')
     replaced = regex.sub(r'<config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">\1</config>', xml_string)
 
-    infile = BytesIO(to_bytes(replaced, errors='surrogate_or_strict'))
+    inbytes = BytesIO(to_bytes(replaced, errors='surrogate_or_strict'))
 
     # Try to parse in the target XML file
     try:
         parser = etree.XMLParser(remove_blank_text=True, strip_cdata=False)
-        doc = etree.parse(infile, parser)
+        doc = etree.parse(inbytes, parser)
     except etree.XMLSyntaxError as e:
         module.fail_json(msg="Error while parsing document: %s (%s)" % ('xml_string', e))
 
-    # format the xml
+    # format the xml so line by line regex can be used
     pretty = etree.tostring(doc, xml_declaration=True, encoding='UTF-8', pretty_print=True)
     
     # replace namespaces (these will error the config)

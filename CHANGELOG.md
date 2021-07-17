@@ -1,5 +1,11 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.1.0
+
+### Added
+
+- xml_diff module
+
 ## v1.0.7
 
 ### Added
