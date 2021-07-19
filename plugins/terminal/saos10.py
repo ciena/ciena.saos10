@@ -34,6 +34,7 @@ class TerminalModule(TerminalBase):
     terminal_stdout_re = [
         re.compile(br"[\w+\-.:\/[\]]+(?:\([^\)]+\)){0,3}[*]?> "),
         re.compile(br"[\w+\-.:@\/[\]]+(?:\([^\)]+\)){0,3}[*]?# "),
+        re.compile(br"\.ui:~\$"),
     ]
 
     terminal_stderr_re = [

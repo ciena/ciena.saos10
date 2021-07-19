@@ -1,5 +1,11 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.1.1
+
+### Added
+
+- add prompt match for ui container (diag shell)
+
 ## v1.1.0
 
 ### Added
