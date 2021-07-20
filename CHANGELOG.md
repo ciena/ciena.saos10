@@ -1,5 +1,12 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.2.0
+
+### Changed
+
+- support 2nd level prune
+- fix tests
+
 ## v1.1.3
 
 ### Changed

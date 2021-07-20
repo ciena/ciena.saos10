@@ -11,14 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7]
+        python-version: [3.8]
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/ciena/saos10
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install collections
+        run: |
+          ansible-galaxy collection install ansible.netcommon 
       - name: Install dependencies
         run: |
           pip install -r requirements.txt

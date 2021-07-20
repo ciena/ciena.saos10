@@ -75,13 +75,22 @@ EXAMPLES = r'''
 #   </system>
 # </config>
 
-- name: Remove the 'subjective' attribute of the 'rating' element
+- name: Get config differences
   ciena.saos10.saos10_xmldiff:
     new: {{ new_xml }}
     old: {{ old_xml }}
 '''
 
 RETURN = r'''
+# Returns the minimal config that can be applied to convert from old to new:
+# <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+#   <system xmlns="http://openconfig.net/yang/system">
+#     <config>
+#       <hostname>5162-1</hostname>
+#     </config>
+#   </system>
+# </config>
+
 xmlstring:
     description: An XML string of the resulting differences
     type: str
@@ -144,6 +153,15 @@ def strip_duplicate_attributes(old, new):
     return result
 
 
+def strip_duplicate_level_2_elements(old_root, new_root):
+    for old_element in old_root:
+        new_element = new_root.find(old_element.tag)
+        if (new_element):
+            old_element, new_element = strip_duplicate_elements(old_element, new_element)
+
+    return old_root, new_root
+
+
 def check_libs(module):
     # Check if we have lxml 2.3.0 or newer installed
     if not HAS_LXML:
@@ -191,6 +209,8 @@ def main():
         module.fail_json(msg="Error while parsing document: %s (%s)" % ('old', e))
 
     old_root, new_root = strip_duplicate_elements(old_root, new_root)
+    # Note: recursive element comparison and pruning is not implemented.
+    old_root, new_root = strip_duplicate_level_2_elements(old_root, new_root)
     result['xmlstring'] = etree.tostring(new_root)
     module.exit_json(**result)
 
