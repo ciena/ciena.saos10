@@ -82,16 +82,12 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
-diff:
+xmlstring:
     description: An XML string of the resulting differences
     type: str
     returned: always
 '''
 
-import copy
-import json
-import os
-import re
 import traceback
 
 from distutils.version import LooseVersion
@@ -99,7 +95,7 @@ from io import BytesIO
 
 LXML_IMP_ERR = None
 try:
-    from lxml import etree, objectify
+    from lxml import etree
     HAS_LXML = True
 except ImportError:
     LXML_IMP_ERR = traceback.format_exc()
@@ -113,10 +109,8 @@ except ImportError:
     XMLDIFF_IMP_ERR = traceback.format_exc()
     HAS_XMLDIFF = False
 
-from ansible.module_utils.basic import AnsibleModule, json_dict_bytes_to_unicode, missing_required_lib
-from ansible.module_utils.six import iteritems, string_types
+from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils.common.text.converters import to_bytes, to_native
-from ansible.module_utils.common._collections_compat import MutableMapping
 
 
 def parse(xmlstring):
@@ -126,16 +120,41 @@ def parse(xmlstring):
     return tree
 
 
-def strip_duplicates(old, new):
-    root = new.getroot()
-    
-    for child in root:
-      old_element = old.find(child.tag)
-      compare = xmldiff_main.diff_trees(old_element, child)
-      if (len(compare) == 0):
-        root.remove(child)
+def get_deletion_list(a, b):
+    result = []
+    for child in b:
+        element = a.find(child.tag)
+        compare = xmldiff_main.diff_trees(element, child, diff_options={'F': 0.5, 'ratio_mode': 'accurate'})
+        if (len(compare) == 0):
+            result.append(child)
+    return result
 
-    return root
+
+def strip_duplicate_elements(old_root, new_root):
+    new_delete = get_deletion_list(old_root, new_root)
+    old_delete = get_deletion_list(new_root, old_root)
+    for item in new_delete:
+        new_root.remove(item)
+    for item in old_delete:
+        old_root.remove(item)
+    return old_root, new_root
+
+
+def strip_duplicate_attributes(old, new):
+    return result
+
+
+def check_libs(module):
+    # Check if we have lxml 2.3.0 or newer installed
+    if not HAS_LXML:
+        module.fail_json(msg=missing_required_lib("lxml"), exception=LXML_IMP_ERR)
+    elif LooseVersion('.'.join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion('2.3.0'):
+        module.fail_json(msg='The xml ansible module requires lxml 2.3.0 or newer installed on the managed machine')
+    elif LooseVersion('.'.join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion('3.0.0'):
+        module.warn('Using lxml version lower than 3.0.0 does not guarantee predictable element attribute order.')
+
+    if not HAS_XMLDIFF:
+        module.fail_json(msg=missing_required_lib("xmldiff"), exception=XMLDIFF_IMP_ERR)
 
 
 def main():
@@ -155,31 +174,24 @@ def main():
     if module.check_mode:
         module.exit_json(**result)
 
+    check_libs(module)
+
     new = module.params['new']
     old = module.params['old']
 
-    # Check if we have lxml 2.3.0 or newer installed
-    if not HAS_LXML:
-        module.fail_json(msg=missing_required_lib("lxml"), exception=LXML_IMP_ERR)
-    elif LooseVersion('.'.join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion('2.3.0'):
-        module.fail_json(msg='The xml ansible module requires lxml 2.3.0 or newer installed on the managed machine')
-    elif LooseVersion('.'.join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion('3.0.0'):
-        module.warn('Using lxml version lower than 3.0.0 does not guarantee predictable element attribute order.')
-
-    if not HAS_XMLDIFF:
-        module.fail_json(msg=missing_required_lib("xmldiff"), exception=XMLDIFF_IMP_ERR)
-
     try:
         new_tree = parse(new)
+        new_root = new_tree.getroot()
     except etree.XMLSyntaxError as e:
         module.fail_json(msg="Error while parsing document: %s (%s)" % ('new', e))
     try:
         old_tree = parse(old)
+        old_root = old_tree.getroot()
     except etree.XMLSyntaxError as e:
         module.fail_json(msg="Error while parsing document: %s (%s)" % ('old', e))
 
-    stripped = strip_duplicates(old_tree, new_tree)
-    result['diff'] = str(etree.tostring(stripped))
+    old_root, new_root = strip_duplicate_elements(old_root, new_root)
+    result['xmlstring'] = etree.tostring(new_root)
     module.exit_json(**result)
 
 

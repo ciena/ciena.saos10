@@ -1,0 +1,33 @@
+---
+  - name: Diff
+    ciena.saos10.xml_diff:
+      old: "{{ lookup('file', 'fixtures/system-config-property-modify_old.xml') }}"
+      new: "{{ lookup('file', 'fixtures/system-config-property-modify_new.xml') }}"
+    register: result
+
+  - debug:
+      var: result['diff']
+
+  - name: Format
+    community.general.xml:
+      xmlstring: "{{ result['xmlstring'] }}"
+      pretty_print: yes
+    register: formatted
+
+  - name: Create tmp xml file for comparison purposes
+    copy:
+      dest: /tmp/comparison.xml
+      content: "{{ formatted['xmlstring'] }}"
+
+  - name: Compare to expected result
+    copy:
+      src: fixtures/system-config-property-modify_diff.xml
+      dest: /tmp/comparison.xml
+    check_mode: yes
+    diff: yes
+    register: comparison
+
+  - name: Test expected result
+    assert:
+      that:
+      - comparison is not changed
