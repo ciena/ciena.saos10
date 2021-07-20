@@ -1,2 +1,4 @@
 ansible
 paramiko
+xmldiff
+lxml
