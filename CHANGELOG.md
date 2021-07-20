@@ -1,5 +1,12 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.2.1
+
+### Fixed
+
+- Doc location
+- lint
+
 ## v1.2.0
 
 ### Changed

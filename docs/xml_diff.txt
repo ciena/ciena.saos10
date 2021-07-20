@@ -64,14 +64,14 @@ EXAMPLES:
 #   </system>
 # </config>
 
-- name: Remove the 'subjective' attribute of the 'rating' element
+- name: Get config differences
   ciena.saos10.saos10_xmldiff:
     new: {{ new_xml }}
     old: {{ old_xml }}
 
 
 RETURN VALUES:
-- diff
+- xmlstring
         An XML string of the resulting differences
 
         returned: always

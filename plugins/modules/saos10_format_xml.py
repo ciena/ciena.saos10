@@ -43,7 +43,7 @@ result:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.common.text.converters import to_bytes, to_native
+from ansible.module_utils.common.text.converters import to_bytes
 
 import traceback
 import re
@@ -52,7 +52,7 @@ from io import BytesIO
 
 LXML_IMP_ERR = None
 try:
-    from lxml import etree, objectify
+    from lxml import etree
 
     HAS_LXML = True
 except ImportError:
