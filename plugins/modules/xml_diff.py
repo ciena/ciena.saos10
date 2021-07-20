@@ -2,10 +2,11 @@
 
 # Copyright: (c) 2021, Your Name <jgroom@ciena.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: xmldiff
 
@@ -27,9 +28,9 @@ options:
 
 author:
 - Jeff Groom (@jgroom33)
-'''
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 # Consider the following
 # OLD XML string:
 # <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
@@ -79,9 +80,9 @@ EXAMPLES = r'''
   ciena.saos10.saos10_xmldiff:
     new: {{ new_xml }}
     old: {{ old_xml }}
-'''
+"""
 
-RETURN = r'''
+RETURN = r"""
 # Returns the minimal config that can be applied to convert from old to new:
 # <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
 #   <system xmlns="http://openconfig.net/yang/system">
@@ -95,7 +96,7 @@ xmlstring:
     description: An XML string of the resulting differences
     type: str
     returned: always
-'''
+"""
 
 import traceback
 
@@ -105,6 +106,7 @@ from io import BytesIO
 LXML_IMP_ERR = None
 try:
     from lxml import etree
+
     HAS_LXML = True
 except ImportError:
     LXML_IMP_ERR = traceback.format_exc()
@@ -113,6 +115,7 @@ except ImportError:
 XMLDIFF_IMP_ERR = None
 try:
     from xmldiff import main as xmldiff_main
+
     HAS_XMLDIFF = True
 except ImportError:
     XMLDIFF_IMP_ERR = traceback.format_exc()
@@ -123,7 +126,7 @@ from ansible.module_utils.common.text.converters import to_bytes, to_native
 
 
 def parse(xmlstring):
-    bytes = BytesIO(to_bytes(xmlstring, errors='surrogate_or_strict'))
+    bytes = BytesIO(to_bytes(xmlstring, errors="surrogate_or_strict"))
     parser = etree.XMLParser(remove_blank_text=True, strip_cdata=False)
     tree = etree.parse(bytes, parser)
     return tree
@@ -133,8 +136,10 @@ def get_deletion_list(a, b):
     result = []
     for child in b:
         element = a.find(child.tag)
-        compare = xmldiff_main.diff_trees(element, child, diff_options={'F': 0.5, 'ratio_mode': 'accurate'})
-        if (len(compare) == 0):
+        compare = xmldiff_main.diff_trees(
+            element, child, diff_options={"F": 0.5, "ratio_mode": "accurate"}
+        )
+        if len(compare) == 0:
             result.append(child)
     return result
 
@@ -156,8 +161,10 @@ def strip_duplicate_attributes(old, new):
 def strip_duplicate_level_2_elements(old_root, new_root):
     for old_element in old_root:
         new_element = new_root.find(old_element.tag)
-        if (new_element):
-            old_element, new_element = strip_duplicate_elements(old_element, new_element)
+        if new_element:
+            old_element, new_element = strip_duplicate_elements(
+                old_element, new_element
+            )
 
     return old_root, new_root
 
@@ -165,55 +172,68 @@ def strip_duplicate_level_2_elements(old_root, new_root):
 def check_libs(module):
     # Check if we have lxml 2.3.0 or newer installed
     if not HAS_LXML:
-        module.fail_json(msg=missing_required_lib("lxml"), exception=LXML_IMP_ERR)
-    elif LooseVersion('.'.join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion('2.3.0'):
-        module.fail_json(msg='The xml ansible module requires lxml 2.3.0 or newer installed on the managed machine')
-    elif LooseVersion('.'.join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion('3.0.0'):
-        module.warn('Using lxml version lower than 3.0.0 does not guarantee predictable element attribute order.')
+        module.fail_json(
+            msg=missing_required_lib("lxml"), exception=LXML_IMP_ERR
+        )
+    elif LooseVersion(
+        ".".join(to_native(f) for f in etree.LXML_VERSION)
+    ) < LooseVersion("2.3.0"):
+        module.fail_json(
+            msg="The xml ansible module requires lxml 2.3.0 or newer installed on the managed machine"
+        )
+    elif LooseVersion(
+        ".".join(to_native(f) for f in etree.LXML_VERSION)
+    ) < LooseVersion("3.0.0"):
+        module.warn(
+            "Using lxml version lower than 3.0.0 does not guarantee predictable element attribute order."
+        )
 
     if not HAS_XMLDIFF:
-        module.fail_json(msg=missing_required_lib("xmldiff"), exception=XMLDIFF_IMP_ERR)
+        module.fail_json(
+            msg=missing_required_lib("xmldiff"), exception=XMLDIFF_IMP_ERR
+        )
 
 
 def main():
     module_args = dict(
-        new=dict(type='str', required=True),
-        old=dict(type='str', required=True),
+        new=dict(type="str", required=True),
+        old=dict(type="str", required=True),
     )
     result = dict(
         changed=False,
-        result='',
+        result="",
     )
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     if module.check_mode:
         module.exit_json(**result)
 
     check_libs(module)
 
-    new = module.params['new']
-    old = module.params['old']
+    new = module.params["new"]
+    old = module.params["old"]
 
     try:
         new_tree = parse(new)
         new_root = new_tree.getroot()
     except etree.XMLSyntaxError as e:
-        module.fail_json(msg="Error while parsing document: %s (%s)" % ('new', e))
+        module.fail_json(
+            msg="Error while parsing document: %s (%s)" % ("new", e)
+        )
     try:
         old_tree = parse(old)
         old_root = old_tree.getroot()
     except etree.XMLSyntaxError as e:
-        module.fail_json(msg="Error while parsing document: %s (%s)" % ('old', e))
+        module.fail_json(
+            msg="Error while parsing document: %s (%s)" % ("old", e)
+        )
 
     old_root, new_root = strip_duplicate_elements(old_root, new_root)
     # Note: recursive element comparison and pruning is not implemented.
     old_root, new_root = strip_duplicate_level_2_elements(old_root, new_root)
-    result['xmlstring'] = etree.tostring(new_root)
+    result["xmlstring"] = etree.tostring(new_root)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

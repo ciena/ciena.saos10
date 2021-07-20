@@ -18,14 +18,11 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
     Config,
 )
 
-FACT_LEGACY_SUBSETS = dict(
-    default=Default, config=Config
-)
+FACT_LEGACY_SUBSETS = dict(default=Default, config=Config)
 
 
 class Facts(FactsBase):
-    """ The fact class for saos 10
-    """
+    """The fact class for saos 10"""
 
     VALID_LEGACY_GATHER_SUBSETS = frozenset(FACT_LEGACY_SUBSETS.keys())
 
@@ -35,7 +32,7 @@ class Facts(FactsBase):
     def get_facts(
         self, legacy_facts_type=None, resource_facts_type=None, data=None
     ):
-        """ Collect the facts for saos 10
+        """Collect the facts for saos 10
         :param legacy_facts_type: List of legacy facts types
         :param data: previously collected conf
         :rtype: dict

@@ -3,3 +3,4 @@ __pycache__
 *.py[cod]
 env
 *.tar.gz
+tests/output
