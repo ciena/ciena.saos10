@@ -1,12 +1,9 @@
 ---
   - name: Diff
     ciena.saos10.xml_diff:
-      old: "{{ lookup('file', 'fixtures/system-config-property-modify_old.xml') }}"
-      new: "{{ lookup('file', 'fixtures/system-config-property-modify_new.xml') }}"
+      old: "{{ lookup('file', 'fixtures/' + item + '_old.xml') }}"
+      new: "{{ lookup('file', 'fixtures/' + item + '_new.xml') }}"
     register: result
-
-  - debug:
-      var: result['diff']
 
   - name: Format
     community.general.xml:
@@ -21,7 +18,7 @@
 
   - name: Compare to expected result
     copy:
-      src: fixtures/system-config-property-modify_diff.xml
+      src: fixtures/{{ item }}_diff.xml
       dest: /tmp/comparison.xml
     check_mode: yes
     diff: yes

@@ -29,9 +29,13 @@
 
     # NOTE: The xml module requires at least lxml v2.3.0
     lxml_xpath_attribute_result_attrname: '{{ lxml_version.stdout is version("2.3.0", ">=") }}'
+- name: set tests
+  set_fact:
+    tests:
+      - system-config-property-modify
 
 - name: Only run the tests when lxml v2.3.0+
   when: lxml_xpath_attribute_result_attrname
   block:
-
-  - include_tasks: test-system-config-property-modify.yml
+  - include_tasks: test-item.yml
+    with_items: "{{ tests }}"

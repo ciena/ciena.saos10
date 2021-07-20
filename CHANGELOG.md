@@ -1,5 +1,11 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.1.3
+
+### Changed
+
+- Refactor tests
+
 ## v1.1.2
 
 ### Fixed
