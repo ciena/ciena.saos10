@@ -154,10 +154,6 @@ def strip_duplicate_elements(old_root, new_root):
     return old_root, new_root
 
 
-def strip_duplicate_attributes(old, new):
-    return result
-
-
 def strip_duplicate_level_2_elements(old_root, new_root):
     for old_element in old_root:
         new_element = new_root.find(old_element.tag)
