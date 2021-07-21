@@ -61,13 +61,8 @@ except ImportError:
 
 
 def run_module():
-    module_args = dict(
-        xml_string=dict(type="str", required=True),
-    )
-    result = dict(
-        changed=False,
-        result="",
-    )
+    module_args = dict(xml_string=dict(type="str", required=True))
+    result = dict(changed=False, result="")
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
     if module.check_mode:
         module.exit_json(**result)

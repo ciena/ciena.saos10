@@ -136,11 +136,14 @@ def get_deletion_list(a, b):
     result = []
     for child in b:
         element = a.find(child.tag)
-        compare = xmldiff_main.diff_trees(
-            element, child, diff_options={"F": 0.5, "ratio_mode": "accurate"}
-        )
-        if len(compare) == 0:
-            result.append(child)
+        if element:
+            compare = xmldiff_main.diff_trees(
+                element,
+                child,
+                diff_options={"F": 0.5, "ratio_mode": "accurate"},
+            )
+            if len(compare) == 0:
+                result.append(child)
     return result
 
 
@@ -195,10 +198,7 @@ def main():
         new=dict(type="str", required=True),
         old=dict(type="str", required=True),
     )
-    result = dict(
-        changed=False,
-        result="",
-    )
+    result = dict(changed=False, result="")
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 
     if module.check_mode:

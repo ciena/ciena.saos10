@@ -1,5 +1,11 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.2.2
+
+### Fixed
+
+- ignore missing element from new
+
 ## v1.2.1
 
 ### Fixed
