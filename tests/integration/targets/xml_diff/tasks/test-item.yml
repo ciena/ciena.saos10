@@ -1,30 +1,30 @@
 ---
-  - name: Diff
-    ciena.saos10.xml_diff:
-      old: "{{ lookup('file', 'fixtures/' + item + '_old.xml') }}"
-      new: "{{ lookup('file', 'fixtures/' + item + '_new.xml') }}"
-    register: result
+- name: Diff
+  ciena.saos10.xml_diff:
+    old: "{{ lookup('file', 'fixtures/' + item + '_old.xml') }}"
+    new: "{{ lookup('file', 'fixtures/' + item + '_new.xml') }}"
+  register: result
 
-  - name: Format
-    community.general.xml:
-      xmlstring: "{{ result['xmlstring'] }}"
-      pretty_print: yes
-    register: formatted
+- name: Format
+  community.general.xml:
+    xmlstring: "{{ result['xmlstring'] }}"
+    pretty_print: true
+  register: formatted
 
-  - name: Create tmp xml file for comparison purposes
-    copy:
-      dest: /tmp/comparison.xml
-      content: "{{ formatted['xmlstring'] }}"
+- name: Create tmp xml file for comparison purposes
+  copy:
+    dest: /tmp/comparison.xml
+    content: "{{ formatted['xmlstring'] }}"
 
-  - name: Compare to expected result
-    copy:
-      src: fixtures/{{ item }}_diff.xml
-      dest: /tmp/comparison.xml
-    check_mode: yes
-    diff: yes
-    register: comparison
+- name: Compare to expected result
+  copy:
+    src: fixtures/{{ item }}_diff.xml
+    dest: /tmp/comparison.xml
+  check_mode: true
+  diff: true
+  register: comparison
 
-  - name: Test expected result
-    assert:
-      that:
+- name: Test expected result
+  assert:
+    that:
       - comparison is not changed

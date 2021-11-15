@@ -45,10 +45,7 @@ try:
 
     HAS_LXML = True
 except ImportError:
-    from xml.etree.ElementTree import (
-        fromstring,
-        tostring as xml_to_string,
-    )
+    from xml.etree.ElementTree import fromstring, tostring as xml_to_string
 
     HAS_LXML = False
 
