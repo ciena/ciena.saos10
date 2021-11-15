@@ -30,11 +30,30 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 import json
 
-from ansible.module_utils._text import to_text
+from ansible.module_utils._text import to_text, to_bytes
 from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.connection import Connection, ConnectionError
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    NetconfConnection,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    remove_namespaces,
+)
+
+try:
+    from lxml.etree import tostring as xml_to_string, fromstring
+
+    HAS_LXML = True
+except ImportError:
+    from xml.etree.ElementTree import (
+        fromstring,
+        tostring as xml_to_string,
+    )
+
+    HAS_LXML = False
 
 _DEVICE_CONFIGS = {}
+CONFIG_FORMATS = frozenset(["xml", "text", "json", "set"])
 
 saos10_provider_spec = {
     "host": dict(),
@@ -47,12 +66,29 @@ saos10_provider_spec = {
         fallback=(env_fallback, ["ANSIBLE_NET_SSH_KEYFILE"]), type="path"
     ),
     "timeout": dict(type="int"),
+    "transport": dict(default="netconf", choices=["cli", "netconf"]),
 }
 saos10_argument_spec = {
     "provider": dict(
-        type="dict", options=saos10_provider_spec, removed_in_version=2.14
+        type="dict",
+        options=saos10_provider_spec,
+        removed_at_date="2022-06-01",
+        removed_from_collection="ciena.saos10",
     )
 }
+
+
+def remove_ns(element):
+    data = remove_namespaces(xml_to_string(element))
+    root = fromstring(to_bytes(data, errors="surrogate_then_replace"))
+    return root
+
+
+def tostring(element, encoding="UTF-8"):
+    if HAS_LXML:
+        return xml_to_string(element, encoding="unicode")
+    else:
+        return to_text(xml_to_string(element, encoding), encoding=encoding)
 
 
 def get_provider_argspec():
@@ -67,6 +103,8 @@ def get_connection(module):
     network_api = capabilities.get("network_api")
     if network_api == "cliconf":
         module._saos10_connection = Connection(module._socket_path)
+    elif network_api == "netconf":
+        module._saos10_connection = NetconfConnection(module._socket_path)
     else:
         module.fail_json(msg="Invalid connection type %s" % network_api)
 
@@ -86,6 +124,11 @@ def get_capabilities(module):
     return module._saos10_capabilities
 
 
+def is_netconf(module):
+    capabilities = get_capabilities(module)
+    return True if capabilities.get("network_api") == "netconf" else False
+
+
 def get_config(module, flags=None, format=None):
     flags = [] if flags is None else flags
     global _DEVICE_CONFIGS
@@ -101,6 +144,18 @@ def get_config(module, flags=None, format=None):
         cfg = to_text(out, errors="surrogate_then_replace").strip()
         _DEVICE_CONFIGS = cfg
         return cfg
+
+
+def get_configuration(module, source="running", format="xml", filter=None):
+    if format not in CONFIG_FORMATS:
+        module.fail_json(msg="invalid config format specified")
+
+    conn = get_connection(module)
+    try:
+        reply = conn.get_config(source=source)
+    except ConnectionError as exc:
+        module.fail_json(msg=to_text(exc, errors="surrogate_then_replace"))
+    return reply
 
 
 def run_commands(module, commands, check_rc=True):

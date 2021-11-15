@@ -17,5 +17,6 @@ class FactsArgs(object):  # pylint: disable=R0903
 
     argument_spec = {
         "gather_subset": dict(default=["!config"], type="list"),
-        "gather_network_resources": dict(type="list"),
+        "gather_network_resources": dict(type="list", elements="str"),
+        "config_format": dict(default="xml", choices=["xml", "text", "json"]),
     }

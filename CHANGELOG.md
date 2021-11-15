@@ -1,5 +1,14 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.3.0
+
+### Remove
+- format_xml module
+
+### Added
+- netconf support
+- get facts via netconf
+
 ## v1.2.2
 
 ### Fixed

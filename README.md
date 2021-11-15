@@ -22,7 +22,6 @@ The Ciena SAOS 10 collection supports ``network_cli``  connections.
 Name | Description
 --- | ---
 [ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_command.txt)|Run commands on remote devices running Ciena SAOS 10
-[ciena.saos10.saos10_format_xml](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_format_xml.txt)|Convert a retrieved running config to a config that can be applied
 [ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_facts.txt)|Collect facts from remote devices running Ciena SAOS 10
 [ciena.saos10.xml_diff](https://github.com/ciena/ciena.saos10/blob/master/docs/xml_diff.txt)|Diff 2 xml configs
 
@@ -77,7 +76,6 @@ Release is done automatically use Github Actions as part of merging to master.
 ```bash
 ansible-doc -M ./plugins/modules/ saos10_facts | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_facts.txt
 ansible-doc -M ./plugins/modules/ saos10_command | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_command.txt
-ansible-doc -M ./plugins/modules/ saos10_format_xml | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_format_xml.txt
 ansible-doc -M ./plugins/modules/ xml_diff | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/xml_diff.txt
 ```
 

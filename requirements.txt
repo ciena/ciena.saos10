@@ -1,4 +1,3 @@
-ansible
-paramiko
 xmldiff
 lxml
+ncclient

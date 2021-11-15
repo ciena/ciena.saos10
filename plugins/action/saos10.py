@@ -26,12 +26,17 @@ import copy
 from ansible_collections.ansible.netcommon.plugins.action.network import (
     ActionModule as ActionNetworkModule,
 )
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
+    load_provider,
+)
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10 import (
     saos10_provider_spec,
 )
 from ansible.utils.display import Display
 
 display = Display()
+
+CLI_SUPPORTED_MODULES = ["saos10_netconf", "saos10_ping", "saos10_command"]
 
 
 class ActionModule(ActionNetworkModule):
@@ -43,13 +48,30 @@ class ActionModule(ActionNetworkModule):
         persistent_connection = self._play_context.connection.split(".")[-1]
         warnings = []
 
-        if persistent_connection == "network_cli":
+        if persistent_connection in ("netconf", "network_cli"):
             provider = self._task.args.get("provider", {})
             if any(provider.values()):
-                display.warning(
-                    "provider is unnecessary when using network_cli and will be ignored"
-                )
-                del self._task.args["provider"]
+                if not (module_name == "saos10_facts"):
+                    display.warning(
+                        "provider is unnecessary when using %s and will be ignored"
+                        % self._play_context.connection
+                    )
+                    del self._task.args["provider"]
+
+            if (
+                persistent_connection == "network_cli"
+                and module_name not in CLI_SUPPORTED_MODULES
+            ) or (
+                persistent_connection == "netconf"
+                and module_name in CLI_SUPPORTED_MODULES[0:2]
+            ):
+                return {
+                    "failed": True,
+                    "msg": "Connection type '%s' is not valid for '%s' module. "
+                    "Please see https://docs.ansible.com/ansible/latest/network/user_guide/platform_junos.html"
+                    % (self._play_context.connection, module_name),
+                }
+
         elif self._play_context.connection == "local":
             provider = load_provider(saos10_provider_spec, self._task.args)
             pc = copy.deepcopy(self._play_context)
