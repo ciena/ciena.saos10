@@ -32,7 +32,6 @@ jobs:
       - name: test
         working-directory: ./ansible_collections/ciena/saos10
         run: |
-          pip install lxml
           ansible-test integration
       - name: build
         working-directory: ./ansible_collections/ciena/saos10

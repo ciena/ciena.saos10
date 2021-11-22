@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.3.1
+
+### Fixed
+- Linting
+
 ## v1.3.0
 
 ### Remove
