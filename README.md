@@ -1,5 +1,3 @@
-
-
 # Ciena SAOS 10 Collection
 
 The Ansible Ciena SAOS collection includes a variety of Ansible content to help automate the management of Ciena SAOS 10.x network appliances.
@@ -12,7 +10,7 @@ This collection has been tested against following Ansible versions: **>=2.9.10,<
 
 ### Supported connections
 
-The Ciena SAOS 10 collection supports ``network_cli``  connections.
+The Ciena SAOS 10 collection supports ``network_cli`` and ``netconf`` connections.
 
 ## Included content
 
@@ -24,6 +22,7 @@ Name | Description
 [ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_command.txt)|Run commands on remote devices running Ciena SAOS 10
 [ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_facts.txt)|Collect facts from remote devices running Ciena SAOS 10
 [ciena.saos10.xml_diff](https://github.com/ciena/ciena.saos10/blob/master/docs/xml_diff.txt)|Diff 2 xml configs
+[ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_classifiers.txt)|Configure classifiers
 
 <!--end collection content-->
 ## Installing this collection
@@ -77,25 +76,32 @@ Release is done automatically use Github Actions as part of merging to master.
 ansible-doc -M ./plugins/modules/ saos10_facts | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_facts.txt
 ansible-doc -M ./plugins/modules/ saos10_command | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_command.txt
 ansible-doc -M ./plugins/modules/ xml_diff | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/xml_diff.txt
+ansible-doc -M ./plugins/modules/ saos10_classifiers | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_classifiers.txt
+```
+
+### Resource Module Builder
+
+The modules in this project were built using the [resource module builder hosted by Ciena](https://github.com/ciena/resource_module_builder).
+
+Usage:
+
+```bash
+git clone git@github.com:ciena/resource_module_builder.git
+export MODEL=classifiers
+cd resource_module_builder
+ansible-playbook -e rm_dest=soas10 \
+                 -e structure=collection \
+                 -e collection_org=ciena \
+                 -e collection_name=saos10 \
+                 -e model=saos10/$MODEL/saos10_$MODEL.yml \
+                 -e transport=netconf \
+                 site.yml
 ```
 
 ## Changelogs
 
-[CHANGELOG](CHANGELOG.rst)
-
-## Roadmap
-
-* Netconf calls
-
-## More information
-
-- [Ansible network resources](https://docs.ansible.com/ansible/latest/network/getting_started/network_resources.html)
-- [Ansible Collection overview](https://github.com/ansible-collections/overview)
-- [Ansible User guide](https://docs.ansible.com/ansible/latest/user_guide/index.html)
-- [Ansible Developer guide](https://docs.ansible.com/ansible/latest/dev_guide/index.html)
-- [Ansible Community code of conduct](https://docs.ansible.com/ansible/latest/community/code_of_conduct.html)
+[CHANGELOG](CHANGELOG.md)
 
 ## Licensing
 
 See [LICENSE](LICENSE) to see the full text.
-

@@ -1,0 +1,161 @@
+SAOS10_CLASSIFIERS    
+
+        This module provides declarative management of a classifier
+
+ADDED IN: version 2.9
+
+OPTIONS (= is mandatory):
+
+- config
+        A dictionary of classifier options
+        [Default: (null)]
+        elements: dict
+        type: list
+
+        SUBOPTIONS:
+
+        - filter-entry
+            Add one filtering rule for this classifier
+            [Default: (null)]
+            elements: dict
+            type: list
+
+            SUBOPTIONS:
+
+            = filter-parameter
+                Indicates which filter parameter is used by this
+                filter entry
+                (Choices: any, destination-mac, internal-cos, ip-
+                version, l4-source-port, source-ip, vtag-stack, base-
+                etype, dscp, ip-fragment, l4-application, local-
+                termination, source-mac, destination-ip, icmp, ip-
+                protocol, l4-destination-port, mpls-label, tcp-flags)
+                type: str
+
+            - logical-not
+                Opposite of what is specified in the
+                filter-parameters. If the filter-parameter
+                specifies a tpid as tpid-8100, then anything
+                other than tpid-8100 is considered an acceptable
+                packet
+                [Default: (null)]
+                type: str
+
+            - untagged-exclude-priority-tagged
+                Untagged exclude priority tagged
+                [Default: (null)]
+                type: bool
+
+            - vtags
+                List of VLAN tags
+                [Default: (null)]
+                elements: dict
+                type: list
+
+                SUBOPTIONS:
+
+                = tag
+                    1 represents outer most tag, 2 next outer most,
+                    etc
+
+                    type: int
+
+                = vlan-id
+                    A specific value of VLAN Tag VLAN-ID
+
+                    type: int
+
+        - filter-operation
+            Choose the scope of application of the rule
+            (Choices: match-any, match-all)[Default: (null)]
+            type: str
+
+        = name
+            A unique name for the classifier
+
+            type: str
+
+- state
+        The state the configuration should be left in
+        (Choices: merged, overridden, deleted)[Default: merged]
+        type: str
+
+
+AUTHOR: Ciena
+
+METADATA:
+  metadata_version: '1.1'
+  status:
+  - preview
+  supported_by: network
+
+
+EXAMPLES:
+
+# Using overridden
+
+- name: Configure interfaces
+  ciena.saos10.saos10_classifiers:
+    config:
+      - name: untagged
+        filter-entry:
+          - filter-parameter: vtag-stack
+            untagged-exclude-priority-tagged: false
+      - name: foo-100
+        filter-entry:
+          - filter-parameter: vtag-stack
+            vtags:
+              - tag: 1
+                vlan-id: 100
+    operation: overridden
+
+
+# Using merged
+
+- name: Configure interfaces
+  ciena.saos10.saos10_classifiers:
+    config:
+      - name: untagged
+        filter-entry:
+          - filter-parameter: vtag-stack
+            untagged-exclude-priority-tagged: false
+      - name: foo-100
+        filter-entry:
+          - filter-parameter: vtag-stack
+            vtags:
+              - tag: 1
+                vlan-id: 100
+    operation: merged
+
+
+# Using deleted
+
+- name: Configure interfaces
+  ciena.saos10.saos10_classifiers:
+    config:
+      - name: untagged
+      - name: foo-100
+    operation: deleted
+
+
+RETURN VALUES:
+- after
+        The resulting configuration model invocation.
+
+        returned: when changed
+        sample: The configuration returned will always be in the same format
+        of the parameters above.
+
+- before
+        The configuration prior to the model invocation.
+
+        returned: always
+        sample: The configuration returned will always be in the same format
+        of the parameters above.
+
+- xml
+        The set of xml commands pushed to the remote device.
+
+        returned: always
+        sample: <system xmlns="http://openconfig.net/yang/system"><config><hostname>foo</hostname></config></system>
+        type: list

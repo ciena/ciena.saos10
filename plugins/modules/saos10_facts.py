@@ -35,27 +35,38 @@ options:
     default: '!config'
   gather_network_resources:
     description:
-    - When supplied, this argument will restrict the facts collected to a given subset.
-      Possible values for this argument include all and the resources like interfaces.
-      Can specify a list of values to include a larger subset. Values can also be
-      used with an initial C(M(!)) to specify that a specific subset should not be
-      collected. Valid subsets are 'all', 'interfaces', 'neighbors'
+      - When supplied, this argument will restrict the facts collected
+        to a given subset. Possible values for this argument include
+        all and the resources like interfaces, vlans etc.
+        Can specify a list of values to include a larger subset. Values
+        can also be used with an initial C(M(!)) to specify that a
+        specific subset should not be collected.
     required: false
 """
 
 EXAMPLES = """
-- name: Gather all facts
-  ciena.saos10.saos10_facts:
+# Gather all facts
+- saos10_facts:
     gather_subset: all
     gather_network_resources: all
 
-- name: collect config and default facts
-  ciena.saos10.saos10_facts:
-    gather_subset: config
+# Collect only the classifiers facts
+- saos10_facts:
+    gather_subset:
+      - !all
+      - !min
+    gather_network_resources:
+      - classifiers
 
-- name: collect everything exception the config
-  ciena.saos10.saos10_facts:
-    gather_subset: '!config'
+# Do not collect classifiers facts
+- saos10_facts:
+    gather_network_resources:
+      - "!classifiers"
+
+# Collect classifiers and minimal default facts
+- saos10_facts:
+    gather_subset: min
+    gather_network_resources: classifiers
 """
 
 RETURN = """
@@ -104,9 +115,6 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspe
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.facts import (
     Facts,
 )
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10 import (
-    saos10_argument_spec,
-)
 
 
 def main():
@@ -115,11 +123,9 @@ def main():
 
     :returns: ansible_facts
     """
-    argument_spec = FactsArgs.argument_spec
-    argument_spec.update(saos10_argument_spec)
 
     module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True
+        argument_spec=FactsArgs.argument_spec, supports_check_mode=True
     )
 
     warnings = []

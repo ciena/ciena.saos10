@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.4.0
+
+### Added
+- classifiers module
+
 ## v1.3.1
 
 ### Fixed

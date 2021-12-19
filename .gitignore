@@ -4,3 +4,5 @@ __pycache__
 env
 *.tar.gz
 tests/output
+cache
+*.log
