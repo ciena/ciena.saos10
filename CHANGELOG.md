@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.4.1
+
+### Fixed
+- `diag shell host` prompt match
+
 ## v1.4.0
 
 ### Added
