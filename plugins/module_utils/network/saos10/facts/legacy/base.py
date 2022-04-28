@@ -57,25 +57,23 @@ class FactsBase(object):
 class Default(FactsBase):
     def populate(self):
         self.facts.update(self.platform_facts())
-        config_filter = (
-            '<components xmlns="http://openconfig.net/yang/platform"/>'
-        )
+        config_filter = '<components xmlns="http://openconfig.net/yang/platform"/>'
         reply = get(self.module, filter=("subtree", config_filter))
         root = remove_ns(reply)
-        serial_number = root.xpath(
-            "/data/components/component[1]/state/serial-no"
-        )[0].text
+        serial_number = root.xpath("/data/components/component[1]/state/serial-no")[
+            0
+        ].text
         model = root.xpath(
             "/data/components/component[1]/component-properties/component-property[name = 'hw-model']/value"
         )[0].text
-        platform = root.xpath("/data/components/component[1]/state/name")[
-            0
-        ].text
+        platform = root.xpath("/data/components/component[1]/state/name")[0].text
         self.facts["serialnum"] = serial_number
         self.facts["model"] = model
         self.facts["platform"] = platform
 
-        config_filter = '<software-state xmlns="http://www.ciena.com/ns/yang/ciena-software-mgmt"/>'
+        config_filter = (
+            '<software-state xmlns="http://www.ciena.com/ns/yang/ciena-software-mgmt"/>'
+        )
         reply = get(self.module, filter=("subtree", config_filter))
         root = remove_ns(reply)
         network_os_version = root.xpath(

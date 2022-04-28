@@ -52,10 +52,26 @@ The following example task replaces configuration changes in the existing config
 
 ```yaml
 ---
-  - name: Execute SAOS 10 commands
-    ciena.saos10.saos10_command:
-      commands:
-      - software show
+- hosts: all
+  collections:
+    - ciena.saos10
+  gather_facts: false
+  name: Gather facts for ciena device Saos 10
+  tasks:
+    - name: get device facts for Saos 10
+      ciena.saos10.saos10_facts:
+        gather_subset:
+          - all
+        gather_network_resources:
+          - classifiers
+      connection: netconf
+    - name: saos10_command with diag shell
+      ciena.saos10.saos10_command:
+        commands:
+        - software show
+        - diag shell host
+        - ls /
+      connection: network_cli
   - name: Set port config
     ciena.saos10.saos10_command:
       commands:

@@ -83,9 +83,7 @@ class ClassifiersFacts(object):
         facts = {}
         if objs:
             facts["classifiers"] = []
-            params = utils.validate_config(
-                self.argument_spec, {"config": objs}
-            )
+            params = utils.validate_config(self.argument_spec, {"config": objs})
             for cfg in params["config"]:
                 facts["classifiers"].append(utils.remove_empties(cfg))
 

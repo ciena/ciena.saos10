@@ -28,7 +28,8 @@ The arg spec for the saos10_classifiers module
 
 
 class ClassifiersArgs(object):  # pylint: disable=R0903
-    """The arg spec for the saos10_classifiers module"""
+    """The arg spec for the saos10_classifiers module
+    """
 
     def __init__(self, **kwargs):
         pass

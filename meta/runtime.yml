@@ -6,3 +6,5 @@ plugin_routing:
       redirect: ciena.saos10.saos10
     saos10_facts:
       redirect: ciena.saos10.saos10
+    saos10_classifiers:
+      redirect: ciena.saos10.saos10

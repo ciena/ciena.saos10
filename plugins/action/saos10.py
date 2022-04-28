@@ -36,7 +36,12 @@ from ansible.utils.display import Display
 
 display = Display()
 
-CLI_SUPPORTED_MODULES = ["saos10_netconf", "saos10_ping", "saos10_command"]
+CLI_SUPPORTED_MODULES = [
+    "saos10_netconf",
+    "saos10_ping",
+    "saos10_command",
+    "saos10_classifiers",
+]
 
 
 class ActionModule(ActionNetworkModule):
@@ -79,9 +84,7 @@ class ActionModule(ActionNetworkModule):
             pc.network_os = "ciena.saos10.saos10"
             pc.remote_addr = provider["host"] or self._play_context.remote_addr
             pc.port = int(provider["port"] or self._play_context.port or 22)
-            pc.remote_user = (
-                provider["username"] or self._play_context.connection_user
-            )
+            pc.remote_user = provider["username"] or self._play_context.connection_user
             pc.password = provider["password"] or self._play_context.password
             pc.private_key_file = (
                 provider["ssh_keyfile"] or self._play_context.private_key_file
@@ -103,8 +106,7 @@ class ActionModule(ActionNetworkModule):
                 )
 
             display.vvv(
-                "using connection plugin %s (was local)" % pc.connection,
-                pc.remote_addr,
+                "using connection plugin %s (was local)" % pc.connection, pc.remote_addr
             )
 
             command_timeout = (

@@ -4,6 +4,7 @@
     - ciena.saos10
   gather_facts: false
   name: Gather facts for ciena device Saos 10
+  connection: netconf
   tasks:
     - name: get device facts for Saos 10
       ciena.saos10.saos10_facts:
@@ -19,3 +20,14 @@
         - diag shell host
         - ls /
       connection: network_cli
+    - name: Configure Classifier
+      ciena.saos10.saos10_classifiers:
+        config:
+          - name: foo-100
+            filter-entry:
+              - filter-parameter: vtag-stack
+                vtags:
+                  - tag: 1
+                    vlan-id: 100
+        state: merged
+      connection: netconf

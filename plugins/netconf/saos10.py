@@ -42,9 +42,7 @@ except (
 class Netconf(NetconfBase):
     def get_text(self, ele, tag):
         try:
-            return to_text(
-                ele.find(tag).text, errors="surrogate_then_replace"
-            ).strip()
+            return to_text(ele.find(tag).text, errors="surrogate_then_replace").strip()
         except AttributeError:
             pass
 

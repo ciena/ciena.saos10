@@ -138,7 +138,7 @@ EXAMPLES = """
             vtags:
               - tag: 1
                 vlan-id: 100
-    operation: overridden
+    state: overridden
 
 
 # Using merged
@@ -156,7 +156,7 @@ EXAMPLES = """
             vtags:
               - tag: 1
                 vlan-id: 100
-    operation: merged
+    state: merged
 
 
 # Using deleted
@@ -166,7 +166,7 @@ EXAMPLES = """
     config:
       - name: untagged
       - name: foo-100
-    operation: deleted
+    state: deleted
 
 
 """

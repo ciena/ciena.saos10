@@ -138,9 +138,7 @@ def get_deletion_list(a, b):
         element = a.find(child.tag)
         if element:
             compare = xmldiff_main.diff_trees(
-                element,
-                child,
-                diff_options={"F": 0.5, "ratio_mode": "accurate"},
+                element, child, diff_options={"F": 0.5, "ratio_mode": "accurate"}
             )
             if len(compare) == 0:
                 result.append(child)
@@ -171,9 +169,7 @@ def strip_duplicate_level_2_elements(old_root, new_root):
 def check_libs(module):
     # Check if we have lxml 2.3.0 or newer installed
     if not HAS_LXML:
-        module.fail_json(
-            msg=missing_required_lib("lxml"), exception=LXML_IMP_ERR
-        )
+        module.fail_json(msg=missing_required_lib("lxml"), exception=LXML_IMP_ERR)
     elif LooseVersion(
         ".".join(to_native(f) for f in etree.LXML_VERSION)
     ) < LooseVersion("2.3.0"):
@@ -188,15 +184,12 @@ def check_libs(module):
         )
 
     if not HAS_XMLDIFF:
-        module.fail_json(
-            msg=missing_required_lib("xmldiff"), exception=XMLDIFF_IMP_ERR
-        )
+        module.fail_json(msg=missing_required_lib("xmldiff"), exception=XMLDIFF_IMP_ERR)
 
 
 def main():
     module_args = dict(
-        new=dict(type="str", required=True),
-        old=dict(type="str", required=True),
+        new=dict(type="str", required=True), old=dict(type="str", required=True)
     )
     result = dict(changed=False, result="")
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
@@ -213,16 +206,12 @@ def main():
         new_tree = parse(new)
         new_root = new_tree.getroot()
     except etree.XMLSyntaxError as e:
-        module.fail_json(
-            msg="Error while parsing document: %s (%s)" % ("new", e)
-        )
+        module.fail_json(msg="Error while parsing document: %s (%s)" % ("new", e))
     try:
         old_tree = parse(old)
         old_root = old_tree.getroot()
     except etree.XMLSyntaxError as e:
-        module.fail_json(
-            msg="Error while parsing document: %s (%s)" % ("old", e)
-        )
+        module.fail_json(msg="Error while parsing document: %s (%s)" % ("old", e))
 
     old_root, new_root = strip_duplicate_elements(old_root, new_root)
     # Note: recursive element comparison and pruning is not implemented.

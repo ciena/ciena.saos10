@@ -2,7 +2,7 @@
 all:
   hosts:
     5130-1:
-      ansible_host: 10.92.44.161
+      ansible_host: 10.92.44.152
       ansible_network_os: ciena.saos10.saos10
       ansible_user: diag
       ansible_password: ciena123

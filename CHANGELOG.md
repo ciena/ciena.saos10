@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.4.2
+
+### Fixed
+- Classifiers module merge
+
 ## v1.4.1
 
 ### Fixed

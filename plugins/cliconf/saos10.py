@@ -88,9 +88,7 @@ class Cliconf(CliconfBase):
         if not command:
             raise ValueError("must provide value of command to execute")
         if output:
-            raise ValueError(
-                "'output' value %s is not supported for get" % output
-            )
+            raise ValueError("'output' value %s is not supported for get" % output)
 
         return self.send_command(
             command=command,
@@ -113,8 +111,7 @@ class Cliconf(CliconfBase):
             output = cmd.pop("output", None)
             if output:
                 raise ValueError(
-                    "'output' value %s is not supported for run_commands"
-                    % output
+                    "'output' value %s is not supported for run_commands" % output
                 )
 
             try:
