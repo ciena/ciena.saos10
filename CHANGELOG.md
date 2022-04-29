@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.4.3
+
+### Fixed
+- Classifiers module delete/override
+
 ## v1.4.2
 
 ### Fixed

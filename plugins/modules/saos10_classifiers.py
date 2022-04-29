@@ -40,7 +40,7 @@ DOCUMENTATION = """
 ---
 module: saos10_classifiers
 version_added: 2.9
-short_description: Manage XCVR on Ciena SAOS 10 devices
+short_description: Manage classifiers on Ciena SAOS 10 devices
 description: This module provides declarative management of a classifier
 author: Ciena
 options:
@@ -123,24 +123,6 @@ options:
     type: str
 """
 EXAMPLES = """
-# Using overridden
-
-- name: Configure interfaces
-  ciena.saos10.saos10_classifiers:
-    config:
-      - name: untagged
-        filter-entry:
-          - filter-parameter: vtag-stack
-            untagged-exclude-priority-tagged: false
-      - name: foo-100
-        filter-entry:
-          - filter-parameter: vtag-stack
-            vtags:
-              - tag: 1
-                vlan-id: 100
-    state: overridden
-
-
 # Using merged
 
 - name: Configure interfaces
@@ -157,6 +139,24 @@ EXAMPLES = """
               - tag: 1
                 vlan-id: 100
     state: merged
+
+
+# Using overridden
+
+- name: Configure interfaces
+  ciena.saos10.saos10_classifiers:
+    config:
+      - name: untagged
+        filter-entry:
+          - filter-parameter: vtag-stack
+            untagged-exclude-priority-tagged: false
+      - name: foo-100
+        filter-entry:
+          - filter-parameter: vtag-stack
+            vtags:
+              - tag: 1
+                vlan-id: 100
+    state: overridden
 
 
 # Using deleted

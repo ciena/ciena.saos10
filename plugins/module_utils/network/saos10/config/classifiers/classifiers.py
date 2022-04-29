@@ -143,8 +143,10 @@ class Classifiers(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        intf_xml = []
-        return intf_xml
+        classifiers_xml = []
+        classifiers_xml.extend(self._state_deleted(want, have))
+        classifiers_xml.extend(self._state_merged(want, have))
+        return classifiers_xml
 
     def _state_overridden(self, want, have):
         """ The command generator when state is overridden
@@ -153,8 +155,10 @@ class Classifiers(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        intf_xml = []
-        return intf_xml
+        classifiers_xml = []
+        classifiers_xml.extend(self._state_deleted(have, have))
+        classifiers_xml.extend(self._state_merged(want, have))
+        return classifiers_xml
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
@@ -163,8 +167,16 @@ class Classifiers(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        intf_xml = []
-        return intf_xml
+        classifiers_xml = []
+        if not want:
+            want = have
+        delete = dict(delete="delete")
+        for config in want:
+            classifier_root = build_root_xml_node("classifier")
+            build_child_xml_node(classifier_root, "classifier", config["name"])
+            classifier_root.attrib.update(delete)
+            classifiers_xml.append(classifier_root)
+        return classifiers_xml
 
     def _state_merged(self, want, have):
         """The command generator when state is merged
@@ -177,12 +189,12 @@ class Classifiers(ConfigBase):
         for child in want:
             classifiers_root = build_root_xml_node("classifiers")
             classifier = build_child_xml_node(classifiers_root, "classifier")
-            build_child_xml_node(
-                classifier, "name", child["name"]
-            )
+            build_child_xml_node(classifier, "name", child["name"])
             for entry in child["filter-entry"]:
                 entry_node = build_child_xml_node(classifier, "filter-entry")
-                build_child_xml_node(entry_node, "filter-parameter", entry["filter-parameter"])
+                build_child_xml_node(
+                    entry_node, "filter-parameter", entry["filter-parameter"]
+                )
                 for vtag in entry["vtags"]:
                     vtag_item = build_child_xml_node(entry_node, "vtags")
                     build_child_xml_node(vtag_item, "tag", vtag["tag"])
