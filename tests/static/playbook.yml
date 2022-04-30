@@ -6,20 +6,20 @@
   name: Gather facts for ciena device Saos 10
   connection: netconf
   tasks:
-    - name: get device facts for Saos 10
-      ciena.saos10.saos10_facts:
-        gather_subset:
-          - all
-        gather_network_resources:
-          - classifiers
-      connection: netconf
-    - name: saos10_command with diag shell
-      ciena.saos10.saos10_command:
-        commands:
-        - software show
-        - diag shell host
-        - ls /
-      connection: network_cli
+    # - name: get device facts for Saos 10
+    #   ciena.saos10.saos10_facts:
+    #     gather_subset:
+    #       - all
+    #     gather_network_resources:
+    #       - classifiers
+    #   connection: netconf
+    # - name: saos10_command with diag shell
+    #   ciena.saos10.saos10_command:
+    #     commands:
+    #     - software show
+    #     - diag shell host
+    #     - ls /
+    #   connection: network_cli
     - name: Configure Classifier
       ciena.saos10.saos10_classifiers:
         config:

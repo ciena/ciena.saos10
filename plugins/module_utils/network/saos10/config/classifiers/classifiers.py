@@ -186,18 +186,34 @@ class Classifiers(ConfigBase):
                   to the desired configuration
         """
         classifiers_xml = []
-        for child in want:
+        for classifier in want:
             classifiers_root = build_root_xml_node("classifiers")
-            classifier = build_child_xml_node(classifiers_root, "classifier")
-            build_child_xml_node(classifier, "name", child["name"])
-            for entry in child["filter-entry"]:
-                entry_node = build_child_xml_node(classifier, "filter-entry")
+            classifier_node = build_child_xml_node(classifiers_root, "classifier")
+            build_child_xml_node(classifier_node, "name", classifier["name"])
+            if classifier["filter-operation"]:
                 build_child_xml_node(
-                    entry_node, "filter-parameter", entry["filter-parameter"]
+                    classifier_node, "filter-operation", classifier["filter-operation"]
                 )
-                for vtag in entry["vtags"]:
-                    vtag_item = build_child_xml_node(entry_node, "vtags")
-                    build_child_xml_node(vtag_item, "tag", vtag["tag"])
-                    build_child_xml_node(vtag_item, "vlan-id", vtag["vlan-id"])
-            classifiers_xml.append(classifier)
+            for filter_entry in classifier["filter-entry"]:
+                filter_entry_node = build_child_xml_node(
+                    classifier_node, "filter-entry"
+                )
+                if filter_entry["filter-parameter"]:
+                    build_child_xml_node(
+                        filter_entry_node,
+                        "filter-parameter",
+                        filter_entry["filter-parameter"],
+                    )
+                if filter_entry["logical-not"]:
+                    build_child_xml_node(
+                        filter_entry_node, "logical-not", filter_entry["logical-not"]
+                    )
+                for vtags in filter_entry["vtags"]:
+                    vtags_node = build_child_xml_node(filter_entry_node, "vtags")
+                    if vtags["tag"]:
+                        build_child_xml_node(vtags_node, "tag", vtags["tag"])
+                    if vtags["vlan-id"]:
+                        build_child_xml_node(vtags_node, "vlan-id", vtags["vlan-id"])
+
+            classifiers_xml.append(classifier_node)
         return classifiers_xml
