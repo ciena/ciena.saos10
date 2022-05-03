@@ -41,6 +41,7 @@ CLI_SUPPORTED_MODULES = [
     "saos10_ping",
     "saos10_command",
     "saos10_classifiers",
+    "saos10_fds",
 ]
 
 

@@ -1,5 +1,5 @@
 ---
-requires_ansible: '>=2.9.10,<2.11'
+requires_ansible: '>=2.9.10,<2.13'
 plugin_routing:
   action:
     saos10_command:
@@ -7,4 +7,6 @@ plugin_routing:
     saos10_facts:
       redirect: ciena.saos10.saos10
     saos10_classifiers:
+      redirect: ciena.saos10.saos10
+    saos10_fds:
       redirect: ciena.saos10.saos10

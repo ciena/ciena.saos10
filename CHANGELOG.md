@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.5.0
+### Added
+- fds module
+- standardize doc gen
+
 ## v1.4.4
 ### Fixed
 - Use codegen from rmb merge method

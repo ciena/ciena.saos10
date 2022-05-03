@@ -6,20 +6,21 @@
   name: Gather facts for ciena device Saos 10
   connection: netconf
   tasks:
-    # - name: get device facts for Saos 10
-    #   ciena.saos10.saos10_facts:
-    #     gather_subset:
-    #       - all
-    #     gather_network_resources:
-    #       - classifiers
-    #   connection: netconf
-    # - name: saos10_command with diag shell
-    #   ciena.saos10.saos10_command:
-    #     commands:
-    #     - software show
-    #     - diag shell host
-    #     - ls /
-    #   connection: network_cli
+    - name: get device facts for Saos 10
+      ciena.saos10.saos10_facts:
+        gather_subset:
+          - all
+        gather_network_resources:
+          - fds
+          - classifiers
+      connection: netconf
+    - name: saos10_command with diag shell
+      ciena.saos10.saos10_command:
+        commands:
+        - software show
+        - diag shell host
+        - ls /
+      connection: network_cli
     - name: Configure Classifier
       ciena.saos10.saos10_classifiers:
         config:
@@ -29,5 +30,17 @@
                 vtags:
                   - tag: 1
                     vlan-id: 100
+        state: merged
+      connection: netconf
+    - name: Configure fds
+      ciena.saos10.saos10_fds:
+        config:
+          - name: foo
+            mode: vpls
+            initiate-l2-transform:
+              vlan-stack:
+                - tag: 1
+                  push-tpid: tpid-8100
+                  push-vid: 202
         state: merged
       connection: netconf

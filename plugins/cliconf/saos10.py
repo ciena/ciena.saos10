@@ -22,6 +22,7 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 cliconf: saos10
+author: jgroom@ciena.com
 short_description: Use saos10 cliconf to run command on Ciena saos10 platform
 description:
   - This saos10 plugin provides low level abstraction apis for

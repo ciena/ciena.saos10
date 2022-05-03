@@ -2,29 +2,48 @@
 
 The Ansible Ciena SAOS collection includes a variety of Ansible content to help automate the management of Ciena SAOS 10.x network appliances.
 
-This collection has been tested against Ciena 10-4
+This collection has been tested against Ciena 10.7
 
+<!--start requires_ansible-->
 ## Ansible version compatibility
 
-This collection has been tested against following Ansible versions: **>=2.9.10,<2.11**.
+This collection has been tested against following Ansible versions: **>=2.9.10,<2.13**.
+
+For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
+fully qualified collection name (for example, `cisco.ios.ios`).
+Plugins and modules within a collection may be tested with only specific Ansible versions.
+A collection may contain metadata that identifies these versions.
+PEP440 is the schema used to describe the versions of Ansible.
+<!--end requires_ansible-->
 
 ### Supported connections
 
-The Ciena SAOS 10 collection supports ``network_cli`` and ``netconf`` connections.
+The Ciena SAOS 10 collection supports `network_cli` and `netconf` connections.
 
 ## Included content
 
 <!--start collection content-->
+### Cliconf plugins
+Name | Description
+--- | ---
+[ciena.saos10.saos10](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_cliconf.rst)|Use saos10 cliconf to run command on Ciena saos10 platform
+
+### Netconf plugins
+Name | Description
+--- | ---
+[ciena.saos10.saos10](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_netconf.rst)|Use saos10 netconf plugin to run netconf commands on Ciena saos10 platform
 
 ### Modules
 Name | Description
 --- | ---
-[ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_command.txt)|Run commands on remote devices running Ciena SAOS 10
-[ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_facts.txt)|Collect facts from remote devices running Ciena SAOS 10
-[ciena.saos10.xml_diff](https://github.com/ciena/ciena.saos10/blob/master/docs/xml_diff.txt)|Diff 2 xml configs
-[ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/master/docs/saos10_classifiers.txt)|Configure classifiers
+[ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_classifiers_module.rst)|Manage classifiers on Ciena SAOS 10 devices
+[ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_command_module.rst)|Run commands on remote devices running Ciena SAOS 10
+[ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
+[ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_fds_module.rst)|Manage forwarding domains on Ciena SAOS 10 devices
+[ciena.saos10.xmldiff](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.xmldiff_module.rst)|return diff for a pair of xml inputs
 
 <!--end collection content-->
+
 ## Installing this collection
 
 Install the Ciena SAOS 10 collection with the Ansible Galaxy CLI:
@@ -84,35 +103,11 @@ The following example task replaces configuration changes in the existing config
 
 We welcome community contributions to this collection. If you find problems, please open an issue or create a PR against the [Ciena SAOS 10 collection repository](https://github.com/ciena/ciena.saos10).
 
-Release is done automatically use Github Actions as part of merging to master.
-
-### Documentation generation
-
-```bash
-ansible-doc -M ./plugins/modules/ saos10_facts | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_facts.txt
-ansible-doc -M ./plugins/modules/ saos10_command | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_command.txt
-ansible-doc -M ./plugins/modules/ xml_diff | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/xml_diff.txt
-ansible-doc -M ./plugins/modules/ saos10_classifiers | sed -e 's/(\/home.*//g' | sed -e 's/> //g' > docs/saos10_classifiers.txt
-```
+Release is done automatically using Github Actions as part of merging to master.
 
 ### Resource Module Builder
 
 The modules in this project were built using the [resource module builder hosted by Ciena](https://github.com/ciena/resource_module_builder).
-
-Usage:
-
-```bash
-git clone git@github.com:ciena/resource_module_builder.git
-export MODEL=classifiers
-cd resource_module_builder
-ansible-playbook -e rm_dest=soas10 \
-                 -e structure=collection \
-                 -e collection_org=ciena \
-                 -e collection_name=saos10 \
-                 -e model=saos10/$MODEL/saos10_$MODEL.yml \
-                 -e transport=netconf \
-                 site.yml
-```
 
 ## Changelogs
 

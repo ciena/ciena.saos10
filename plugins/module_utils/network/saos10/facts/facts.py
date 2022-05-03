@@ -23,9 +23,12 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.classifiers.classifiers import (
     ClassifiersFacts,
 )
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.fds.fds import (
+    FdsFacts,
+)
 
 FACT_LEGACY_SUBSETS = dict(default=Default, config=Config)
-FACT_RESOURCE_SUBSETS = dict(classifiers=ClassifiersFacts)
+FACT_RESOURCE_SUBSETS = dict(classifiers=ClassifiersFacts, fds=FdsFacts)
 
 
 class Facts(FactsBase):
