@@ -4,7 +4,7 @@ authors:
 dependencies:
   ansible.netcommon: '>=1.0.0'
 license_file: LICENSE
-version: 1.5.0
+version: 1.5.1
 name: saos10
 namespace: ciena
 readme: README.md

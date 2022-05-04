@@ -188,9 +188,11 @@ class Fds(ConfigBase):
             fds_root = build_root_xml_node("fds")
             fd_node = build_child_xml_node(fds_root, "fd")
             build_child_xml_node(fd_node, "name", fd["name"])
-            if fd["mode"]:
+            if "mode" in fd:
                 build_child_xml_node(fd_node, "mode", fd["mode"])
-            if fd["pfg-profile"]:
+            if "vlan-id" in fd:
+                build_child_xml_node(fd_node, "vlan-id", fd["vlan-id"])
+            if "pfg-profile" in fd:
                 build_child_xml_node(fd_node, "pfg-profile", fd["pfg-profile"])
             initiate_l2_transform = fd["initiate-l2-transform"]
             initiate_l2_transform_node = build_child_xml_node(
@@ -200,21 +202,21 @@ class Fds(ConfigBase):
                 vlan_stack_node = build_child_xml_node(
                     initiate_l2_transform_node, "vlan-stack"
                 )
-                if vlan_stack["tag"]:
+                if "tag" in vlan_stack:
                     build_child_xml_node(vlan_stack_node, "tag", vlan_stack["tag"])
-                if vlan_stack["push-tpid"]:
+                if "push-tpid" in vlan_stack:
                     build_child_xml_node(
                         vlan_stack_node, "push-tpid", vlan_stack["push-tpid"]
                     )
-                if vlan_stack["push-pcp"]:
+                if "push-pcp" in vlan_stack:
                     build_child_xml_node(
                         vlan_stack_node, "push-pcp", vlan_stack["push-pcp"]
                     )
-                if vlan_stack["push-dei"]:
+                if "push-dei" in vlan_stack:
                     build_child_xml_node(
                         vlan_stack_node, "push-dei", vlan_stack["push-dei"]
                     )
-                if vlan_stack["push-vid"]:
+                if "push-vid" in vlan_stack:
                     build_child_xml_node(
                         vlan_stack_node, "push-vid", vlan_stack["push-vid"]
                     )

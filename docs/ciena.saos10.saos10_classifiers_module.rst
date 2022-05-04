@@ -21,6 +21,13 @@ Synopsis
 
 
 
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- ncclient (>=v0.6.4)
+- xmltodict (>=0.12.0)
+
 
 Parameters
 ----------

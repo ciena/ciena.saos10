@@ -11,7 +11,9 @@ based on the configuration.
 """
 from copy import deepcopy
 
+import re
 from ansible.module_utils._text import to_text, to_bytes
+from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     remove_namespaces,
 )
@@ -26,6 +28,7 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspe
 )
 
 try:
+    from lxml import etree
     from lxml.etree import tostring as xml_to_string, fromstring
 
     HAS_LXML = True
@@ -33,6 +36,13 @@ except ImportError:
     from xml.etree.ElementTree import fromstring, tostring as xml_to_string
 
     HAS_LXML = False
+
+try:
+    import xmltodict
+
+    HAS_XMLTODICT = True
+except ImportError:
+    HAS_XMLTODICT = False
 
 
 class ClassifiersFacts(object):
@@ -101,7 +111,50 @@ class ClassifiersFacts(object):
         :returns: The generated config
         """
         config = deepcopy(spec)
+        classifier = self._get_xml_dict(conf)["classifier"]
         config["name"] = utils.get_xml_conf_arg(conf, "name")
-        config["some_value"] = utils.get_xml_conf_arg(conf, "some_value")
+        if "filter-operation" in classifier:
+            config["filter-operation"] = re.sub(
+                "^[a-z]+\:", "", classifier["filter-operation"]
+            )  # regex to remove namespace declaration in values
+        if classifier["filter-entry"]:
+            config["filter-entry"] = []
+            if not isinstance(classifier["filter-entry"], list):
+                filter_entrys = [classifier["filter-entry"]]
+            else:
+                filter_entrys = classifier["filter-entry"]
+
+            for filter_entry in filter_entrys:
+                filter_entry_result = {}
+                if "filter-parameter" in filter_entry:
+                    filter_entry_result["filter-parameter"] = re.sub(
+                        "^[a-z]+\:", "", filter_entry["filter-parameter"]
+                    )  # regex to remove namespace declaration in values
+                if "logical-not" in filter_entry:
+                    filter_entry_result["logical-not"] = re.sub(
+                        "^[a-z]+\:", "", filter_entry["logical-not"]
+                    )  # regex to remove namespace declaration in values
+                if filter_entry["vtags"]:
+                    filter_entry_result["vtags"] = []
+                    if not isinstance(filter_entry["vtags"], list):
+                        vtagss = [filter_entry["vtags"]]
+                    else:
+                        vtagss = filter_entry["vtags"]
+
+                    for vtags in vtagss:
+                        vtags_result = {}
+                        if "tag" in vtags:
+                            vtags_result["tag"] = vtags["tag"]
+                        if "vlan-id" in vtags:
+                            vtags_result["vlan-id"] = vtags["vlan-id"]
+                        filter_entry_result["vtags"].append(vtags_result)
+
+                config["filter-entry"].append(filter_entry_result)
 
         return utils.remove_empties(config)
+
+    def _get_xml_dict(self, xml_root):
+        if not HAS_XMLTODICT:
+            self._module.fail_json(msg=missing_required_lib("xmltodict"))
+        xml_dict = xmltodict.parse(etree.tostring(xml_root), dict_constructor=dict)
+        return xml_dict

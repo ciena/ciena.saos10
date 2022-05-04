@@ -3,3 +3,4 @@ paramiko
 xmldiff
 lxml
 ncclient
+xmltodict

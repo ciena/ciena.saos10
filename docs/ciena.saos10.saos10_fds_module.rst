@@ -8,7 +8,7 @@ ciena.saos10.saos10_fds
 **Manage forwarding domains on Ciena SAOS 10 devices**
 
 
-Version added: 2.9
+Version added: 1.5.0
 
 .. contents::
    :local:
@@ -20,6 +20,13 @@ Synopsis
 - This module provides declarative management of a forwarding domain
 
 
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- ncclient (>=v0.6.4)
+- xmltodict (>=0.12.0)
 
 
 Parameters

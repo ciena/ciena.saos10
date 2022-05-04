@@ -11,7 +11,9 @@ based on the configuration.
 """
 from copy import deepcopy
 
+import re
 from ansible.module_utils._text import to_text, to_bytes
+from ansible.module_utils.basic import missing_required_lib
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     remove_namespaces,
 )
@@ -26,6 +28,7 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspe
 )
 
 try:
+    from lxml import etree
     from lxml.etree import tostring as xml_to_string, fromstring
 
     HAS_LXML = True
@@ -33,6 +36,13 @@ except ImportError:
     from xml.etree.ElementTree import fromstring, tostring as xml_to_string
 
     HAS_LXML = False
+
+try:
+    import xmltodict
+
+    HAS_XMLTODICT = True
+except ImportError:
+    HAS_XMLTODICT = False
 
 
 class FdsFacts(object):
@@ -101,7 +111,23 @@ class FdsFacts(object):
         :returns: The generated config
         """
         config = deepcopy(spec)
+        fd = self._get_xml_dict(conf)["fd"]
         config["name"] = utils.get_xml_conf_arg(conf, "name")
-        config["some_value"] = utils.get_xml_conf_arg(conf, "some_value")
+        if "mode" in fd:
+            config["mode"] = re.sub(
+                "^[a-z]+\:", "", fd["mode"]
+            )  # regex to remove namespace declaration in values
+        if "vlan-id" in fd:
+            config["vlan-id"] = fd["vlan-id"]
+        if "pfg-profile" in fd:
+            config["pfg-profile"] = re.sub(
+                "^[a-z]+\:", "", fd["pfg-profile"]
+            )  # regex to remove namespace declaration in values
 
         return utils.remove_empties(config)
+
+    def _get_xml_dict(self, xml_root):
+        if not HAS_XMLTODICT:
+            self._module.fail_json(msg=missing_required_lib("xmltodict"))
+        xml_dict = xmltodict.parse(etree.tostring(xml_root), dict_constructor=dict)
+        return xml_dict

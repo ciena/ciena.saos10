@@ -190,7 +190,7 @@ class Classifiers(ConfigBase):
             classifiers_root = build_root_xml_node("classifiers")
             classifier_node = build_child_xml_node(classifiers_root, "classifier")
             build_child_xml_node(classifier_node, "name", classifier["name"])
-            if classifier["filter-operation"]:
+            if "filter-operation" in classifier:
                 build_child_xml_node(
                     classifier_node, "filter-operation", classifier["filter-operation"]
                 )
@@ -198,21 +198,21 @@ class Classifiers(ConfigBase):
                 filter_entry_node = build_child_xml_node(
                     classifier_node, "filter-entry"
                 )
-                if filter_entry["filter-parameter"]:
+                if "filter-parameter" in filter_entry:
                     build_child_xml_node(
                         filter_entry_node,
                         "filter-parameter",
                         filter_entry["filter-parameter"],
                     )
-                if filter_entry["logical-not"]:
+                if "logical-not" in filter_entry:
                     build_child_xml_node(
                         filter_entry_node, "logical-not", filter_entry["logical-not"]
                     )
                 for vtags in filter_entry["vtags"]:
                     vtags_node = build_child_xml_node(filter_entry_node, "vtags")
-                    if vtags["tag"]:
+                    if "tag" in vtags:
                         build_child_xml_node(vtags_node, "tag", vtags["tag"])
-                    if vtags["vlan-id"]:
+                    if "vlan-id" in vtags:
                         build_child_xml_node(vtags_node, "vlan-id", vtags["vlan-id"])
 
             classifiers_xml.append(classifier_node)

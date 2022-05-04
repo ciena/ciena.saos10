@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.5.1
+### Added
+- fds facts gather
+- classifiers facts gather
+
 ## v1.5.0
 ### Added
 - fds module
