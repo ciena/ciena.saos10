@@ -26,21 +26,21 @@ The Ciena SAOS 10 collection supports `network_cli` and `netconf` connections.
 ### Cliconf plugins
 Name | Description
 --- | ---
-[ciena.saos10.saos10](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_cliconf.rst)|Use saos10 cliconf to run command on Ciena saos10 platform
+[ciena.saos10.saos10](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_cliconf.rst)|Use saos10 cliconf to run command on Ciena saos10 platform
 
 ### Netconf plugins
 Name | Description
 --- | ---
-[ciena.saos10.saos10](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_netconf.rst)|Use saos10 netconf plugin to run netconf commands on Ciena saos10 platform
+[ciena.saos10.saos10](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_netconf.rst)|Use saos10 netconf plugin to run netconf commands on Ciena saos10 platform
 
 ### Modules
 Name | Description
 --- | ---
-[ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_classifiers_module.rst)|Manage classifiers on Ciena SAOS 10 devices
-[ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_command_module.rst)|Run commands on remote devices running Ciena SAOS 10
-[ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
-[ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.saos10_fds_module.rst)|Manage forwarding domains on Ciena SAOS 10 devices
-[ciena.saos10.xmldiff](https://github.com/ciena/ciena.saos10/blob/main/docs/ciena.saos10.xmldiff_module.rst)|return diff for a pair of xml inputs
+[ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_classifiers_module.rst)|Manage classifiers on Ciena SAOS 10 devices
+[ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_command_module.rst)|Run commands on remote devices running Ciena SAOS 10
+[ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
+[ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|Manage forwarding domains on Ciena SAOS 10 devices
+[ciena.saos10.xmldiff](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.xmldiff_module.rst)|return diff for a pair of xml inputs
 
 <!--end collection content-->
 
