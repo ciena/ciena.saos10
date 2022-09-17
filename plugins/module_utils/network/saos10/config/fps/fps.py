@@ -4,7 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-The saos10_classifiers class
+The saos10_fps class
 It is in this file where the current configuration (as dict)
 is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
@@ -37,18 +37,18 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.
 )
 
 
-class Classifiers(ConfigBase):
+class Fps(ConfigBase):
     """
-    The saos10_classifiers class
+    The saos10_fps class
     """
 
     gather_subset = ["!all", "!min"]
-    gather_network_resources = ["classifiers"]
+    gather_network_resources = ["fps"]
 
     def __init__(self, module):
-        super(Classifiers, self).__init__(module)
+        super(Fps, self).__init__(module)
 
-    def get_classifiers_facts(self):
+    def get_fps_facts(self):
         """ Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
@@ -57,10 +57,10 @@ class Classifiers(ConfigBase):
         facts, _warnings = Facts(self._module).get_facts(
             self.gather_subset, self.gather_network_resources
         )
-        classifiers_facts = facts["ansible_network_resources"].get("classifiers")
-        if not classifiers_facts:
+        fps_facts = facts["ansible_network_resources"].get("fps")
+        if not fps_facts:
             return []
-        return classifiers_facts
+        return fps_facts
 
     def execute_module(self):
         """ Execute the module
@@ -69,8 +69,8 @@ class Classifiers(ConfigBase):
         :returns: The result from module execution
         """
         result = {"changed": False}
-        existing_classifiers_facts = self.get_classifiers_facts()
-        config_xmls = self.set_config(existing_classifiers_facts)
+        existing_fps_facts = self.get_fps_facts()
+        config_xmls = self.set_config(existing_fps_facts)
 
         for config_xml in to_list(config_xmls):
             config = f'<config>{config_xml.decode("utf-8")}</config>'
@@ -84,19 +84,17 @@ class Classifiers(ConfigBase):
             self._module._connection.edit_config(**kwargs)
 
         result["xml"] = config_xmls
-        changed_classifiers_facts = self.get_classifiers_facts()
+        changed_fps_facts = self.get_fps_facts()
 
-        result["changed"] = config_is_diff(
-            existing_classifiers_facts, changed_classifiers_facts
-        )
+        result["changed"] = config_is_diff(existing_fps_facts, changed_fps_facts)
 
-        result["before"] = existing_classifiers_facts
+        result["before"] = existing_fps_facts
         if result["changed"]:
-            result["after"] = changed_classifiers_facts
+            result["after"] = changed_fps_facts
 
         return result
 
-    def set_config(self, existing_classifiers_facts):
+    def set_config(self, existing_fps_facts):
         """ Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
 
@@ -105,7 +103,7 @@ class Classifiers(ConfigBase):
                   to the desired configuration
         """
         want = self._module.params["config"]
-        have = existing_classifiers_facts
+        have = existing_fps_facts
         resp = self.set_state(want, have)
         return to_list(resp)
 
@@ -118,7 +116,7 @@ class Classifiers(ConfigBase):
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        root = build_root_xml_node("classifiers")
+        root = build_root_xml_node("fps")
         state = self._module.params["state"]
         if state == "overridden":
             config_xmls = self._state_overridden(want, have)
@@ -143,10 +141,10 @@ class Classifiers(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        classifiers_xml = []
-        classifiers_xml.extend(self._state_deleted(want, have))
-        classifiers_xml.extend(self._state_merged(want, have))
-        return classifiers_xml
+        fps_xml = []
+        fps_xml.extend(self._state_deleted(want, have))
+        fps_xml.extend(self._state_merged(want, have))
+        return fps_xml
 
     def _state_overridden(self, want, have):
         """ The command generator when state is overridden
@@ -155,10 +153,10 @@ class Classifiers(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        classifiers_xml = []
-        classifiers_xml.extend(self._state_deleted(have, have))
-        classifiers_xml.extend(self._state_merged(want, have))
-        return classifiers_xml
+        fps_xml = []
+        fps_xml.extend(self._state_deleted(have, have))
+        fps_xml.extend(self._state_merged(want, have))
+        return fps_xml
 
     def _state_deleted(self, want, have):
         """ The command generator when state is deleted
@@ -167,15 +165,15 @@ class Classifiers(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        classifiers_xml = []
+        fps_xml = []
         if not want:
             want = have
         for config in want:
-            classifier_root = build_root_xml_node("classifier")
-            build_child_xml_node(classifier_root, "name", config["name"])
-            classifier_root.attrib["operation"] = "remove"
-            classifiers_xml.append(classifier_root)
-        return classifiers_xml
+            fp_root = build_root_xml_node("fp")
+            build_child_xml_node(fp_root, "name", config["name"])
+            fp_root.attrib["operation"] = "remove"
+            fps_xml.append(fp_root)
+        return fps_xml
 
     def _state_merged(self, want, have):
         """The command generator when state is merged
@@ -184,35 +182,14 @@ class Classifiers(ConfigBase):
         :returns: the xml necessary to migrate the current configuration
                   to the desired configuration
         """
-        classifiers_xml = []
-        for classifier in want:
-            classifiers_root = build_root_xml_node("classifiers")
-            classifier_node = build_child_xml_node(classifiers_root, "classifier")
-            build_child_xml_node(classifier_node, "name", classifier["name"])
-            if classifier["filter-operation"]:
-                build_child_xml_node(
-                    classifier_node, "filter-operation", classifier["filter-operation"]
-                )
-            for filter_entry in classifier["filter-entry"]:
-                filter_entry_node = build_child_xml_node(
-                    classifier_node, "filter-entry"
-                )
-                if filter_entry["filter-parameter"]:
-                    build_child_xml_node(
-                        filter_entry_node,
-                        "filter-parameter",
-                        filter_entry["filter-parameter"],
-                    )
-                if filter_entry["logical-not"]:
-                    build_child_xml_node(
-                        filter_entry_node, "logical-not", filter_entry["logical-not"]
-                    )
-                for vtags in filter_entry["vtags"]:
-                    vtags_node = build_child_xml_node(filter_entry_node, "vtags")
-                    if vtags["tag"]:
-                        build_child_xml_node(vtags_node, "tag", vtags["tag"])
-                    if vtags["vlan-id"]:
-                        build_child_xml_node(vtags_node, "vlan-id", vtags["vlan-id"])
-
-            classifiers_xml.append(classifier_node)
-        return classifiers_xml
+        fps_xml = []
+        for fp in want:
+            fps_root = build_root_xml_node("fps")
+            fp_node = build_child_xml_node(fps_root, "fp")
+            build_child_xml_node(fp_node, "name", fp["name"])
+            if fp["logical-port"]:
+                build_child_xml_node(fp_node, "logical-port", fp["logical-port"])
+            if fp["fd-name"]:
+                build_child_xml_node(fp_node, "fd-name", fp["fd-name"])
+            fps_xml.append(fp_node)
+        return fps_xml

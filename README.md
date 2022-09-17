@@ -7,7 +7,7 @@ This collection has been tested against Ciena 10.7
 <!--start requires_ansible-->
 ## Ansible version compatibility
 
-This collection has been tested against following Ansible versions: **>=2.9.10,<2.13**.
+This collection has been tested against following Ansible versions: **>=2.9.10,<=2.13**.
 
 For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
 fully qualified collection name (for example, `cisco.ios.ios`).
@@ -40,6 +40,7 @@ Name | Description
 [ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_command_module.rst)|Run commands on remote devices running Ciena SAOS 10
 [ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
 [ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|Manage forwarding domains on Ciena SAOS 10 devices
+[ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|Manage forwarding domains on Ciena SAOS 10 devices
 [ciena.saos10.xmldiff](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.xmldiff_module.rst)|return diff for a pair of xml inputs
 
 <!--end collection content-->

@@ -168,11 +168,10 @@ class Fds(ConfigBase):
         fds_xml = []
         if not want:
             want = have
-        delete = dict(delete="delete")
         for config in want:
             fd_root = build_root_xml_node("fd")
-            build_child_xml_node(fd_root, "fd", config["name"])
-            fd_root.attrib.update(delete)
+            build_child_xml_node(fd_root, "name", config["name"])
+            fd_root.attrib["operation"] = "remove"
             fds_xml.append(fd_root)
         return fds_xml
 
@@ -188,11 +187,11 @@ class Fds(ConfigBase):
             fds_root = build_root_xml_node("fds")
             fd_node = build_child_xml_node(fds_root, "fd")
             build_child_xml_node(fd_node, "name", fd["name"])
-            if "mode" in fd:
+            if fd["mode"]:
                 build_child_xml_node(fd_node, "mode", fd["mode"])
-            if "vlan-id" in fd:
+            if fd["vlan-id"]:
                 build_child_xml_node(fd_node, "vlan-id", fd["vlan-id"])
-            if "pfg-profile" in fd:
+            if fd["pfg-profile"]:
                 build_child_xml_node(fd_node, "pfg-profile", fd["pfg-profile"])
             initiate_l2_transform = fd["initiate-l2-transform"]
             initiate_l2_transform_node = build_child_xml_node(
@@ -202,21 +201,21 @@ class Fds(ConfigBase):
                 vlan_stack_node = build_child_xml_node(
                     initiate_l2_transform_node, "vlan-stack"
                 )
-                if "tag" in vlan_stack:
+                if vlan_stack["tag"]:
                     build_child_xml_node(vlan_stack_node, "tag", vlan_stack["tag"])
-                if "push-tpid" in vlan_stack:
+                if vlan_stack["push-tpid"]:
                     build_child_xml_node(
                         vlan_stack_node, "push-tpid", vlan_stack["push-tpid"]
                     )
-                if "push-pcp" in vlan_stack:
+                if vlan_stack["push-pcp"]:
                     build_child_xml_node(
                         vlan_stack_node, "push-pcp", vlan_stack["push-pcp"]
                     )
-                if "push-dei" in vlan_stack:
+                if vlan_stack["push-dei"]:
                     build_child_xml_node(
                         vlan_stack_node, "push-dei", vlan_stack["push-dei"]
                     )
-                if "push-vid" in vlan_stack:
+                if vlan_stack["push-vid"]:
                     build_child_xml_node(
                         vlan_stack_node, "push-vid", vlan_stack["push-vid"]
                     )

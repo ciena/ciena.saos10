@@ -13,6 +13,7 @@
         gather_network_resources:
           - fds
           - classifiers
+          - fps
       connection: netconf
     - name: saos10_command with diag shell
       ciena.saos10.saos10_command:
@@ -20,6 +21,11 @@
         - software show
         - diag shell host
         - ls /
+      connection: network_cli
+    - name: saos10_command with diag shell
+      ciena.saos10.saos10_command:
+        commands:
+        - software show
       connection: network_cli
     - name: Configure Classifier
       ciena.saos10.saos10_classifiers:
@@ -43,4 +49,30 @@
                   push-tpid: tpid-8100
                   push-vid: 202
         state: merged
+      connection: netconf
+    - name: Configure fps
+      ciena.saos10.saos10_fps:
+        config:
+          - name: foo
+            fd-name: foo
+            logical-port: 1
+        state: merged
+      connection: netconf
+    ##### DELETIONS
+    - name: Remove fps
+      ciena.saos10.saos10_fps:
+        config:
+          - name: foo
+        state: deleted
+      connection: netconf
+    - name: delete fds
+      ciena.saos10.saos10_fds:
+        config:
+          - name: foo
+        state: deleted
+    - name: delete Classifier
+      ciena.saos10.saos10_classifiers:
+        config:
+          - name: foo-100
+        state: deleted
       connection: netconf

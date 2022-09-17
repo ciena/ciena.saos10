@@ -312,7 +312,7 @@ Examples
     # Using merged
 
     - name: Configure interfaces
-      ciena.saos10.saos10_classifiers:
+      ciena.saos10.saos10_fds:
         config:
           - name: remote-fd
             mode: vpls
@@ -328,7 +328,7 @@ Examples
     # Using overridden
 
     - name: Configure interfaces
-      ciena.saos10.saos10_classifiers:
+      ciena.saos10.saos10_fds:
         config:
           - name: remote-fd
             mode: vpls
@@ -344,7 +344,7 @@ Examples
     # Using deleted
 
     - name: Configure interfaces
-      ciena.saos10.saos10_classifiers:
+      ciena.saos10.saos10_fds:
         config:
           - name: remote-fd
         state: deleted
