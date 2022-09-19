@@ -1,5 +1,9 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.6.1
+### Fixed
+- docs
+
 ## v1.6.0
 ### Added
 - fps

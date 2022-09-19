@@ -40,15 +40,15 @@ DOCUMENTATION = """
 ---
 module: saos10_fps
 version_added: 1.5.0
-short_description: Manage forwarding domains on Ciena SAOS 10 devices
-description: This module provides declarative management of a forwarding domain
+short_description: Manage flow points on Ciena SAOS 10 devices
+description: This module provides declarative management of a flow point
 author: Ciena
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
 options:
   config:
-    description: A dictionary of forwarding domain options
+    description: A dictionary of flow point options
     type: list
     elements: dict
     suboptions:
@@ -76,7 +76,7 @@ options:
 EXAMPLES = """
 # Using merged
 
-- name: Configure interfaces
+- name: Configure flow point
   ciena.saos10.saos10_fps:
     config:
       - name: fp1
@@ -87,7 +87,7 @@ EXAMPLES = """
 
 # Using overridden
 
-- name: Configure interfaces
+- name: Configure flow point
   ciena.saos10.saos10_fps:
     config:
       - name: fp1
@@ -98,7 +98,7 @@ EXAMPLES = """
 
 # Using deleted
 
-- name: Configure interfaces
+- name: delete flow point
   ciena.saos10.saos10_fps:
     config:
       - name: fp1
