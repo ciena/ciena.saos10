@@ -5,7 +5,7 @@
 ciena.saos10.saos10_fps
 ***********************
 
-**Manage forwarding domains on Ciena SAOS 10 devices**
+**Manage flow points on Ciena SAOS 10 devices**
 
 
 Version added: 1.5.0
@@ -17,7 +17,7 @@ Version added: 1.5.0
 
 Synopsis
 --------
-- This module provides declarative management of a forwarding domain
+- This module provides declarative management of a flow point
 
 
 
@@ -53,7 +53,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>A dictionary of forwarding domain options</div>
+                        <div>A dictionary of flow point options</div>
                 </td>
             </tr>
                                 <tr>
@@ -139,7 +139,7 @@ Examples
 
     # Using merged
 
-    - name: Configure interfaces
+    - name: Configure flow point
       ciena.saos10.saos10_fps:
         config:
           - name: fp1
@@ -150,7 +150,7 @@ Examples
 
     # Using overridden
 
-    - name: Configure interfaces
+    - name: Configure flow point
       ciena.saos10.saos10_fps:
         config:
           - name: fp1
@@ -161,7 +161,7 @@ Examples
 
     # Using deleted
 
-    - name: Configure interfaces
+    - name: delete flow point
       ciena.saos10.saos10_fps:
         config:
           - name: fp1

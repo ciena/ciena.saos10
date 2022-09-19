@@ -283,7 +283,7 @@ Examples
 
     # Using merged
 
-    - name: Configure interfaces
+    - name: Configure classifier
       ciena.saos10.saos10_classifiers:
         config:
           - name: untagged
@@ -301,7 +301,7 @@ Examples
 
     # Using overridden
 
-    - name: Configure interfaces
+    - name: Configure classifier
       ciena.saos10.saos10_classifiers:
         config:
           - name: untagged
@@ -319,7 +319,7 @@ Examples
 
     # Using deleted
 
-    - name: Configure interfaces
+    - name: Delete classifier
       ciena.saos10.saos10_classifiers:
         config:
           - name: untagged

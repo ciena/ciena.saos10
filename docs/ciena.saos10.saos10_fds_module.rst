@@ -311,7 +311,7 @@ Examples
 
     # Using merged
 
-    - name: Configure interfaces
+    - name: Configure forwarding domain
       ciena.saos10.saos10_fds:
         config:
           - name: remote-fd
@@ -327,7 +327,7 @@ Examples
 
     # Using overridden
 
-    - name: Configure interfaces
+    - name: Configure forwarding domain
       ciena.saos10.saos10_fds:
         config:
           - name: remote-fd
@@ -343,7 +343,7 @@ Examples
 
     # Using deleted
 
-    - name: Configure interfaces
+    - name: Delete forwading domain
       ciena.saos10.saos10_fds:
         config:
           - name: remote-fd
