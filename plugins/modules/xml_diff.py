@@ -152,19 +152,14 @@ def strip_duplicate_elements(old_root, new_root):
         new_root.remove(item)
     for item in old_delete:
         old_root.remove(item)
-    return old_root, new_root
 
-
-def strip_duplicate_level_2_elements(old_root, new_root):
+    # Recursively strip duplicates for nested children
     for old_element in old_root:
         new_element = new_root.find(old_element.tag)
         if new_element:
-            old_element, new_element = strip_duplicate_elements(
-                old_element, new_element
-            )
+            strip_duplicate_elements(old_element, new_element)
 
     return old_root, new_root
-
 
 def check_libs(module):
     # Check if we have lxml 2.3.0 or newer installed
@@ -214,8 +209,6 @@ def main():
         module.fail_json(msg="Error while parsing document: %s (%s)" % ("old", e))
 
     old_root, new_root = strip_duplicate_elements(old_root, new_root)
-    # Note: recursive element comparison and pruning is not implemented.
-    old_root, new_root = strip_duplicate_level_2_elements(old_root, new_root)
     result["xmlstring"] = etree.tostring(new_root)
     module.exit_json(**result)
 
