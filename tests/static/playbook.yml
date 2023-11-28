@@ -15,18 +15,11 @@
           - classifiers
           - fps
       connection: netconf
-    - name: saos10_command with diag shell
-      ciena.saos10.saos10_command:
-        commands:
-        - software show
-        - diag shell host
-        - ls /
-      connection: network_cli
-    - name: saos10_command with diag shell
-      ciena.saos10.saos10_command:
-        commands:
-        - software show
-      connection: network_cli
+    - name: print facts
+      debug:
+        var: ansible_facts
+    - name: Test diag shell
+      ansible.builtin.include_tasks: test-diag-shell.yml
     - name: Configure Classifier
       ciena.saos10.saos10_classifiers:
         config:

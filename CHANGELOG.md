@@ -1,5 +1,10 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.6.4
+### Added
+- Add support for ansible 2.16
+- Add support for saos 10.9
+
 ## v1.6.3
 ### Fixed
 - diff recursion

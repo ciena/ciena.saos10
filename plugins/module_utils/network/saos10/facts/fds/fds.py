@@ -85,7 +85,7 @@ class FdsFacts(object):
 
         objs = []
         for resource in resources:
-            if resource:
+            if resource is not None:
                 obj = self.render_config(self.generated_spec, resource)
                 if obj:
                     objs.append(obj)
