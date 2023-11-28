@@ -8,6 +8,7 @@ This collection has been tested against saos-10-09-00-0307-GA
 ## Ansible version compatibility
 
 This collection has been tested against following Ansible versions:
+
   * 2.10
   * 2.16
 

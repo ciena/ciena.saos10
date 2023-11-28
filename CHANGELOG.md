@@ -1,5 +1,9 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.6.5
+### Fixed
+- Runtime definitions
+
 ## v1.6.4
 ### Added
 - Add support for ansible 2.16
