@@ -123,7 +123,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
 )
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10 import (
     run_commands,
-    saos10_argument_spec,
 )
 
 
@@ -157,7 +156,6 @@ def main():
         retries=dict(default=10, type="int"),
         interval=dict(default=1, type="int"),
     )
-    argument_spec.update(saos10_argument_spec)
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     warnings = list()
     result = {"changed": False, "warnings": warnings}
