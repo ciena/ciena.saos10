@@ -74,16 +74,19 @@ options:
         description: Reference to a Private Forwarding Group Profile.
         type: str
       initiate-l2-transform:
-        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the l2-transform to be applied to the frame. e.g. an L3-frame injected via this forwarding domain to L2 datapath.
+        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the l2-transform to be applied to the frame.
+          e.g. an L3-frame injected via this forwarding domain to L2 datapath.
         type: dict
         suboptions:
           vlan-stack:
-            description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the VLAN related l2-transform to be applied to the frame.
+            description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the VLAN related l2-transform to be
+              applied to the frame.
             type: list
             elements: dict
             suboptions:
               tag:
-                description: Dependent on the transform operation, the tag numbers are push => '1' represents push outermost, '2' represents push outermost (always push to outer)
+                description: Dependent on the transform operation, the tag numbers are push => '1' represents push outermost, '2' represents push outermost
+                  (always push to outer)
                 type: int
               push-tpid:
                 description: Represents the TPID value of the vlan tag for the tag being pushed
@@ -94,7 +97,8 @@ options:
                   - tpid-88a8
                   - tpid-9100
               push-pcp:
-                description: Represents the PCP value of the vlan tag for the tag being pushed. When the PCP value is mapped using a cos-to-frame-map, 'map' is specified.
+                description: Represents the PCP value of the vlan tag for the tag being pushed. When the PCP value is mapped using a cos-to-frame-map,
+                  'map' is specified.
                 type: str
                 choices:
                   - pcp-0
