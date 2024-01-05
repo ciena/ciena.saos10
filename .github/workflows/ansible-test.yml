@@ -2,9 +2,9 @@
 name: Test collection
 on:  # yamllint disable-line rule:truthy
   push:
-    branches: [main]
+    branches: [master, main]
   pull_request:
-    branches: [main]
+    branches: [master, main]
   schedule:
     - cron: "0 6 * * *"
 

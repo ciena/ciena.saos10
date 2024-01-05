@@ -2,9 +2,9 @@
 name: Lint extra docsite docs and links
 on:  # yamllint disable-line rule:truthy
   push:
-    branches: [main]
+    branches: [master, main]
   pull_request:
-    branches: [main]
+    branches: [master, main]
   schedule:
     - cron: '0 6 * * *'
 
