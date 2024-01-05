@@ -1,19 +1,19 @@
 ---
 - name: Install lxml (FreeBSD)
-  package:
+  ansible.builtin.package:
     name: "py{{ ansible_python.version.major }}{{ ansible_python.version.minor }}-lxml"
     state: present
   when: ansible_os_family == "FreeBSD"
 
 # Needed for MacOSX !
 - name: Install lxml
-  pip:
+  ansible.builtin.pip:
     name: lxml
     state: present
 #  when: ansible_os_family == "Darwin"
 
 - name: Get lxml version
-  command: "{{ ansible_python_interpreter }} -c 'from lxml import etree; print(\".\".join(str(v) for v in etree.LXML_VERSION))'"
+  ansible.builtin.command: "{{ ansible_python_interpreter }} -c 'from lxml import etree; print(\".\".join(str(v) for v in etree.LXML_VERSION))'"
   register: lxml_version
 
 - name: Set lxml capabilities as variables
