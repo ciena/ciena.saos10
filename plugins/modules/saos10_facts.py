@@ -70,11 +70,6 @@ EXAMPLES = """
     gather_network_resources:
       - classifiers
 
-# Do not collect classifiers facts
-- saos10_facts:
-    gather_network_resources:
-      - "!classifiers"
-
 # Collect classifiers and minimal default facts
 - saos10_facts:
     gather_subset: min
