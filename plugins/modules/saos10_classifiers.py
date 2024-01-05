@@ -39,7 +39,7 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = """
 ---
 module: saos10_classifiers
-version_added: 2.9
+version_added: 1.0.0
 short_description: Manage classifiers on Ciena SAOS 10 devices
 description: This module provides declarative management of a classifier
 author:
