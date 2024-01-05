@@ -35,7 +35,6 @@ except ImportError:
 
 
 class FactsBase(object):
-
     COMMANDS = frozenset()
 
     def __init__(self, module):
