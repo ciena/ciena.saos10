@@ -27,6 +27,7 @@ from ansible.utils.display import Display
 
 display = Display()
 
+
 class ActionModule(ActionNetworkModule):
     def run(self, tmp=None, task_vars=None):
         del tmp  # tmp no longer has any effect
@@ -39,7 +40,8 @@ class ActionModule(ActionNetworkModule):
         if persistent_connection in ("netconf", "network_cli"):
             return {
                 "failed": True,
-                "msg": "Connection type %s is not valid for this module" % self._play_context.connection,
+                "msg": "Connection type %s is not valid for this module"
+                % self._play_context.connection,
             }
 
         result = super(ActionModule, self).run(task_vars=task_vars)
