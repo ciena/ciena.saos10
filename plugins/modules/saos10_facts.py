@@ -65,8 +65,8 @@ EXAMPLES = """
 # Collect only the classifiers facts
 - saos10_facts:
     gather_subset:
-      - !all
-      - !min
+      - "!all"
+      - "!min"
     gather_network_resources:
       - classifiers
 
