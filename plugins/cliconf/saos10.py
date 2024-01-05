@@ -64,7 +64,7 @@ class Cliconf(CliconfBase):
 
         return device_info
 
-    def get_config(self, source="running", format="text", flags=None):
+    def get_config(self, source="running", flags=None, format="text"):
         cmd = "show running"
         out = self.send_command(cmd)
         return out
@@ -83,8 +83,8 @@ class Cliconf(CliconfBase):
         prompt=None,
         answer=None,
         sendonly=False,
-        output=None,
         newline=True,
+        output=None,
         check_all=False,
     ):
         if not command:

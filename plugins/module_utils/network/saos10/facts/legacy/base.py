@@ -42,7 +42,7 @@ class FactsBase(object):
         self.warnings = list()
         self.responses = None
 
-    def tostring(element, encoding="UTF-8"):
+    def tostring(self, element, encoding="UTF-8"):
         if HAS_LXML:
             return xml_to_string(element, encoding="unicode")
         else:
