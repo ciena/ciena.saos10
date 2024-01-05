@@ -1,12 +1,10 @@
 ---
 - hosts: all
-  collections:
-    - ciena.saos10
   gather_facts: false
   name: Gather facts for ciena device Saos 10
   connection: netconf
   tasks:
-    - name: get device facts for Saos 10
+    - name: Get device facts for Saos 10
       ciena.saos10.saos10_facts:
         gather_subset:
           - all
@@ -15,8 +13,8 @@
           - classifiers
           - fps
       connection: netconf
-    - name: print facts
-      debug:
+    - name: Print facts
+      ansible.builtin.debug:
         var: ansible_facts
     - name: Test diag shell
       ansible.builtin.include_tasks: test-diag-shell.yml
@@ -58,12 +56,12 @@
           - name: foo
         state: deleted
       connection: netconf
-    - name: delete fds
+    - name: Delete fds
       ciena.saos10.saos10_fds:
         config:
           - name: foo
         state: deleted
-    - name: delete Classifier
+    - name: Delete Classifier
       ciena.saos10.saos10_classifiers:
         config:
           - name: foo-100

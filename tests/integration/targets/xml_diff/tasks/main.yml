@@ -18,7 +18,7 @@
   changed_when: false
 
 - name: Set lxml capabilities as variables
-  set_fact:
+  ansible.builtin.set_fact:
     # NOTE: Some tests require predictable element attribute order,
     #       which is only guaranteed starting from lxml v3.0alpha1
     lxml_predictable_attribute_order: '{{ lxml_version.stdout is version("3", ">=") }}'
@@ -35,5 +35,6 @@
 - name: Only run the tests when lxml v2.3.0+
   when: lxml_xpath_attribute_result_attrname
   block:
-    - ansible.builtin.include_tasks: test-item.yml
+    - name: Run tests
+      ansible.builtin.include_tasks: test-item.yml
       with_items: "{{ tests }}"
