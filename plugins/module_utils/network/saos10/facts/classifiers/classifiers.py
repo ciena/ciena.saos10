@@ -117,7 +117,7 @@ class ClassifiersFacts(object):
         config["name"] = utils.get_xml_conf_arg(conf, "name")
         if "filter-operation" in classifier:
             config["filter-operation"] = re.sub(
-                "^[a-z]+\:", "", classifier["filter-operation"]
+                r"^[a-z]+:", "", classifier["filter-operation"]
             )  # regex to remove namespace declaration in values
         if classifier["filter-entry"]:
             config["filter-entry"] = []
@@ -130,11 +130,11 @@ class ClassifiersFacts(object):
                 filter_entry_result = {}
                 if "filter-parameter" in filter_entry:
                     filter_entry_result["filter-parameter"] = re.sub(
-                        "^[a-z]+\:", "", filter_entry["filter-parameter"]
+                        r"^[a-z]+:", "", filter_entry["filter-parameter"]
                     )  # regex to remove namespace declaration in values
                 if "logical-not" in filter_entry:
                     filter_entry_result["logical-not"] = re.sub(
-                        "^[a-z]+\:", "", filter_entry["logical-not"]
+                        r"^[a-z]+:", "", filter_entry["logical-not"]
                     )  # regex to remove namespace declaration in values
                 if filter_entry["vtags"]:
                     filter_entry_result["vtags"] = []

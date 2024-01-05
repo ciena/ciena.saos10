@@ -117,11 +117,11 @@ class FpsFacts(object):
         config["name"] = utils.get_xml_conf_arg(conf, "name")
         if "logical-port" in fp:
             config["logical-port"] = re.sub(
-                "^[a-z]+\:", "", fp["logical-port"]
+                r"^[a-z]+:", "", fp["logical-port"]
             )  # regex to remove namespace declaration in values
         if "fd-name" in fp:
             config["fd-name"] = re.sub(
-                "^[a-z]+\:", "", fp["fd-name"]
+                r"^[a-z]+:", "", fp["fd-name"]
             )  # regex to remove namespace declaration in values
 
         return utils.remove_empties(config)

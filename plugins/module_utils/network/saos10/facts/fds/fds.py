@@ -117,13 +117,13 @@ class FdsFacts(object):
         config["name"] = utils.get_xml_conf_arg(conf, "name")
         if "mode" in fd:
             config["mode"] = re.sub(
-                "^[a-z]+\:", "", fd["mode"]
+                r"^[a-z]+:", "", fd["mode"]
             )  # regex to remove namespace declaration in values
         if "vlan-id" in fd:
             config["vlan-id"] = fd["vlan-id"]
         if "pfg-profile" in fd:
             config["pfg-profile"] = re.sub(
-                "^[a-z]+\:", "", fd["pfg-profile"]
+                r"^[a-z]+:", "", fd["pfg-profile"]
             )  # regex to remove namespace declaration in values
 
         return utils.remove_empties(config)
