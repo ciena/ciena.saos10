@@ -21,7 +21,7 @@ description:
   or disable collection of additional facts.
 version_added: 1.0.0
 author:
-- Jeff Groom
+  - Jeff Groom (@jgroom33)
 notes:
 - Tested against SAOS 10-4.
 options:

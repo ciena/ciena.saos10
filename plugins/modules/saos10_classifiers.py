@@ -42,7 +42,8 @@ module: saos10_classifiers
 version_added: 2.9
 short_description: Manage classifiers on Ciena SAOS 10 devices
 description: This module provides declarative management of a classifier
-author: jgroom@ciena.com
+author:
+  - Jeff Groom (@jgroom33)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)

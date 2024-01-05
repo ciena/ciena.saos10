@@ -3,7 +3,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = """
-author: Jeff Groom
+author:
+  - Jeff Groom (@jgroom33)
 netconf: saos10
 short_description: Use saos10 netconf plugin to run netconf commands on Ciena saos10
   platform

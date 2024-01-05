@@ -8,7 +8,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 DOCUMENTATION = """
 module: saos10_command
-author: Jeff Groom
+author:
+  - Jeff Groom (@jgroom33)
 short_description: Run commands on remote devices running Ciena SAOS 10
 description:
 - Sends arbitrary commands to a saos node and returns the results read from the device.

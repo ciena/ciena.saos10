@@ -27,7 +27,7 @@ options:
         type: str
 
 author:
-- Jeff Groom (@jgroom33)
+  - Jeff Groom (@jgroom33)
 """
 
 EXAMPLES = r"""
