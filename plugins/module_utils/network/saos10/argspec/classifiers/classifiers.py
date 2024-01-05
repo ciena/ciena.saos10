@@ -25,8 +25,9 @@
 """
 The arg spec for the saos10_classifiers module
 """
-
 from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
 
 
 class ClassifiersArgs(object):  # pylint: disable=R0903
