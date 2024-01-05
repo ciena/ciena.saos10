@@ -2,12 +2,12 @@
 - name: Saos10_command with diag shell
   ciena.saos10.saos10_command:
     commands:
-    - software show
-    - diag shell host
-    - ls /
+      - software show
+      - diag shell host
+      - ls /
   connection: network_cli
 - name: Saos10_command with diag shell
   ciena.saos10.saos10_command:
     commands:
-    - software show
+      - software show
   connection: network_cli
