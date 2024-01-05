@@ -26,10 +26,11 @@
 The arg spec for the saos10_fps module
 """
 
+from __future__ import absolute_import, division, print_function
+
 
 class FpsArgs(object):  # pylint: disable=R0903
-    """The arg spec for the saos10_fps module
-    """
+    """The arg spec for the saos10_fps module"""
 
     def __init__(self, **kwargs):
         pass
