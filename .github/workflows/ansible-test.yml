@@ -1,0 +1,35 @@
+---
+name: Test collection
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * *"
+
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{
+      github.event.pull_request.number || github.sha
+    }}
+  cancel-in-progress: true
+
+jobs:
+  ansible-lint:
+    uses: ansible-network/github_actions/.github/workflows/ansible-lint.yml@main
+  sanity:
+    uses: ansible-network/github_actions/.github/workflows/sanity.yml@main
+
+  all_green:
+    if: ${{ always() && (github.event_name != 'schedule') }}
+    needs:
+      - ansible-lint
+      - sanity
+    runs-on: ubuntu-latest
+    steps:
+      - run: >-
+          python -c "assert set([
+          '${{ needs.ansible-lint.result }}',
+          '${{ needs.sanity.result }}',
+          ]) == {'success'}"

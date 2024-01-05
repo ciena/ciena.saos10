@@ -9,7 +9,6 @@ This collection has been tested against saos-10-09-00-0307-GA
 
 This collection has been tested against following Ansible versions:
 
-  * 2.10
   * 2.16
 
 For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
