@@ -25,12 +25,14 @@ import json
 import re
 
 from ansible.module_utils._text import to_text, to_native
-from ansible.errors import AnsibleConnectionFailure
 from ansible.plugins.netconf import NetconfBase, ensure_ncclient
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    remove_namespaces,
+)
 
 try:
-    from ncclient import manager
-    from ncclient.transport.errors import SSHUnknownHostError
+    from ncclient.operations import RPCError
+    from ncclient.xml_ import to_ele, to_xml
 
     HAS_NCCLIENT = True
 except (
@@ -58,7 +60,6 @@ class Netconf(NetconfBase):
             "load_configuration",
             "get_configuration",
             "reboot",
-            "halt",
         ]
         result["network_api"] = "netconf"
         result["device_info"] = self.get_device_info()
@@ -72,40 +73,49 @@ class Netconf(NetconfBase):
 
     @ensure_ncclient
     def get_device_info(self):
-        device_info = dict()
-        device_info["network_os"] = "saos10"
+        device_info = {}
+        device_info["network_os"] = "waveserver5"
+        filter = """
+        <filter>
+            <components xmlns="http://openconfig.net/yang/platform"/>
+            <system xmlns="http://openconfig.net/yang/system">
+                <config>
+                    <hostname/>
+                </config>
+            </system>
+        </filter>
+        """
+        filter = to_ele(filter)
+        response = self.get(filter=filter, remove_ns=True)
+        root = to_ele(response)
+        model = self._extract_xpath(root, "//component[name='Waveserver']/state/description")
+        network_os_version = self._extract_xpath(root, "//component[name='CM-1']/state/software-version")
+        hostname = self._extract_xpath(root, "/data/system/config/hostname")
+        serial_number = self._extract_xpath(root, "//component[name='Waveserver']/state/serial-no")
+        platform = self._extract_xpath(root, "//component[name='Waveserver']/state/id")
+
+        device_info["network_os_platform"] = platform
+        device_info["network_os_serialnum"] = serial_number
+        device_info["network_os_hostname"] = hostname
+        device_info["network_os_version"] = network_os_version
+        device_info["network_os_model"] = model
+
         return device_info
 
-    @staticmethod
-    @ensure_ncclient
-    def guess_network_os(obj):
-        """
-        Guess the remote network os name
-        :param obj: Netconf connection class object
-        :return: Network OS name
-        """
+    def get(self, filter=None, with_defaults=None, remove_ns=False):
+        if isinstance(filter, list):
+            filter = tuple(filter)
         try:
-            m = manager.connect(
-                host=obj._play_context.remote_addr,
-                port=obj._play_context.port or 830,
-                username=obj._play_context.remote_user,
-                password=obj._play_context.password,
-                key_filename=obj.key_filename,
-                hostkey_verify=obj.get_option("host_key_checking"),
-                look_for_keys=obj.get_option("look_for_keys"),
-                allow_agent=obj._play_context.allow_agent,
-                timeout=obj.get_option("persistent_connect_timeout"),
-                # We need to pass in the path to the ssh_config file when guessing
-                # the network_os so that a jumphost is correctly used if defined
-                ssh_config=obj._ssh_config,
-            )
-        except SSHUnknownHostError as exc:
-            raise AnsibleConnectionFailure(to_native(exc))
+            resp = self.m.get(filter=filter, with_defaults=with_defaults)
+            if remove_ns:
+                response = remove_namespaces(resp)
+            else:
+                response = resp.data_xml if hasattr(resp, "data_xml") else resp.xml
+            return response
+        except RPCError as exc:
+            raise Exception(to_xml(exc.xml))
 
-        guessed_os = None
-        for c in m.server_capabilities:
-            if re.search("saos-10", c):
-                guessed_os = "saos10"
-
-        m.close_session()
-        return guessed_os
+    def _extract_xpath(self, root, xpath_str, default=None):
+        """Extract data using XPath and return text or default."""
+        result = root.xpath(xpath_str)
+        return result[0].text if result else default

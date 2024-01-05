@@ -50,26 +50,6 @@ except ImportError:
 _DEVICE_CONFIGS = {}
 CONFIG_FORMATS = frozenset(["xml", "text", "json", "set"])
 
-saos10_provider_spec = {
-    "host": dict(),
-    "port": dict(type="int"),
-    "username": dict(fallback=(env_fallback, ["ANSIBLE_NET_USERNAME"])),
-    "password": dict(fallback=(env_fallback, ["ANSIBLE_NET_PASSWORD"]), no_log=True),
-    "ssh_keyfile": dict(
-        fallback=(env_fallback, ["ANSIBLE_NET_SSH_KEYFILE"]), type="path"
-    ),
-    "timeout": dict(type="int"),
-    "transport": dict(default="netconf", choices=["cli", "netconf"]),
-}
-saos10_argument_spec = {
-    "provider": dict(
-        type="dict",
-        options=saos10_provider_spec,
-        removed_at_date="2022-06-01",
-        removed_from_collection="ciena.saos10",
-    )
-}
-
 
 def remove_ns(element):
     data = remove_namespaces(xml_to_string(element))
@@ -82,10 +62,6 @@ def tostring(element, encoding="UTF-8"):
         return xml_to_string(element, encoding="unicode")
     else:
         return to_text(xml_to_string(element, encoding), encoding=encoding)
-
-
-def get_provider_argspec():
-    return saos10_provider_spec
 
 
 def get_connection(module):
