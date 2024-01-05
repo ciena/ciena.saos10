@@ -57,7 +57,7 @@ options:
         type: str
         required: True
       mode:
-        description: Forwarding mode of the forwarding-domain 
+        description: Forwarding mode of the forwarding-domain
         type: str
         choices:
           - vpls

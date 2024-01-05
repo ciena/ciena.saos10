@@ -161,6 +161,7 @@ def strip_duplicate_elements(old_root, new_root):
 
     return old_root, new_root
 
+
 def check_libs(module):
     # Check if we have lxml 2.3.0 or newer installed
     if not HAS_LXML:

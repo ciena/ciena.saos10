@@ -93,7 +93,7 @@ options:
               - tcp-flags
           logical-not:
             description:
-              - Opposite of what is specified in the 
+              - Opposite of what is specified in the
               - filter-parameters. If the filter-parameter
               - specifies a tpid as tpid-8100, then anything
               - other than tpid-8100 is considered an acceptable
