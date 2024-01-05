@@ -22,24 +22,36 @@ description:
 version_added: 1.0.0
 author:
   - Jeff Groom (@jgroom33)
-notes:
-- Tested against SAOS 10-4.
 options:
   gather_subset:
     description:
     - When supplied, this argument will restrict the facts collected to a given subset.  Possible
-      values for this argument include all, default, config, and neighbors. Can specify
-      a list of values to include a larger subset. Values can also be used with an
-      initial C(M(!)) to specify that a specific subset should not be collected.
+      values for this argument include C(all), C(default), C(config), C(min). Can specify
+      a list of values to include a larger subset.
     required: false
     default: '!config'
+  config_format:
+    description:
+    - The I(config_format) argument specifies the format of the configuration when
+      serializing output from the device. This argument is applicable only when C(config)
+      value is present in I(gather_subset). The I(config_format) should be supported
+      by the waveserver version running on device. This value is not applicable while fetching
+      old style facts that is when C(ofacts) value is present in value if I(gather_subset)
+      value. This option is valid only for C(gather_subset) values.
+    type: str
+    required: false
+    default: xml
+    choices:
+    - xml
+    - text
+    - json
   gather_network_resources:
     description:
       - When supplied, this argument will restrict the facts collected
         to a given subset. Possible values for this argument include
         all and the resources like interfaces, vlans etc.
         Can specify a list of values to include a larger subset. Values
-        can also be used with an initial C(M(!)) to specify that a
+        can also be used with an initial C(!) to specify that a
         specific subset should not be collected.
     required: false
 """
