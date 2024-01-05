@@ -12,12 +12,12 @@
   register: formatted
 
 - name: Create tmp xml file for comparison purposes
-  copy:
+  ansible.builtin.copy:
     dest: /tmp/comparison.xml
     content: "{{ formatted['xmlstring'] }}"
 
 - name: Compare to expected result
-  copy:
+  ansible.builtin.copy:
     src: fixtures/{{ item }}_diff.xml
     dest: /tmp/comparison.xml
   check_mode: true
@@ -25,6 +25,6 @@
   register: comparison
 
 - name: Test expected result
-  assert:
+  ansible.builtin.assert:
     that:
       - comparison is not changed
