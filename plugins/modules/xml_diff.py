@@ -6,13 +6,13 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: xmldiff
 
 short_description: return diff for a pair of xml inputs
 
-version_added: "1.1.0"
+version_added: 1.1.0
 
 description: return diff for a pair of xml inputs
 
