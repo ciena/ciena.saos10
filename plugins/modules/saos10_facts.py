@@ -29,7 +29,10 @@ options:
       values for this argument include C(all), C(default), C(config), C(min). Can specify
       a list of values to include a larger subset.
     required: false
-    default: '!config'
+    default:
+    - '!config'
+    type: list
+    elements: str
   config_format:
     description:
     - The I(config_format) argument specifies the format of the configuration when
@@ -47,13 +50,15 @@ options:
     - json
   gather_network_resources:
     description:
-      - When supplied, this argument will restrict the facts collected
-        to a given subset. Possible values for this argument include
-        all and the resources like interfaces, vlans etc.
-        Can specify a list of values to include a larger subset. Values
-        can also be used with an initial C(!) to specify that a
-        specific subset should not be collected.
+    - When supplied, this argument will restrict the facts collected to a given subset.
+      Possible values for this argument include all and the resources like interfaces,
+      vlans etc. Can specify a list of values to include a larger subset. Values can
+      also be used with an initial C(!) to specify that a specific subset should
+      not be collected. Valid subsets are 'all', 'interfaces'
     required: false
+    type: list
+    elements: str
+    version_added: "0.0.1"
 """
 
 EXAMPLES = """

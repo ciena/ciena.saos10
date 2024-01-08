@@ -59,13 +59,15 @@ Parameters
                     <b>gather_network_resources</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
+                    <div style="font-style: italic; font-size: small; color: darkgreen">added in 0.0.1</div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>When supplied, this argument will restrict the facts collected to a given subset. Possible values for this argument include all and the resources like interfaces, vlans etc. Can specify a list of values to include a larger subset. Values can also be used with an initial <code>!</code> to specify that a specific subset should not be collected.</div>
+                        <div>When supplied, this argument will restrict the facts collected to a given subset. Possible values for this argument include all and the resources like interfaces, vlans etc. Can specify a list of values to include a larger subset. Values can also be used with an initial <code>!</code> to specify that a specific subset should not be collected. Valid subsets are &#x27;all&#x27;, &#x27;interfaces&#x27;</div>
                 </td>
             </tr>
             <tr>
@@ -74,11 +76,12 @@ Parameters
                     <b>gather_subset</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
-                        <b>Default:</b><br/><div style="color: blue">"!config"</div>
+                        <b>Default:</b><br/><div style="color: blue">["!config"]</div>
                 </td>
                 <td>
                         <div>When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include <code>all</code>, <code>default</code>, <code>config</code>, <code>min</code>. Can specify a list of values to include a larger subset.</div>
