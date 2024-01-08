@@ -112,9 +112,7 @@ class Cliconf(CliconfBase):
 
             output = cmd.pop("output", None)
             if output:
-                raise ValueError(
-                    "'output' value %s is not supported for run_commands" % output
-                )
+                raise ValueError("'output' value %s is not supported for run_commands" % output)
 
             try:
                 out = self.send_command(**cmd)

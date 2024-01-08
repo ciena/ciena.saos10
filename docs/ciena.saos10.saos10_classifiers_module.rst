@@ -53,14 +53,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>A dictionary of classifier options</div>
+                        <div>List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.) to define their incoming classification.</div>
                 </td>
             </tr>
                                 <tr>
                     <td class="elbow-placeholder"></td>
                 <td colspan="3">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter-entry</b>
+                    <b>filter_entry</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
@@ -70,7 +70,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Add one filtering rule for this classifier</div>
+                        <div>Add one filtering rule for this classifier.</div>
                 </td>
             </tr>
                                 <tr>
@@ -78,34 +78,33 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter-parameter</b>
+                    <b>filter_parameter</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>any</li>
-                                    <li>destination-mac</li>
-                                    <li>internal-cos</li>
-                                    <li>ip-version</li>
-                                    <li>l4-source-port</li>
-                                    <li>source-ip</li>
                                     <li>vtag-stack</li>
-                                    <li>base-etype</li>
+                                    <li>mpls-label-stack</li>
                                     <li>dscp</li>
+                                    <li>source-ip</li>
+                                    <li>destination-ip</li>
+                                    <li>l4-source-port</li>
+                                    <li>l4-destination-port</li>
+                                    <li>ip-protocol</li>
+                                    <li>base-etype</li>
+                                    <li>any</li>
                                     <li>ip-fragment</li>
                                     <li>l4-application</li>
-                                    <li>local-termination</li>
-                                    <li>source-mac</li>
-                                    <li>destination-ip</li>
-                                    <li>icmp</li>
-                                    <li>ip-protocol</li>
-                                    <li>l4-destination-port</li>
-                                    <li>mpls-label</li>
                                     <li>tcp-flags</li>
+                                    <li>source-mac</li>
+                                    <li>destination-mac</li>
+                                    <li>local-termination</li>
+                                    <li>icmp</li>
+                                    <li>ip-version</li>
+                                    <li>internal-cos</li>
                         </ul>
                 </td>
                 <td>
@@ -117,20 +116,20 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>logical-not</b>
+                    <b>logical_not</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">boolean</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no</li>
+                                    <li>yes</li>
+                        </ul>
                 </td>
                 <td>
-                        <div>Opposite of what is specified in the</div>
-                        <div>filter-parameters. If the filter-parameter</div>
-                        <div>specifies a tpid as tpid-8100, then anything</div>
-                        <div>other than tpid-8100 is considered an acceptable</div>
-                        <div>packet</div>
+                        <div>Opposite of what is specified in the filter-parameters. If the filter-parameter specifies a tpid as tpid-8100, then anything other than tpid-8100 is considered an acceptable packet.</div>
                 </td>
             </tr>
             <tr>
@@ -216,7 +215,7 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="3">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>filter-operation</b>
+                    <b>filter_operation</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -224,8 +223,8 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>match-any</li>
                                     <li>match-all</li>
+                                    <li>match-any</li>
                         </ul>
                 </td>
                 <td>
@@ -240,13 +239,12 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>A unique name for the classifier</div>
+                        <div>A unique name for the classifier.</div>
                 </td>
             </tr>
 
@@ -299,34 +297,6 @@ Examples
         state: merged
 
 
-    # Using overridden
-
-    - name: Configure classifier
-      ciena.saos10.saos10_classifiers:
-        config:
-          - name: untagged
-            filter-entry:
-              - filter-parameter: vtag-stack
-                untagged-exclude-priority-tagged: false
-          - name: foo-100
-            filter-entry:
-              - filter-parameter: vtag-stack
-                vtags:
-                  - tag: 1
-                    vlan-id: 100
-        state: overridden
-
-
-    # Using deleted
-
-    - name: Delete classifier
-      ciena.saos10.saos10_classifiers:
-        config:
-          - name: untagged
-          - name: foo-100
-        state: deleted
-
-
 
 Return Values
 -------------
@@ -346,7 +316,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>after</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">-</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>when changed</td>
@@ -364,7 +334,7 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                     <b>before</b>
                     <a class="ansibleOptionLink" href="#return-" title="Permalink to this return value"></a>
                     <div style="font-size: small">
-                      <span style="color: purple">-</span>
+                      <span style="color: purple">dictionary</span>
                     </div>
                 </td>
                 <td>always</td>
@@ -404,4 +374,4 @@ Status
 Authors
 ~~~~~~~
 
-- jgroom@ciena.com
+- Jeff Groom (@jgroom33)

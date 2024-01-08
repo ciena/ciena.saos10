@@ -30,76 +30,71 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
 module: saos10_classifiers
-version_added: 1.0.0
+version_added: 2.9
 short_description: Manage classifiers on Ciena SAOS 10 devices
 description: This module provides declarative management of a classifier
-author:
-  - Jeff Groom (@jgroom33)
+author: Jeff Groom (@jgroom33)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
 options:
   config:
-    description: A dictionary of classifier options
+    description: List of classifier templates. Classifiers can be referenced by various
+      entities (flow-point/access-flow/qos-flow etc.) to define their incoming classification.
     type: list
     elements: dict
     suboptions:
-      filter-operation:
+      name:
+        description: A unique name for the classifier.
+        type: str
+        required: false
+      filter_operation:
         description: Choose the scope of application of the rule
         type: str
         choices:
-          - match-any
           - match-all
-      name:
-        description: A unique name for the classifier
-        type: str
-        required: True
-      filter-entry:
-        description: Add one filtering rule for this classifier
+          - match-any
+        required: false
+      filter_entry:
+        description: Add one filtering rule for this classifier.
         type: list
         elements: dict
         suboptions:
-          filter-parameter:
+          filter_parameter:
             description: Indicates which filter parameter is used by this filter entry
             type: str
-            required: True
             choices:
-              - any
-              - destination-mac
-              - internal-cos
-              - ip-version
-              - l4-source-port
-              - source-ip
               - vtag-stack
-              - base-etype
+              - mpls-label-stack
               - dscp
+              - source-ip
+              - destination-ip
+              - l4-source-port
+              - l4-destination-port
+              - ip-protocol
+              - base-etype
+              - any
               - ip-fragment
               - l4-application
-              - local-termination
-              - source-mac
-              - destination-ip
-              - icmp
-              - ip-protocol
-              - l4-destination-port
-              - mpls-label
               - tcp-flags
-          logical-not:
-            description:
-              - Opposite of what is specified in the
-              - filter-parameters. If the filter-parameter
-              - specifies a tpid as tpid-8100, then anything
-              - other than tpid-8100 is considered an acceptable
-              - packet
-            type: str
+              - source-mac
+              - destination-mac
+              - local-termination
+              - icmp
+              - ip-version
+              - internal-cos
+            required: false
+          logical_not:
+            description: Opposite of what is specified in the filter-parameters. If
+              the filter-parameter specifies a tpid as tpid-8100, then anything other
+              than tpid-8100 is considered an acceptable packet.
+            type: bool
+            required: false
           untagged-exclude-priority-tagged:
             description: Untagged exclude priority tagged
             type: bool
@@ -111,19 +106,19 @@ options:
               tag:
                 description: 1 represents outer most tag, 2 next outer most, etc
                 type: int
-                required: True
+                required: true
               vlan-id:
                 description: A specific value of VLAN Tag VLAN-ID
                 type: int
-                required: True
+                required: true
   state:
     choices:
-    - merged
-    - overridden
-    - deleted
+      - merged
+      - overridden
+      - deleted
     default: merged
     description:
-    - The state the configuration should be left in
+      - The state the configuration should be left in
     type: str
 """
 EXAMPLES = """
@@ -145,45 +140,19 @@ EXAMPLES = """
     state: merged
 
 
-# Using overridden
-
-- name: Configure classifier
-  ciena.saos10.saos10_classifiers:
-    config:
-      - name: untagged
-        filter-entry:
-          - filter-parameter: vtag-stack
-            untagged-exclude-priority-tagged: false
-      - name: foo-100
-        filter-entry:
-          - filter-parameter: vtag-stack
-            vtags:
-              - tag: 1
-                vlan-id: 100
-    state: overridden
-
-
-# Using deleted
-
-- name: Delete classifier
-  ciena.saos10.saos10_classifiers:
-    config:
-      - name: untagged
-      - name: foo-100
-    state: deleted
-
-
 """
 RETURN = """
 before:
   description: The configuration prior to the model invocation.
   returned: always
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
 after:
   description: The resulting configuration model invocation.
   returned: when changed
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
@@ -210,9 +179,7 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(
-        argument_spec=ClassifiersArgs.argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=ClassifiersArgs.argument_spec, supports_check_mode=True)
 
     result = Classifiers(module).execute_module()
     module.exit_json(**result)

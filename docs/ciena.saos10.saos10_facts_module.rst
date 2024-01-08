@@ -36,6 +36,26 @@ Parameters
             <tr>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>config_format</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li><div style="color: blue"><b>xml</b>&nbsp;&larr;</div></li>
+                                    <li>text</li>
+                                    <li>json</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>The <em>config_format</em> argument specifies the format of the configuration when serializing output from the device. This argument is applicable only when <code>config</code> value is present in <em>gather_subset</em>. The <em>config_format</em> should be supported by the waveserver version running on device. This value is not applicable while fetching old style facts that is when <code>ofacts</code> value is present in value if <em>gather_subset</em> value. This option is valid only for <code>gather_subset</code> values.</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
                     <b>gather_network_resources</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
@@ -45,7 +65,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>When supplied, this argument will restrict the facts collected to a given subset. Possible values for this argument include all and the resources like interfaces, vlans etc. Can specify a list of values to include a larger subset. Values can also be used with an initial <code><span class='module'>!</span></code> to specify that a specific subset should not be collected.</div>
+                        <div>When supplied, this argument will restrict the facts collected to a given subset. Possible values for this argument include all and the resources like interfaces, vlans etc. Can specify a list of values to include a larger subset. Values can also be used with an initial <code>!</code> to specify that a specific subset should not be collected.</div>
                 </td>
             </tr>
             <tr>
@@ -61,18 +81,12 @@ Parameters
                         <b>Default:</b><br/><div style="color: blue">"!config"</div>
                 </td>
                 <td>
-                        <div>When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include all, default, config, and neighbors. Can specify a list of values to include a larger subset. Values can also be used with an initial <code><span class='module'>!</span></code> to specify that a specific subset should not be collected.</div>
+                        <div>When supplied, this argument will restrict the facts collected to a given subset.  Possible values for this argument include <code>all</code>, <code>default</code>, <code>config</code>, <code>min</code>. Can specify a list of values to include a larger subset.</div>
                 </td>
             </tr>
     </table>
     <br/>
 
-
-Notes
------
-
-.. note::
-   - Tested against SAOS 10-4.
 
 
 
@@ -89,15 +103,10 @@ Examples
     # Collect only the classifiers facts
     - saos10_facts:
         gather_subset:
-          - !all
-          - !min
+          - "!all"
+          - "!min"
         gather_network_resources:
           - classifiers
-
-    # Do not collect classifiers facts
-    - saos10_facts:
-        gather_network_resources:
-          - "!classifiers"
 
     # Collect classifiers and minimal default facts
     - saos10_facts:
@@ -264,4 +273,4 @@ Status
 Authors
 ~~~~~~~
 
-- Jeff Groom
+- Jeff Groom (@jgroom33)

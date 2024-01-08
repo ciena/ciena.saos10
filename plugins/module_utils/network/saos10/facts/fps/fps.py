@@ -9,10 +9,6 @@ It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
 """
-from __future__ import absolute_import, division, print_function
-
-__metaclass__ = type
-
 from copy import deepcopy
 
 import re
@@ -89,7 +85,7 @@ class FpsFacts(object):
 
         objs = []
         for resource in resources:
-            if resource is not None:
+            if resource:
                 obj = self.render_config(self.generated_spec, resource)
                 if obj:
                     objs.append(obj)
@@ -119,11 +115,11 @@ class FpsFacts(object):
         config["name"] = utils.get_xml_conf_arg(conf, "name")
         if "logical-port" in fp:
             config["logical-port"] = re.sub(
-                r"^[a-z]+:", "", fp["logical-port"]
+                "^[a-z]+\:", "", fp["logical-port"]
             )  # regex to remove namespace declaration in values
         if "fd-name" in fp:
             config["fd-name"] = re.sub(
-                r"^[a-z]+:", "", fp["fd-name"]
+                "^[a-z]+\:", "", fp["fd-name"]
             )  # regex to remove namespace declaration in values
 
         return utils.remove_empties(config)

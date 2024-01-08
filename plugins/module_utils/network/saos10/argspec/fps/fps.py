@@ -27,6 +27,7 @@ The arg spec for the saos10_fps module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -38,17 +39,53 @@ class FpsArgs(object):  # pylint: disable=R0903
 
     argument_spec = {
         "config": {
+            "type": "list",
             "elements": "dict",
             "options": {
-                "fd-name": {"type": "str"},
-                "logical-port": {"type": "str"},
-                "name": {"required": True, "type": "str"},
+                "description": {"type": "str"},
+                "type": {"type": "str", "choices": ["q-in-q", "mpls-pw", "uni", "other"]},
+                "name": {"type": "str"},
+                "fd_name": {"type": "str"},
+                "logical_port": {"type": "str"},
+                "mtu_size": {"type": "int"},
+                "admin_state": {"type": "str", "choices": ["enabled", "disabled"]},
+                "ingress_l2_transform": {
+                    "type": "list",
+                    "elements": "dict",
+                    "options": {
+                        "ingress_name": {"type": "str"},
+                        "frame_type": {"type": "str", "choices": ["stack", "untagged"]},
+                    },
+                },
+                "egress_l2_transform": {
+                    "type": "list",
+                    "elements": "dict",
+                    "options": {
+                        "egress_name": {"type": "str"},
+                        "frame_type": {"type": "str", "choices": ["stack", "untagged"]},
+                    },
+                },
+                "ingress_l3_transform": {"type": "str", "choices": ["map", "remark-dscp"]},
+                "egress_l3_transform": {"type": "str", "choices": ["map", "remark-dscp"]},
+                "frame_to_cos": {"type": "str", "choices": ["map", "fixed"]},
+                "cos_to_frame_map": {"type": "str"},
+                "flood_containment_profile": {"type": "str"},
+                "classifier_list": {"type": "str"},
+                "classifier_list_precedence": {"type": "int"},
+                "mac_learning": {"type": "str", "choices": ["enabled", "disabled"]},
+                "meter_profile": {"type": "str"},
+                "pfg_group": {
+                    "type": "str",
+                    "choices": ["leaf", "root", "dynamic", "mesh", "spoke", "group-A", "group-B", "group-C", "group-D"],
+                },
+                "queue_group_instance": {"type": "str"},
+                "stats_collection": {"type": "str", "choices": ["on", "off"]},
+                "normalized_vid": {
+                    "type": "list",
+                    "elements": "dict",
+                    "options": {"tag": {"type": "int"}, "vlan_id": {"type": "int"}},
+                },
             },
-            "type": "list",
         },
-        "state": {
-            "choices": ["merged", "overridden", "deleted"],
-            "default": "merged",
-            "type": "str",
-        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "overridden", "deleted"]},
     }  # pylint: disable=C0301

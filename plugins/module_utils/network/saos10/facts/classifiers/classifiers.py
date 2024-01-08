@@ -11,13 +11,14 @@ based on the configuration.
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
+
 
 from copy import deepcopy
 
-import re
-from ansible.module_utils._text import to_text, to_bytes
-from ansible.module_utils.basic import missing_required_lib
+import re  # pylint: disable=unused-import
+from ansible.module_utils._text import to_bytes
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     remove_namespaces,
 )
@@ -32,21 +33,13 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspe
 )
 
 try:
-    from lxml import etree
     from lxml.etree import tostring as xml_to_string, fromstring
 
     HAS_LXML = True
 except ImportError:
-    from xml.etree.ElementTree import fromstring, tostring as xml_to_string
+    from xml.etree.ElementTree import tostring as xml_to_string, fromstring
 
     HAS_LXML = False
-
-try:
-    import xmltodict
-
-    HAS_XMLTODICT = True
-except ImportError:
-    HAS_XMLTODICT = False
 
 
 class ClassifiersFacts(object):
@@ -74,22 +67,23 @@ class ClassifiersFacts(object):
         :rtype: dictionary
         :returns: facts
         """
+        if not HAS_LXML:
+            self._module.fail_json(msg="lxml is not installed.")
 
         if not data:
             config_filter = """
-                <classifiers>
-                </classifiers>
+                <waveserver-classifiers xmlns="urn:ciena:params:xml:ns:yang:ciena-ws:ciena-mef-classifier">
+                </waveserver-classifiers>
                 """
             data = get(self._module, filter=("subtree", config_filter))
 
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resources = data.xpath("/data/classifiers/classifier")
-
+        resources = data.xpath("/rpc-reply/data/waveserver-classifiers/classifiers")
         objs = []
         for resource in resources:
-            if resource is not None:
+            if resource:
                 obj = self.render_config(self.generated_spec, resource)
                 if obj:
                     objs.append(obj)
@@ -104,6 +98,23 @@ class ClassifiersFacts(object):
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts
 
+    def get_xml_value(self, xml_obj, xpath):
+        result = xml_obj.xpath(xpath)
+        return result[0].text if result else None
+
+    def recursive_config_fill(self, config, conf, spec, xml_base_path=""):
+        for key, unused in spec.items():
+            modified_key = key.replace("_", "-")
+            new_base_path = f"{xml_base_path}/{modified_key}" if xml_base_path else modified_key
+
+            if isinstance(spec[key], dict):
+                config[key] = {}
+                self.recursive_config_fill(config[key], conf, spec[key], new_base_path)
+            else:
+                extracted_value = self.get_xml_value(conf, new_base_path)
+                if extracted_value is not None:
+                    config[key] = extracted_value
+
     def render_config(self, spec, conf):
         """
         Render config as dictionary structure and delete keys
@@ -114,51 +125,8 @@ class ClassifiersFacts(object):
         :rtype: dictionary
         :returns: The generated config
         """
-        config = deepcopy(spec)
-        classifier = self._get_xml_dict(conf)["classifier"]
-        config["name"] = utils.get_xml_conf_arg(conf, "name")
-        if "filter-operation" in classifier:
-            config["filter-operation"] = re.sub(
-                r"^[a-z]+:", "", classifier["filter-operation"]
-            )  # regex to remove namespace declaration in values
-        if classifier["filter-entry"]:
-            config["filter-entry"] = []
-            if not isinstance(classifier["filter-entry"], list):
-                filter_entrys = [classifier["filter-entry"]]
-            else:
-                filter_entrys = classifier["filter-entry"]
-
-            for filter_entry in filter_entrys:
-                filter_entry_result = {}
-                if "filter-parameter" in filter_entry:
-                    filter_entry_result["filter-parameter"] = re.sub(
-                        r"^[a-z]+:", "", filter_entry["filter-parameter"]
-                    )  # regex to remove namespace declaration in values
-                if "logical-not" in filter_entry:
-                    filter_entry_result["logical-not"] = re.sub(
-                        r"^[a-z]+:", "", filter_entry["logical-not"]
-                    )  # regex to remove namespace declaration in values
-                if filter_entry["vtags"]:
-                    filter_entry_result["vtags"] = []
-                    if not isinstance(filter_entry["vtags"], list):
-                        vtagss = [filter_entry["vtags"]]
-                    else:
-                        vtagss = filter_entry["vtags"]
-
-                    for vtags in vtagss:
-                        vtags_result = {}
-                        if "tag" in vtags:
-                            vtags_result["tag"] = vtags["tag"]
-                        if "vlan-id" in vtags:
-                            vtags_result["vlan-id"] = vtags["vlan-id"]
-                        filter_entry_result["vtags"].append(vtags_result)
-
-                config["filter-entry"].append(filter_entry_result)
-
+        if isinstance(conf, str):
+            conf = fromstring(conf)
+        config = {}
+        self.recursive_config_fill(config, conf, spec)
         return utils.remove_empties(config)
-
-    def _get_xml_dict(self, xml_root):
-        if not HAS_XMLTODICT:
-            self._module.fail_json(msg=missing_required_lib("xmltodict"))
-        xml_dict = xmltodict.parse(etree.tostring(xml_root), dict_constructor=dict)
-        return xml_dict

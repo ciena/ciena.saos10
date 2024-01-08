@@ -30,11 +30,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
@@ -42,36 +38,219 @@ module: saos10_fps
 version_added: 1.5.0
 short_description: Manage flow points on Ciena SAOS 10 devices
 description: This module provides declarative management of a flow point
-author:
-  - Jeff Groom (@jgroom33)
+author: Ciena
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
 options:
   config:
-    description: A dictionary of flow point options
+    description: A list of all mef-fp configuration entries.
     type: list
     elements: dict
     suboptions:
-      name:
-        description: This object indicates the flow point identifier.
+      description:
+        description: A editable string used to describe this entry.
         type: str
-        required: True
-      logical-port:
+        required: false
+      type:
+        description: ''
+        type: str
+        choices:
+          - q-in-q
+          - mpls-pw
+          - uni
+          - other
+      name:
+        description: This object indicates the flow point identifier. The identifier
+          is a text string that is used to identify a flow point.  Unique string values
+          are chosen to uniquely identify the flow point.  Octet values of 0x00 through
+          0x1f are illegal.  MEF 26.1 restricts the maximum size identifiers to 45
+          octets.
+        type: str
+        required: false
+      fd_name:
+        description: The forwarding domain that the flow-point is attached to.
+        type: str
+        required: false
+      logical_port:
         description: The logical-port associated with the flow-point.
         type: str
-      fd-name:
-        description: The name of the forwarding domain.
+        required: false
+      mtu_size:
+        description: This object indicates the configured EVC maximum service frame
+          format size. It must be less than or equal to the max-mtu-size. Vendors
+          may choose to go beyond this limit.
+        type: int
+        required: false
+      admin_state:
+        description: Enable/disable the admin state.
         type: str
-
+        choices:
+          - enabled
+          - disabled
+        required: false
+      ingress_l2_transform:
+        description: Ingress L2-transform configured on this flow-point.
+        type: list
+        elements: dict
+        suboptions:
+          ingress_name:
+            description: Need a key for this list. It cannot be a choice of several
+              objects but objects that will always be specified.
+            type: str
+            required: false
+          frame_type:
+            description: ''
+            type: str
+            choices:
+              - stack
+              - untagged
+      egress_l2_transform:
+        description: Egress L2-transform configured on this flow-point.
+        type: list
+        elements: dict
+        suboptions:
+          egress_name:
+            description: Need a key for this list. It cannot be a choice of several
+              objects but objects that will always be specified.
+            type: str
+            required: false
+          frame_type:
+            description: ''
+            type: str
+            choices:
+              - stack
+              - untagged
+      ingress_l3_transform:
+        description: ''
+        type: str
+        choices:
+          - map
+          - remark-dscp
+      egress_l3_transform:
+        description: ''
+        type: str
+        choices:
+          - map
+          - remark-dscp
+      frame_to_cos:
+        description: ''
+        type: str
+        choices:
+          - map
+          - fixed
+      cos_to_frame_map:
+        description: A mapping resolving an internal color and cos to frame pcp+dei,
+          dscp, mpls-tc.
+        type: str
+        required: false
+      flood_containment_profile:
+        description: Reference to a Flood Containment Profile definition.
+        type: str
+        required: false
+      classifier_list:
+        description: List of classifier templates referenced by flow-point to define
+          their incoming classification.
+        type: str
+        required: false
+      classifier_list_precedence:
+        description: A precedence value for the flow-point. Lower values take precedence
+          over higher values.
+        type: int
+        required: false
+      mac_learning:
+        description: Enable/disable the MAC learning of flow-point.
+        type: str
+        choices:
+          - enabled
+          - disabled
+        required: false
+      meter_profile:
+        description: A reference to a Meter Profile.
+        type: str
+        required: false
+      pfg_group:
+        description: The Private-Forwarding-Group that the flow-point belongs to for
+          the scope of a Private-Forwarding-Group-Profile. Can be leaf/root for a
+          PFG-profile with PFG-type of leaf-and-root or spokemesh-and-leafroot. Can
+          be mesh/spoke for a PFG-profile with PFG-type of spoke-and-mesh or spokemesh-and-leafroot.
+          Can be groupA/B/C/D for a PFG-profile with PFG-type of pfg-groups. Can be
+          leaf/root/dynamic for a PFG-profile with PFG-type dynamic-leaf-and-root
+        type: str
+        choices:
+          - leaf
+          - root
+          - dynamic
+          - mesh
+          - spoke
+          - group-A
+          - group-B
+          - group-C
+          - group-D
+        required: false
+      queue_group_instance:
+        description: A reference to a Queue Group Instance.
+        type: str
+        required: false
+      stats_collection:
+        description: Determines whether stats collection will be turned on or not
+          for a flow-point
+        type: str
+        choices:
+          - "on"
+          - "off"
+        required: false
+      normalized_vid:
+        description: "Used to represent normalized-vid values for EVPN FXC, e.g. MPLS
+          label + vid lookup. The tag number represents the position of the normalized-vid.
+          tag '1' represents outer most tag, tag '2' next outer most, etc. Note that
+          the normalized-vid is used in conjunction with an ingress-l2-transform of
+          the same flow-point. That is, an ingress-l2-xform operation of push/stamp
+          is generally used to ensure that the frame contains the normalized-vid in
+          flow-point to EVPN service-tunnel direction. In the case of the ingress-l2-transform
+          stamp operation:    - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid
+          tag 1 (outer).    - ingress-l2-transform stamp tag 2 (next outer) matches
+          normalized-vid tag 2 (next outer (aka inner)). In the case of the ingress-l2-transform
+          push operation:    - ingress-l2-transform push tag 1 (outer most) matches
+          normalized-vid tag 1 (outer), when 1 tag is being pushed via the ingress-l2-transform.\
+          \    - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid
+          tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform.\
+          \    - ingress-l2-transform push tag 1 (outer most) matches normalized-vid
+          tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform."
+        type: list
+        elements: dict
+        suboptions:
+          tag:
+            description: "The tag number represents the position of the normalized-vid.
+              '1' represents outer most tag, '2' next outer most, etc. Note that the
+              normalized-vid is used in conjunction with an ingress-l2-transform of
+              the same flow-point. That is, an ingress-l2-xform operation of push/stamp
+              is generally used to ensure that the frame contains the normalized-vid
+              in flow-point to EVPN service-tunnel direction. In the case of the ingress-l2-transform
+              stamp operation:    - ingress-l2-transform stamp tag 1 (outer) matches
+              normalized-vid tag 1 (outer).    - ingress-l2-transform stamp tag 2
+              (next outer) matches normalized-vid tag 2 (next outer (aka inner)).
+              In the case of the ingress-l2-transform push operation:    - ingress-l2-transform
+              push tag 1 (outer most) matches normalized-vid tag 1 (outer), when 1
+              tag is being pushed via the ingress-l2-transform.    - ingress-l2-transform
+              push tag 2 (next outer most) matches normalized-vid tag 1 (outer), when
+              2 tags are being pushed via the ingress-l2-transform.    - ingress-l2-transform
+              push tag 1 (outer most) matches normalized-vid tag 2 (next outer (aka
+              inner)), when 2 tags are being pushed via the ingress-l2-transform."
+            type: int
+            required: false
+          vlan_id:
+            description: ''
+            type: int
+            required: false
   state:
     choices:
-    - merged
-    - overridden
-    - deleted
+      - merged
+      - overridden
+      - deleted
     default: merged
     description:
-    - The state the configuration should be left in
+      - The state the configuration should be left in
     type: str
 """
 EXAMPLES = """
@@ -111,12 +290,14 @@ RETURN = """
 before:
   description: The configuration prior to the model invocation.
   returned: always
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
 after:
   description: The resulting configuration model invocation.
   returned: when changed
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
@@ -143,9 +324,7 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(
-        argument_spec=FpsArgs.argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=FpsArgs.argument_spec, supports_check_mode=True)
 
     result = Fps(module).execute_module()
     module.exit_json(**result)

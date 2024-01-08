@@ -30,17 +30,16 @@ display = Display()
 
 
 class TerminalModule(TerminalBase):
-
     terminal_stdout_re = [
-        re.compile(br"[\w+\-.:\/[\]]+(?:\([^\)]+\)){0,3}[*]?> "),
-        re.compile(br"[\w+\-.:@\/[\]]+(?:\([^\)]+\)){0,3}[*]?# "),
-        re.compile(br"diag\@\S+\$ "),
+        re.compile(rb"[\w+\-.:\/[\]]+(?:\([^\)]+\)){0,3}[*]?> "),
+        re.compile(rb"[\w+\-.:@\/[\]]+(?:\([^\)]+\)){0,3}[*]?# "),
+        re.compile(rb"diag\@\S+\$ "),
     ]
 
     terminal_stderr_re = [
-        re.compile(br"SHELL PARSER FAILURE"),
-        re.compile(br"ERROR\:"),
-        re.compile(br"Error\:"),
+        re.compile(rb"SHELL PARSER FAILURE"),
+        re.compile(rb"ERROR\:"),
+        re.compile(rb"Error\:"),
     ]
 
     terminal_initial_prompt_newline = False
@@ -51,7 +50,5 @@ class TerminalModule(TerminalBase):
             for cmd in commands:
                 self._exec_cli_command(cmd)
         except AnsibleConnectionFailure:
-            display.warning(
-                "WARNING: Unable to set terminal width, command responses may be truncated"
-            )
+            display.warning("WARNING: Unable to set terminal width, command responses may be truncated")
             raise AnsibleConnectionFailure("unable to set terminal parameters")

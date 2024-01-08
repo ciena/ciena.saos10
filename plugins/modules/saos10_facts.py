@@ -131,15 +131,11 @@ def main():
     :returns: ansible_facts
     """
 
-    module = AnsibleModule(
-        argument_spec=FactsArgs.argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=FactsArgs.argument_spec, supports_check_mode=True)
 
     warnings = []
     if module.params["gather_subset"] == "!config":
-        warnings.append(
-            "default value for `gather_subset` will be changed to `min` from `!config` v2.11 onwards"
-        )
+        warnings.append("default value for `gather_subset` will be changed to `min` from `!config` v2.11 onwards")
 
     result = Facts(module).get_facts()
 

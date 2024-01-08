@@ -32,6 +32,9 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
 
 FACT_LEGACY_SUBSETS = dict(default=Default, config=Config)
 FACT_RESOURCE_SUBSETS = dict(classifiers=ClassifiersFacts, fds=FdsFacts, fps=FpsFacts)
+    fps=FpsFacts,
+    fds=FdsFacts,
+    classifiers=ClassifiersFacts,
 
 
 class Facts(FactsBase):

@@ -84,9 +84,7 @@ class Netconf(NetconfBase):
         result["server_capabilities"] = list(self.m.server_capabilities)
         result["client_capabilities"] = list(self.m.client_capabilities)
         result["session_id"] = self.m.session_id
-        result["device_operations"] = self.get_device_operations(
-            result["server_capabilities"]
-        )
+        result["device_operations"] = self.get_device_operations(result["server_capabilities"])
         return json.dumps(result)
 
     @ensure_ncclient

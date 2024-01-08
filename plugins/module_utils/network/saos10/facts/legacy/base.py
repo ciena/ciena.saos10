@@ -58,9 +58,7 @@ class Default(FactsBase):
         config_filter = '<components xmlns="http://openconfig.net/yang/platform"/>'
         reply = get(self.module, filter=("subtree", config_filter))
         root = remove_ns(reply)
-        serial_number = root.xpath("/data/components/component[1]/state/serial-no")[
-            0
-        ].text
+        serial_number = root.xpath("/data/components/component[1]/state/serial-no")[0].text
         model = root.xpath(
             "/data/components/component[1]/component-properties/component-property[name = 'hw-model']/value"
         )[0].text
@@ -69,14 +67,10 @@ class Default(FactsBase):
         self.facts["model"] = model
         self.facts["platform"] = platform
 
-        config_filter = (
-            '<software-state xmlns="http://www.ciena.com/ns/yang/ciena-software-mgmt"/>'
-        )
+        config_filter = '<software-state xmlns="http://www.ciena.com/ns/yang/ciena-software-mgmt"/>'
         reply = get(self.module, filter=("subtree", config_filter))
         root = remove_ns(reply)
-        network_os_version = root.xpath(
-            "/data/software-state/running-package/package-version"
-        )[0].text
+        network_os_version = root.xpath("/data/software-state/running-package/package-version")[0].text
         self.facts["version"] = network_os_version
 
         config_filter = '<system xmlns="http://openconfig.net/yang/system"><config><hostname/></config></system>'

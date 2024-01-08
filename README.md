@@ -7,12 +7,10 @@ This collection has been tested against saos-10-09-00-0307-GA
 <!--start requires_ansible-->
 ## Ansible version compatibility
 
-This collection has been tested against following Ansible versions:
-
-  * 2.16
+This collection has been tested against following Ansible versions: **>=2.12.0**.
 
 For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
-fully qualified collection name (for example, `ciena.saos10.saos10`).
+fully qualified collection name (for example, `cisco.ios.ios`).
 Plugins and modules within a collection may be tested with only specific Ansible versions.
 A collection may contain metadata that identifies these versions.
 PEP440 is the schema used to describe the versions of Ansible.
@@ -43,7 +41,7 @@ Name | Description
 [ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
 [ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|Manage forwarding domains on Ciena SAOS 10 devices
 [ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|Manage flow points on Ciena SAOS 10 devices
-[ciena.saos10.xmldiff](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.xmldiff_module.rst)|return diff for a pair of xml inputs
+[ciena.saos10.xml_diff](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.xml_diff_module.rst)|return diff for a pair of xml inputs
 
 <!--end collection content-->
 

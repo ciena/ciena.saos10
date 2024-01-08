@@ -140,9 +140,7 @@ def load_config(module, commands, commit=False, comment=None):
     connection = get_connection(module)
 
     try:
-        response = connection.edit_config(
-            candidate=commands, commit=commit, comment=comment
-        )
+        response = connection.edit_config(candidate=commands, commit=commit, comment=comment)
     except ConnectionError as exc:
         module.fail_json(msg=to_text(exc, errors="surrogate_then_replace"))
 

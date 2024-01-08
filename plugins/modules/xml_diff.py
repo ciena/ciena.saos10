@@ -127,9 +127,7 @@ def get_deletion_list(a, b):
     for child in b:
         element = a.find(child.tag)
         if element:
-            compare = xmldiff_main.diff_trees(
-                element, child, diff_options={"F": 0.5, "ratio_mode": "accurate"}
-            )
+            compare = xmldiff_main.diff_trees(element, child, diff_options={"F": 0.5, "ratio_mode": "accurate"})
             if len(compare) == 0:
                 result.append(child)
     return result
@@ -156,27 +154,17 @@ def check_libs(module):
     # Check if we have lxml 2.3.0 or newer installed
     if not HAS_LXML:
         module.fail_json(msg=missing_required_lib("lxml"), exception=LXML_IMP_ERR)
-    elif LooseVersion(
-        ".".join(to_native(f) for f in etree.LXML_VERSION)
-    ) < LooseVersion("2.3.0"):
-        module.fail_json(
-            msg="The xml ansible module requires lxml 2.3.0 or newer installed on the managed machine"
-        )
-    elif LooseVersion(
-        ".".join(to_native(f) for f in etree.LXML_VERSION)
-    ) < LooseVersion("3.0.0"):
-        module.warn(
-            "Using lxml version lower than 3.0.0 does not guarantee predictable element attribute order."
-        )
+    elif LooseVersion(".".join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion("2.3.0"):
+        module.fail_json(msg="The xml ansible module requires lxml 2.3.0 or newer installed on the managed machine")
+    elif LooseVersion(".".join(to_native(f) for f in etree.LXML_VERSION)) < LooseVersion("3.0.0"):
+        module.warn("Using lxml version lower than 3.0.0 does not guarantee predictable element attribute order.")
 
     if not HAS_XMLDIFF:
         module.fail_json(msg=missing_required_lib("xmldiff"), exception=XMLDIFF_IMP_ERR)
 
 
 def main():
-    module_args = dict(
-        new=dict(type="str", required=True), old=dict(type="str", required=True)
-    )
+    module_args = dict(new=dict(type="str", required=True), old=dict(type="str", required=True))
     result = dict(changed=False, result="")
     module = AnsibleModule(argument_spec=module_args, supports_check_mode=True)
 

@@ -30,11 +30,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
+ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
 
 DOCUMENTATION = """
 ---
@@ -42,25 +38,30 @@ module: saos10_fds
 version_added: 1.5.0
 short_description: Manage forwarding domains on Ciena SAOS 10 devices
 description: This module provides declarative management of a forwarding domain
-author:
-  - Jeff Groom (@jgroom33)
+author: Ciena
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)
 options:
   config:
-    description: A dictionary of forwarding domain options
+    description: The list of configured forwarding domains on the device.
     type: list
     elements: dict
     suboptions:
-      name:
-        description: A unique name for the forwarding domain
+      description:
+        description: This is string used to describe the Forwarding Domain.
         type: str
-        required: True
+        required: false
+      name:
+        description: An administratively assigned string, which may be used to identify
+          the forwarding domain.
+        type: str
+        required: false
       mode:
         description: Forwarding mode of the forwarding-domain
         type: str
         choices:
+          - vlan
           - vpls
           - vpws
           - fxc
@@ -68,67 +69,69 @@ options:
           - tdm-vpws
           - evpn-vpws
           - evpn-vpls
-      vlan-id:
+        required: false
+      vlan_id:
         description: The id of VLAN associated with forwarding-domain.
         type: int
-      pfg-profile:
+        required: false
+      mac_learning:
+        description: Enable/disable MAC learning for this forwarding-domain.
+        type: str
+        choices:
+          - enabled
+          - disabled
+        required: false
+      l2cp_profile:
+        description: Reference to a Layer 2 Control Protocol Tunneling Profile.
+        type: str
+        required: false
+      flood_containment_profile:
+        description: Reference to a Flood Containment Profile definition.
+        type: str
+        required: false
+      pfg_profile:
         description: Reference to a Private Forwarding Group Profile.
         type: str
-      initiate-l2-transform:
-        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the l2-transform to be applied to the frame.
-          e.g. an L3-frame injected via this forwarding domain to L2 datapath.
+        required: false
+      cos_queue_map:
+        description: Reference to queue-map for hierarchical shaping/scheduling.
+        type: str
+        required: false
+      queue_group_indirection:
+        description: Reference to queue-group-indirection for hierarchical shaping/scheduling.
+        type: str
+        required: false
+      initiate_l2_transform:
+        description: For an L2-frame that is initiated/injected via this forwarding
+          domain, this specifies the l2-transform to be applied to the frame. e.g.
+          an L3-frame injected via this forwarding domain to L2 datapath.
         type: dict
         suboptions:
-          vlan-stack:
-            description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the VLAN related l2-transform to be
-              applied to the frame.
-            type: list
-            elements: dict
-            suboptions:
-              tag:
-                description: Dependent on the transform operation, the tag numbers are push => '1' represents push outermost, '2' represents push outermost
-                  (always push to outer)
-                type: int
-              push-tpid:
-                description: Represents the TPID value of the vlan tag for the tag being pushed
-                type: str
-                default: tpid-8100
-                choices:
-                  - tpid-8100
-                  - tpid-88a8
-                  - tpid-9100
-              push-pcp:
-                description: Represents the PCP value of the vlan tag for the tag being pushed. When the PCP value is mapped using a cos-to-frame-map,
-                  'map' is specified.
-                type: str
-                choices:
-                  - pcp-0
-                  - pcp-1
-                  - pcp-2
-                  - pcp-3
-                  - pcp-4
-                  - pcp-5
-                  - pcp-6
-                  - pcp-7
-                  - map
-              push-dei:
-                description: Represents the DEI value of the vlan tag for the tag being pushed.
-                type: str
-                choices:
-                  - enabled
-                  - disabled
-              push-vid:
-                description: Represents the VID value of the vlan tag for the tag being pushed
-                type: str
-                required: True
+          frame_type:
+            description: ''
+            type: str
+            choices:
+              - stack
+      initiate_cos_to_frame_map:
+        description: For an L2-frame that is initiated/injected via this forwarding
+          domain, this specifies the cos-to-frame map to use for a cos-to-frame map
+          policy of 'mapped' from the initiate-l2-transform config.
+        type: str
+        required: false
+      initiate_frame_to_cos:
+        description: ''
+        type: str
+        choices:
+          - map
+          - fixed
   state:
     choices:
-    - merged
-    - overridden
-    - deleted
+      - merged
+      - overridden
+      - deleted
     default: merged
     description:
-    - The state the configuration should be left in
+      - The state the configuration should be left in
     type: str
 """
 EXAMPLES = """
@@ -178,12 +181,14 @@ RETURN = """
 before:
   description: The configuration prior to the model invocation.
   returned: always
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
 after:
   description: The resulting configuration model invocation.
   returned: when changed
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
@@ -210,9 +215,7 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(
-        argument_spec=FdsArgs.argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=FdsArgs.argument_spec, supports_check_mode=True)
 
     result = Fds(module).execute_module()
     module.exit_json(**result)

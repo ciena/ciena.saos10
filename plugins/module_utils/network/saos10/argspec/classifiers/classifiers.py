@@ -27,6 +27,7 @@ The arg spec for the saos10_classifiers module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -38,60 +39,52 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
 
     argument_spec = {
         "config": {
+            "type": "list",
             "elements": "dict",
             "options": {
-                "filter-entry": {
+                "name": {"type": "str"},
+                "filter_operation": {"type": "str", "choices": ["match-all", "match-any"]},
+                "filter_entry": {
+                    "type": "list",
                     "elements": "dict",
                     "options": {
-                        "filter-parameter": {
+                        "filter_parameter": {
+                            "type": "str",
                             "choices": [
-                                "any",
-                                "destination-mac",
-                                "internal-cos",
-                                "ip-version",
-                                "l4-source-port",
-                                "source-ip",
                                 "vtag-stack",
-                                "base-etype",
+                                "mpls-label-stack",
                                 "dscp",
+                                "source-ip",
+                                "destination-ip",
+                                "l4-source-port",
+                                "l4-destination-port",
+                                "ip-protocol",
+                                "base-etype",
+                                "any",
                                 "ip-fragment",
                                 "l4-application",
-                                "local-termination",
-                                "source-mac",
-                                "destination-ip",
-                                "icmp",
-                                "ip-protocol",
-                                "l4-destination-port",
-                                "mpls-label",
                                 "tcp-flags",
+                                "source-mac",
+                                "destination-mac",
+                                "local-termination",
+                                "icmp",
+                                "ip-version",
+                                "internal-cos",
                             ],
-                            "required": True,
-                            "type": "str",
                         },
-                        "logical-not": {"type": "str"},
+                        "logical_not": {"type": "bool"},
                         "untagged-exclude-priority-tagged": {"type": "bool"},
                         "vtags": {
+                            "type": "list",
                             "elements": "dict",
                             "options": {
-                                "tag": {"required": True, "type": "int"},
-                                "vlan-id": {"required": True, "type": "int"},
+                                "tag": {"type": "int", "required": True},
+                                "vlan-id": {"type": "int", "required": True},
                             },
-                            "type": "list",
                         },
                     },
-                    "type": "list",
                 },
-                "filter-operation": {
-                    "choices": ["match-any", "match-all"],
-                    "type": "str",
-                },
-                "name": {"required": True, "type": "str"},
             },
-            "type": "list",
         },
-        "state": {
-            "choices": ["merged", "overridden", "deleted"],
-            "default": "merged",
-            "type": "str",
-        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "overridden", "deleted"]},
     }  # pylint: disable=C0301

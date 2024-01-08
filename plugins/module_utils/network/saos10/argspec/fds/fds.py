@@ -27,6 +27,7 @@ The arg spec for the saos10_fds module
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
 
 
@@ -38,65 +39,29 @@ class FdsArgs(object):  # pylint: disable=R0903
 
     argument_spec = {
         "config": {
+            "type": "list",
             "elements": "dict",
             "options": {
-                "initiate-l2-transform": {
-                    "options": {
-                        "vlan-stack": {
-                            "elements": "dict",
-                            "options": {
-                                "push-dei": {
-                                    "choices": ["enabled", "disabled"],
-                                    "type": "str",
-                                },
-                                "push-pcp": {
-                                    "choices": [
-                                        "pcp-0",
-                                        "pcp-1",
-                                        "pcp-2",
-                                        "pcp-3",
-                                        "pcp-4",
-                                        "pcp-5",
-                                        "pcp-6",
-                                        "pcp-7",
-                                        "map",
-                                    ],
-                                    "type": "str",
-                                },
-                                "push-tpid": {
-                                    "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"],
-                                    "default": "tpid-8100",
-                                    "type": "str",
-                                },
-                                "push-vid": {"required": True, "type": "str"},
-                                "tag": {"type": "int"},
-                            },
-                            "type": "list",
-                        }
-                    },
-                    "type": "dict",
-                },
+                "description": {"type": "str"},
+                "name": {"type": "str"},
                 "mode": {
-                    "choices": [
-                        "vpls",
-                        "vpws",
-                        "fxc",
-                        "tdm-vpls",
-                        "tdm-vpws",
-                        "evpn-vpws",
-                        "evpn-vpls",
-                    ],
                     "type": "str",
+                    "choices": ["vlan", "vpls", "vpws", "fxc", "tdm-vpls", "tdm-vpws", "evpn-vpws", "evpn-vpls"],
                 },
-                "name": {"required": True, "type": "str"},
-                "pfg-profile": {"type": "str"},
-                "vlan-id": {"type": "int"},
+                "vlan_id": {"type": "int"},
+                "mac_learning": {"type": "str", "choices": ["enabled", "disabled"]},
+                "l2cp_profile": {"type": "str"},
+                "flood_containment_profile": {"type": "str"},
+                "pfg_profile": {"type": "str"},
+                "cos_queue_map": {"type": "str"},
+                "queue_group_indirection": {"type": "str"},
+                "initiate_l2_transform": {
+                    "type": "dict",
+                    "options": {"frame_type": {"type": "str", "choices": ["stack"]}},
+                },
+                "initiate_cos_to_frame_map": {"type": "str"},
+                "initiate_frame_to_cos": {"type": "str", "choices": ["map", "fixed"]},
             },
-            "type": "list",
         },
-        "state": {
-            "choices": ["merged", "overridden", "deleted"],
-            "default": "merged",
-            "type": "str",
-        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "overridden", "deleted"]},
     }  # pylint: disable=C0301

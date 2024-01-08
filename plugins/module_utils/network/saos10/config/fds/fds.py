@@ -12,33 +12,34 @@ created
 """
 from __future__ import absolute_import, division, print_function
 
+
 __metaclass__ = type
+
+try:
+    from lxml.etree import tostring as xml_to_string, Element
+
+    HAS_LXML = True
+except ImportError:
+    from xml.etree.ElementTree import Element
+    from xml.etree.ElementTree import tostring as xml_to_string
+
+    HAS_LXML = False
+
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base import (
     ConfigBase,
 )
-from ansible.module_utils._text import to_text, to_bytes
-
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10 import (
-    xml_to_string,
-    fromstring,
-)
-
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import (
-    to_list,
-)
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.facts import (
     Facts,
 )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
-    remove_namespaces,
-    build_root_xml_node,
-    build_child_xml_node,
-)
-
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.utils import (
     config_is_diff,
 )
+
+NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-ws:ciena-mef-fd"
+ROOT_KEY = "waveserver-fds"
+RESOURCE = "fds"
+XML_ITEMS = "fd"
 
 
 class Fds(ConfigBase):
@@ -47,59 +48,60 @@ class Fds(ConfigBase):
     """
 
     gather_subset = ["!all", "!min"]
-    gather_network_resources = ["fds"]
+    gather_network_resources = [RESOURCE]
 
     def __init__(self, module):
         super(Fds, self).__init__(module)
 
-    def get_fds_facts(self):
-        """ Get the 'facts' (the current configuration)
+    def get_facts(self):
+        """Get the 'facts' (the current configuration)
 
         :rtype: A dictionary
         :returns: The current configuration as a dictionary
         """
-        facts, _warnings = Facts(self._module).get_facts(
-            self.gather_subset, self.gather_network_resources
-        )
-        fds_facts = facts["ansible_network_resources"].get("fds")
-        if not fds_facts:
+        facts, _warnings = Facts(self._module).get_facts(self.gather_subset, self.gather_network_resources)
+        result = facts["ansible_network_resources"].get(RESOURCE)
+        if not result:
             return []
-        return fds_facts
+        return result
 
     def execute_module(self):
-        """ Execute the module
+        """Execute the module
 
         :rtype: A dictionary
         :returns: The result from module execution
         """
         result = {"changed": False}
-        existing_fds_facts = self.get_fds_facts()
-        config_xmls = self.set_config(existing_fds_facts)
+        have = self.get_facts()
+        config_dict = self.set_config(have)
 
-        for config_xml in to_list(config_xmls):
-            config = f'<config>{config_xml.decode("utf-8")}</config>'
-            kwargs = {
-                "config": config,
-                "target": "running",
-                "default_operation": "merge",
-                "format": "xml",
-            }
+        if config_dict:
+            config_xml = self._create_xml_config_generic(config_dict)
+            kwargs = {"config": f"<config>{config_xml}</config>", "target": "running"}
+            try:
+                self._module._connection.edit_config(**kwargs)
+            except Exception as e:
+                return {"failed": True, "msg": str(e)}
 
-            self._module._connection.edit_config(**kwargs)
+            result["changed"] = True
+            result["xml"] = config_xml
 
-        result["xml"] = config_xmls
-        changed_fds_facts = self.get_fds_facts()
+        changed_facts = self.get_facts()
 
-        result["changed"] = config_is_diff(existing_fds_facts, changed_fds_facts)
+        result["changed"] = config_is_diff(have, changed_facts)
 
-        result["before"] = existing_fds_facts
-        if result["changed"]:
-            result["after"] = changed_fds_facts
+        result["before"] = have
+        if self.state in self.ACTION_STATES:
+            if result["changed"]:
+                result["after"] = changed_facts
+
+        elif self.state == "gathered":
+            result["gathered"] = have
 
         return result
 
-    def set_config(self, existing_fds_facts):
-        """ Collect the configuration from the args passed to the module,
+    def set_config(self, have):
+        """Collect the configuration from the args passed to the module,
             collect the current configuration (as a dict from facts)
 
         :rtype: A list
@@ -107,122 +109,77 @@ class Fds(ConfigBase):
                   to the desired configuration
         """
         want = self._module.params["config"]
-        have = existing_fds_facts
-        resp = self.set_state(want, have)
-        return to_list(resp)
-
-    def set_state(self, want, have):
-        """ Select the appropriate function based on the state provided
-
-        :param want: the desired configuration as a dictionary
-        :param have: the current configuration as a dictionary
-        :rtype: A list
-        :returns: the commands necessary to migrate the current configuration
-                  to the desired configuration
-        """
-        root = build_root_xml_node("fds")
         state = self._module.params["state"]
-        if state == "overridden":
-            config_xmls = self._state_overridden(want, have)
-        elif state == "deleted":
-            config_xmls = self._state_deleted(want, have)
-        elif state == "merged":
-            config_xmls = self._state_merged(want, have)
-        elif state == "replaced":
-            config_xmls = self._state_replaced(want, have)
+        state_methods = {
+            "merged": self._state_merged,
+        }
+        config_dict = state_methods[state](want, have) if state in self.ACTION_STATES else {}
+        return config_dict
 
-        for xml in config_xmls:
-            root.append(xml)
-        data = remove_namespaces(xml_to_string(root))
-        root = fromstring(to_bytes(data, errors="surrogate_then_replace"))
+    def _populate_xml_subtree(self, parent: Element, data: dict):
+        for key, value in data.items():
+            sanitized_key = key.replace("_", "-")
+            if isinstance(value, dict):
+                subelem = Element(sanitized_key)
+                self._populate_xml_subtree(subelem, value)
+                parent.append(subelem)
+            elif isinstance(value, list):
+                for list_item in value:
+                    subelem = Element(sanitized_key)
+                    self._populate_xml_subtree(subelem, list_item)
+                    parent.append(subelem)
+            else:
+                subelem = Element(sanitized_key)
+                subelem.text = str(value)
+                if value is not None:
+                    parent.append(subelem)
 
-        return xml_to_string(root)
+    def _create_xml_config_generic(self, config_dict_or_list):
+        if isinstance(config_dict_or_list, dict):
+            return self.create_xml_config_from_dict(config_dict_or_list)
+        elif isinstance(config_dict_or_list, list):
+            return self.create_xml_config_from_list(config_dict_or_list)
+        else:
+            raise TypeError(f"Expected a dictionary or a list, got a {type(config_dict_or_list)}")
 
-    def _state_replaced(self, want, have):
-        """ The command generator when state is replaced
+    def _init_xml_root(self):
+        return Element("{%s}%s" % (NAMESPACE, ROOT_KEY), nsmap={None: NAMESPACE})
 
-        :rtype: A list
-        :returns: the xml necessary to migrate the current configuration
-                  to the desired configuration
-        """
-        fds_xml = []
-        fds_xml.extend(self._state_deleted(want, have))
-        fds_xml.extend(self._state_merged(want, have))
-        return fds_xml
+    def create_xml_config_from_dict(self, config_dict: dict) -> str:
+        root = self._init_xml_root()
+        self._populate_xml_subtree(root, config_dict)
+        return xml_to_string(root).decode()
 
-    def _state_overridden(self, want, have):
-        """ The command generator when state is overridden
-
-        :rtype: A list
-        :returns: the xml necessary to migrate the current configuration
-                  to the desired configuration
-        """
-        fds_xml = []
-        fds_xml.extend(self._state_deleted(have, have))
-        fds_xml.extend(self._state_merged(want, have))
-        return fds_xml
-
-    def _state_deleted(self, want, have):
-        """ The command generator when state is deleted
-
-        :rtype: A list
-        :returns: the xml necessary to migrate the current configuration
-                  to the desired configuration
-        """
-        fds_xml = []
-        if not want:
-            want = have
-        for config in want:
-            fd_root = build_root_xml_node("fd")
-            build_child_xml_node(fd_root, "name", config["name"])
-            fd_root.attrib["operation"] = "remove"
-            fds_xml.append(fd_root)
-        return fds_xml
+    def create_xml_config_from_list(self, config_list: list) -> str:
+        root = self._init_xml_root()
+        for list_item in config_list:
+            if not isinstance(list_item, dict):
+                raise ValueError("List items must be dictionaries.")
+            subroot = Element(XML_ITEMS)
+            self._populate_xml_subtree(subroot, list_item)
+            root.append(subroot)
+        return xml_to_string(root).decode()
 
     def _state_merged(self, want, have):
-        """The command generator when state is merged
+        if isinstance(want, list):
+            return self._state_merged_list(want, have)
+        elif isinstance(want, dict):
+            return self._state_merged_dict(want, have)
 
-        :rtype: A list
-        :returns: the xml necessary to migrate the current configuration
-                  to the desired configuration
-        """
-        fds_xml = []
-        for fd in want:
-            fds_root = build_root_xml_node("fds")
-            fd_node = build_child_xml_node(fds_root, "fd")
-            build_child_xml_node(fd_node, "name", fd["name"])
-            if fd["mode"]:
-                build_child_xml_node(fd_node, "mode", fd["mode"])
-            if fd["vlan-id"]:
-                build_child_xml_node(fd_node, "vlan-id", fd["vlan-id"])
-            if fd["pfg-profile"]:
-                build_child_xml_node(fd_node, "pfg-profile", fd["pfg-profile"])
-            initiate_l2_transform = fd["initiate-l2-transform"]
-            initiate_l2_transform_node = build_child_xml_node(
-                fd_node, "initiate-l2-transform"
-            )
-            for vlan_stack in initiate_l2_transform["vlan-stack"]:
-                vlan_stack_node = build_child_xml_node(
-                    initiate_l2_transform_node, "vlan-stack"
-                )
-                if vlan_stack["tag"]:
-                    build_child_xml_node(vlan_stack_node, "tag", vlan_stack["tag"])
-                if vlan_stack["push-tpid"]:
-                    build_child_xml_node(
-                        vlan_stack_node, "push-tpid", vlan_stack["push-tpid"]
-                    )
-                if vlan_stack["push-pcp"]:
-                    build_child_xml_node(
-                        vlan_stack_node, "push-pcp", vlan_stack["push-pcp"]
-                    )
-                if vlan_stack["push-dei"]:
-                    build_child_xml_node(
-                        vlan_stack_node, "push-dei", vlan_stack["push-dei"]
-                    )
-                if vlan_stack["push-vid"]:
-                    build_child_xml_node(
-                        vlan_stack_node, "push-vid", vlan_stack["push-vid"]
-                    )
+    def _state_merged_dict(self, want, have) -> dict:
+        response = {}
+        for key, value in want.items():
+            if value is None:
+                continue
+            if key in have and have[key] == value:
+                continue
+            response[key] = value
+        return response
 
-            fds_xml.append(fd_node)
-        return fds_xml
+    def _state_merged_list(self, want, have) -> list:
+        response = []
+        for w_item in want:
+            if w_item in have:
+                continue
+            response.append(w_item)
+        return response
