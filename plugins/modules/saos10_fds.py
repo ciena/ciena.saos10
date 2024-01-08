@@ -38,7 +38,7 @@ module: saos10_fds
 version_added: 1.5.0
 short_description: Manage forwarding domains on Ciena SAOS 10 devices
 description: This module provides declarative management of a forwarding domain
-author: Ciena
+author: Jeff Groom (@jgroom33)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)

@@ -38,7 +38,7 @@ module: saos10_fps
 version_added: 1.5.0
 short_description: Manage flow points on Ciena SAOS 10 devices
 description: This module provides declarative management of a flow point
-author: Ciena
+author: Jeff Groom (@jgroom33)
 requirements:
   - ncclient (>=v0.6.4)
   - xmltodict (>=0.12.0)

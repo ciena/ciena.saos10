@@ -31,10 +31,11 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
 )
 
 FACT_LEGACY_SUBSETS = dict(default=Default, config=Config)
-FACT_RESOURCE_SUBSETS = dict(classifiers=ClassifiersFacts, fds=FdsFacts, fps=FpsFacts)
+FACT_RESOURCE_SUBSETS = dict(
     fps=FpsFacts,
     fds=FdsFacts,
     classifiers=ClassifiersFacts,
+)
 
 
 class Facts(FactsBase):
@@ -56,9 +57,7 @@ class Facts(FactsBase):
         :return: the facts gathered
         """
         if self.VALID_RESOURCE_SUBSETS:
-            self.get_network_resources_facts(
-                FACT_RESOURCE_SUBSETS, resource_facts_type, data
-            )
+            self.get_network_resources_facts(FACT_RESOURCE_SUBSETS, resource_facts_type, data)
 
         if self.VALID_LEGACY_GATHER_SUBSETS:
             self.get_network_legacy_facts(FACT_LEGACY_SUBSETS, legacy_facts_type)
