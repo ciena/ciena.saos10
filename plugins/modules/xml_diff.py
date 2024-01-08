@@ -9,7 +9,6 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: xml_diff
-name: saos10
 short_description: return diff for a pair of xml inputs
 version_added: 1.1.0
 description: return diff for a pair of xml inputs
