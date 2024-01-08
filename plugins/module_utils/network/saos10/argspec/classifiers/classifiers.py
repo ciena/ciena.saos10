@@ -73,13 +73,13 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                             ],
                         },
                         "logical_not": {"type": "bool"},
-                        "untagged-exclude-priority-tagged": {"type": "bool"},
+                        "untagged_exclude_priority_tagged": {"type": "bool"},
                         "vtags": {
                             "type": "list",
                             "elements": "dict",
                             "options": {
                                 "tag": {"type": "int", "required": True},
-                                "vlan-id": {"type": "int", "required": True},
+                                "vlan_id": {"type": "int", "required": True},
                             },
                         },
                     },

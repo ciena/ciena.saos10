@@ -35,7 +35,7 @@ ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported
 DOCUMENTATION = """
 ---
 module: saos10_classifiers
-version_added: 2.9
+version_added: "1.0.0"
 short_description: Manage classifiers on Ciena SAOS 10 devices
 description: This module provides declarative management of a classifier
 author: Jeff Groom (@jgroom33)
@@ -95,7 +95,7 @@ options:
               than tpid-8100 is considered an acceptable packet.
             type: bool
             required: false
-          untagged-exclude-priority-tagged:
+          untagged_exclude_priority_tagged:
             description: Untagged exclude priority tagged
             type: bool
           vtags:
@@ -107,7 +107,7 @@ options:
                 description: 1 represents outer most tag, 2 next outer most, etc
                 type: int
                 required: true
-              vlan-id:
+              vlan_id:
                 description: A specific value of VLAN Tag VLAN-ID
                 type: int
                 required: true
@@ -136,7 +136,7 @@ EXAMPLES = """
           - filter-parameter: vtag-stack
             vtags:
               - tag: 1
-                vlan-id: 100
+                vlan_id: 100
     state: merged
 
 

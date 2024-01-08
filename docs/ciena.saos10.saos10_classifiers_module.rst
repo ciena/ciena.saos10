@@ -8,7 +8,7 @@ ciena.saos10.saos10_classifiers
 **Manage classifiers on Ciena SAOS 10 devices**
 
 
-Version added: 2.9
+Version added: 1.0.0
 
 .. contents::
    :local:
@@ -137,7 +137,7 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>untagged-exclude-priority-tagged</b>
+                    <b>untagged_exclude_priority_tagged</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
@@ -196,7 +196,7 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vlan-id</b>
+                    <b>vlan_id</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
@@ -293,7 +293,7 @@ Examples
               - filter-parameter: vtag-stack
                 vtags:
                   - tag: 1
-                    vlan-id: 100
+                    vlan_id: 100
         state: merged
 
 
