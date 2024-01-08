@@ -62,9 +62,9 @@ options:
           - other
       name:
         description: This object indicates the flow point identifier. The identifier
-          is a text string that is used to identify a flow point.  Unique string values
-          are chosen to uniquely identify the flow point.  Octet values of 0x00 through
-          0x1f are illegal.  MEF 26.1 restricts the maximum size identifiers to 45
+          is a text string that is used to identify a flow point. Unique string values
+          are chosen to uniquely identify the flow point. Octet values of 0x00 through
+          0x1f are illegal. MEF 26.1 restricts the maximum size identifiers to 45
           octets.
         type: str
         required: false
@@ -201,42 +201,42 @@ options:
           - "off"
         required: false
       normalized_vid:
-        description: "Used to represent normalized-vid values for EVPN FXC, e.g. MPLS
+        description: Used to represent normalized-vid values for EVPN FXC, e.g. MPLS
           label + vid lookup. The tag number represents the position of the normalized-vid.
           tag '1' represents outer most tag, tag '2' next outer most, etc. Note that
           the normalized-vid is used in conjunction with an ingress-l2-transform of
           the same flow-point. That is, an ingress-l2-xform operation of push/stamp
           is generally used to ensure that the frame contains the normalized-vid in
           flow-point to EVPN service-tunnel direction. In the case of the ingress-l2-transform
-          stamp operation:    - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid
-          tag 1 (outer).    - ingress-l2-transform stamp tag 2 (next outer) matches
-          normalized-vid tag 2 (next outer (aka inner)). In the case of the ingress-l2-transform
-          push operation:    - ingress-l2-transform push tag 1 (outer most) matches
-          normalized-vid tag 1 (outer), when 1 tag is being pushed via the ingress-l2-transform.\
-          \    - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid
-          tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform.\
-          \    - ingress-l2-transform push tag 1 (outer most) matches normalized-vid
-          tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform."
+          stamp operation; - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid
+          tag 1 (outer). - ingress-l2-transform stamp tag 2 (next outer) matches normalized-vid
+          tag 2 (next outer (aka inner)). In the case of the ingress-l2-transform
+          push operation; - ingress-l2-transform push tag 1 (outer most) matches normalized-vid
+          tag 1 (outer), when 1 tag is being pushed via the ingress-l2-transform.
+          - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid
+          tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform.
+          - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag
+          2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform.
         type: list
         elements: dict
         suboptions:
           tag:
-            description: "The tag number represents the position of the normalized-vid.
+            description: The tag number represents the position of the normalized-vid.
               '1' represents outer most tag, '2' next outer most, etc. Note that the
               normalized-vid is used in conjunction with an ingress-l2-transform of
               the same flow-point. That is, an ingress-l2-xform operation of push/stamp
               is generally used to ensure that the frame contains the normalized-vid
               in flow-point to EVPN service-tunnel direction. In the case of the ingress-l2-transform
-              stamp operation:    - ingress-l2-transform stamp tag 1 (outer) matches
-              normalized-vid tag 1 (outer).    - ingress-l2-transform stamp tag 2
-              (next outer) matches normalized-vid tag 2 (next outer (aka inner)).
-              In the case of the ingress-l2-transform push operation:    - ingress-l2-transform
+              stamp operation; - ingress-l2-transform stamp tag 1 (outer) matches
+              normalized-vid tag 1 (outer). - ingress-l2-transform stamp tag 2 (next
+              outer) matches normalized-vid tag 2 (next outer (aka inner)). In the
+              case of the ingress-l2-transform push operation; - ingress-l2-transform
               push tag 1 (outer most) matches normalized-vid tag 1 (outer), when 1
-              tag is being pushed via the ingress-l2-transform.    - ingress-l2-transform
+              tag is being pushed via the ingress-l2-transform. - ingress-l2-transform
               push tag 2 (next outer most) matches normalized-vid tag 1 (outer), when
-              2 tags are being pushed via the ingress-l2-transform.    - ingress-l2-transform
+              2 tags are being pushed via the ingress-l2-transform. - ingress-l2-transform
               push tag 1 (outer most) matches normalized-vid tag 2 (next outer (aka
-              inner)), when 2 tags are being pushed via the ingress-l2-transform."
+              inner)), when 2 tags are being pushed via the ingress-l2-transform.
             type: int
             required: false
           vlan_id:
