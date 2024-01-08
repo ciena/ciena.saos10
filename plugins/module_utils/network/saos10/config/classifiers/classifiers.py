@@ -36,8 +36,8 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.
     config_is_diff,
 )
 
-NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-ws:ciena-mef-classifier"
-ROOT_KEY = "waveserver-classifiers"
+NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-pn::ciena-mef-classifier"
+ROOT_KEY = "classifiers"
 RESOURCE = "classifiers"
 XML_ITEMS = "classifier"
 

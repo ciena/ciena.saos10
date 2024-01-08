@@ -72,15 +72,15 @@ class ClassifiersFacts(object):
 
         if not data:
             config_filter = """
-                <waveserver-classifiers xmlns="urn:ciena:params:xml:ns:yang:ciena-ws:ciena-mef-classifier">
-                </waveserver-classifiers>
+                <classifiers xmlns="urn:ciena:params:xml:ns:yang:ciena-pn::ciena-mef-classifier">
+                </classifiers>
                 """
             data = get(self._module, filter=("subtree", config_filter))
 
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resources = data.xpath("/rpc-reply/data/waveserver-classifiers/classifiers")
+        resources = data.xpath("/rpc-reply/data/classifiers/classifiers")
         objs = []
         for resource in resources:
             if resource:
