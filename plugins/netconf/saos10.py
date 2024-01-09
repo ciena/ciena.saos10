@@ -33,7 +33,7 @@ version_added: 1.0.0
 options:
   ncclient_device_handler:
     type: str
-    default: default
+    default: alu
     description:
     - Specifies the ncclient device handler name for Ciena saos10 network os. To
       identify the ncclient device handler name refer ncclient library documentation.
@@ -65,14 +65,7 @@ class Netconf(NetconfBase):
     def get_capabilities(self):
         result = dict()
         result["rpc"] = self.get_base_rpc() + [
-            "commit",
-            "discard_changes",
-            "lock",
-            "unlock",
-            "execute_rpc",
-            "load_configuration",
             "get_configuration",
-            "reboot",
         ]
         result["network_api"] = "netconf"
         result["device_info"] = self.get_device_info()
@@ -85,25 +78,24 @@ class Netconf(NetconfBase):
     @ensure_ncclient
     def get_device_info(self):
         device_info = {}
-        device_info["network_os"] = "waveserver5"
+        device_info["network_os"] = "saos10"
         filter = """
         <filter>
             <components xmlns="http://openconfig.net/yang/platform"/>
-            <system xmlns="http://openconfig.net/yang/system">
-                <config>
-                    <hostname/>
-                </config>
-            </system>
+            <system xmlns="http://openconfig.net/yang/system"><config><hostname/></config></system>
+            <software-state xmlns="http://www.ciena.com/ns/yang/ciena-software-mgmt"/>
         </filter>
         """
         filter = to_ele(filter)
         response = self.get(filter=filter, remove_ns=True)
         root = to_ele(response)
-        model = self._extract_xpath(root, "//component[name='Waveserver']/state/description")
-        network_os_version = self._extract_xpath(root, "//component[name='CM-1']/state/software-version")
-        hostname = self._extract_xpath(root, "/data/system/config/hostname")
-        serial_number = self._extract_xpath(root, "//component[name='Waveserver']/state/serial-no")
-        platform = self._extract_xpath(root, "//component[name='Waveserver']/state/id")
+        model = self._extract_xpath(
+            root, "//components/component[1]/component-properties/component-property[name = 'hw-model']/value"
+        )
+        network_os_version = self._extract_xpath(root, "/data/software-state/running-package/package-version")
+        hostname = self._extract_xpath(root, "//system/config/hostname")
+        serial_number = self._extract_xpath(root, "//component[1]/state/serial-no")
+        platform = self._extract_xpath(root, "//components/component[1]/state/name")
 
         device_info["network_os_platform"] = platform
         device_info["network_os_serialnum"] = serial_number
@@ -117,12 +109,12 @@ class Netconf(NetconfBase):
         if isinstance(filter, list):
             filter = tuple(filter)
         try:
-            resp = self.m.get(filter=filter, with_defaults=with_defaults)
+            response = self.m.get(filter=filter, with_defaults=with_defaults)
             if remove_ns:
-                response = remove_namespaces(resp)
+                result = remove_namespaces(response)
             else:
-                response = resp.data_xml if hasattr(resp, "data_xml") else resp.xml
-            return response
+                result = response.data_xml if hasattr(response, "data_xml") else response.xml
+            return result
         except RPCError as exc:
             raise Exception(to_xml(exc.xml))
 

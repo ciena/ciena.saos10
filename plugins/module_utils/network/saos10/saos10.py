@@ -30,37 +30,37 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 import json
 
-from ansible.module_utils._text import to_text, to_bytes
+from ansible.module_utils._text import to_text
 from ansible.module_utils.connection import Connection, ConnectionError
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     NetconfConnection,
-    remove_namespaces,
 )
 
 try:
-    from lxml.etree import tostring as xml_to_string, fromstring
+    from lxml.etree import tostring as xml_to_string
 
     HAS_LXML = True
 except ImportError:
-    from xml.etree.ElementTree import fromstring, tostring as xml_to_string
+    from xml.etree.ElementTree import tostring as xml_to_string
 
     HAS_LXML = False
 
 _DEVICE_CONFIGS = {}
-CONFIG_FORMATS = frozenset(["xml", "text", "json", "set"])
+CONFIG_FORMATS = frozenset(["xml"])
 
 
-def remove_ns(element):
-    data = remove_namespaces(xml_to_string(element))
-    root = fromstring(to_bytes(data, errors="surrogate_then_replace"))
-    return root
-
-
-def tostring(element, encoding="UTF-8"):
+def tostring(element, encoding="UTF-8", pretty_print=False):
     if HAS_LXML:
-        return xml_to_string(element, encoding="unicode")
+        return xml_to_string(
+            element,
+            encoding="unicode",
+            pretty_print=pretty_print,
+        )
     else:
-        return to_text(xml_to_string(element, encoding), encoding=encoding)
+        return to_text(
+            xml_to_string(element, encoding),
+            encoding=encoding,
+        )
 
 
 def get_connection(module):

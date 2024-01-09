@@ -22,11 +22,11 @@
       ciena.saos10.saos10_classifiers:
         config:
           - name: foo-100
-            filter-entry:
-              - filter-parameter: vtag-stack
+            filter_entry:
+              - filter_parameter: vtag-stack
                 vtags:
                   - tag: 1
-                    vlan-id: 100
+                    vlan_id: 100
         state: merged
       connection: netconf
     - name: Configure fds
@@ -34,19 +34,19 @@
         config:
           - name: foo
             mode: vpls
-            initiate-l2-transform:
-              vlan-stack:
+            initiate_l2_transform:
+              vlan_stack:
                 - tag: 1
-                  push-tpid: tpid-8100
-                  push-vid: 202
+                  push_tpid: tpid-8100
+                  push_vid: 202
         state: merged
       connection: netconf
     - name: Configure fps
       ciena.saos10.saos10_fps:
         config:
           - name: foo
-            fd-name: foo
-            logical-port: 1
+            fd-_ame: foo
+            logical_port: 1
         state: merged
       connection: netconf
     ##### DELETIONS

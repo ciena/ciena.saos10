@@ -285,12 +285,12 @@ Examples
       ciena.saos10.saos10_classifiers:
         config:
           - name: untagged
-            filter-entry:
-              - filter-parameter: vtag-stack
-                untagged-exclude-priority-tagged: false
+            filter_entry:
+              - filter_parameter: vtag-stack
+                untagged_exclude_priority_tagged: false
           - name: foo-100
-            filter-entry:
-              - filter-parameter: vtag-stack
+            filter_entry:
+              - filter_parameter: vtag-stack
                 vtags:
                   - tag: 1
                     vlan_id: 100

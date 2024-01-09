@@ -44,7 +44,7 @@ Parameters
                     </div>
                 </td>
                 <td>
-                        <b>Default:</b><br/><div style="color: blue">"default"</div>
+                        <b>Default:</b><br/><div style="color: blue">"alu"</div>
                 </td>
                     <td>
                     </td>

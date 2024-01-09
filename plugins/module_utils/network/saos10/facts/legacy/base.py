@@ -16,11 +16,6 @@ import platform
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10 import (
     get_configuration,
     get_capabilities,
-    remove_ns,
-)
-
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.netconf.netconf import (
-    get,
 )
 
 try:
@@ -55,29 +50,6 @@ class FactsBase(object):
 class Default(FactsBase):
     def populate(self):
         self.facts.update(self.platform_facts())
-        config_filter = '<components xmlns="http://openconfig.net/yang/platform"/>'
-        reply = get(self.module, filter=("subtree", config_filter))
-        root = remove_ns(reply)
-        serial_number = root.xpath("/data/components/component[1]/state/serial-no")[0].text
-        model = root.xpath(
-            "/data/components/component[1]/component-properties/component-property[name = 'hw-model']/value"
-        )[0].text
-        platform = root.xpath("/data/components/component[1]/state/name")[0].text
-        self.facts["serialnum"] = serial_number
-        self.facts["model"] = model
-        self.facts["platform"] = platform
-
-        config_filter = '<software-state xmlns="http://www.ciena.com/ns/yang/ciena-software-mgmt"/>'
-        reply = get(self.module, filter=("subtree", config_filter))
-        root = remove_ns(reply)
-        network_os_version = root.xpath("/data/software-state/running-package/package-version")[0].text
-        self.facts["version"] = network_os_version
-
-        config_filter = '<system xmlns="http://openconfig.net/yang/system"><config><hostname/></config></system>'
-        reply = get(self.module, filter=("subtree", config_filter))
-        root = remove_ns(reply)
-        hostname = root.xpath("/data/system/config/hostname")[0].text
-        self.facts["hostname"] = hostname
 
     def platform_facts(self):
         platform_facts = {}
@@ -87,7 +59,7 @@ class Default(FactsBase):
 
         platform_facts["system"] = device_info["network_os"]
 
-        for item in ("image", "version", "hostname"):
+        for item in ("image", "model", "version", "hostname", "platform", "serialnum"):
             val = device_info.get("network_os_%s" % item)
             if val:
                 platform_facts[item] = val
@@ -105,7 +77,7 @@ class Config(FactsBase):
         reply = get_configuration(self.module, format="xml")
 
         if config_format == "xml":
-            config = xml_to_string(remove_ns(reply))
+            config = xml_to_string(reply)
 
         elif config_format == "text":
             raise Exception("text Not yet Implemented")
