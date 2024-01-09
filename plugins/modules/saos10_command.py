@@ -156,9 +156,9 @@ def contains_change(commands):
 def main():
     """main entry point for module execution"""
     argument_spec = dict(
-        commands=dict(type="list", required=True),
-        wait_for=dict(type="list", aliases=["waitfor"]),
-        match=dict(default="all", choices=["all", "any"]),
+        commands=dict(type="list", required=True, elements="str"),
+        wait_for=dict(type="list", aliases=["waitfor"], elements="str"),
+        match=dict(default="all", choices=["all", "any"], type="str"),
         retries=dict(default=10, type="int"),
         interval=dict(default=1, type="int"),
     )
