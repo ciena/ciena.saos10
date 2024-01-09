@@ -40,10 +40,11 @@ options:
 """
 
 import json
-import re
 
-from ansible.module_utils._text import to_text, to_native
-from ansible.plugins.netconf import NetconfBase, ensure_ncclient
+from ansible_collections.ansible.netcommon.plugins.plugin_utils.netconf_base import (
+    NetconfBase,
+    ensure_ncclient,
+)
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     remove_namespaces,
 )
@@ -61,12 +62,6 @@ except (
 
 
 class Netconf(NetconfBase):
-    def get_text(self, ele, tag):
-        try:
-            return to_text(ele.find(tag).text, errors="surrogate_then_replace").strip()
-        except AttributeError:
-            pass
-
     def get_capabilities(self):
         result = dict()
         result["rpc"] = self.get_base_rpc() + [

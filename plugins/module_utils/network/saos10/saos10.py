@@ -31,7 +31,6 @@ __metaclass__ = type
 import json
 
 from ansible.module_utils._text import to_text, to_bytes
-from ansible.module_utils.basic import env_fallback
 from ansible.module_utils.connection import Connection, ConnectionError
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
     NetconfConnection,
