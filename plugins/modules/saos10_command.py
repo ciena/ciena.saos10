@@ -57,14 +57,14 @@ options:
       failed. The command is run on the target device every retry and evaluated against
       the I(wait_for) conditions.
     default: 10
-    type: str
+    type: int
   interval:
     description:
     - Configures the interval in seconds to wait between retries of the command. If
       the command does not pass the specified conditions, the interval indicates how
       long to wait before trying the command again.
     default: 1
-    type: str
+    type: int
 """
 EXAMPLES = """
 - name: run software show on remote devices
