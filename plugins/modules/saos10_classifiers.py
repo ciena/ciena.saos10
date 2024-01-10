@@ -96,21 +96,195 @@ options:
             type: bool
             required: false
           untagged_exclude_priority_tagged:
-            description: Untagged exclude priority tagged
+            description: Untagged exclude priority tagged.
             type: bool
+            required: false
+          l2cp_exclude_priority_tagged:
+            description: L2CP exclude priority tagged.
+            type: bool
+            required: false
           vtags:
-            description: List of VLAN tags
+            description: List of VLAN tags.
             type: list
             elements: dict
             suboptions:
               tag:
-                description: 1 represents outer most tag, 2 next outer most, etc
+                description: "'1' represents outer most tag, '2' next outer most,
+                  etc"
                 type: int
-                required: true
+                required: false
+              tpid:
+                description: A specific value of VLAN Tag EtherType.
+                type: str
+                choices:
+                  - tpid-8100
+                  - tpid-88a8
+                  - tpid-9100
+                required: false
+              pcp:
+                description: A specific value of VLAN Tag PCP.
+                type: int
+                required: false
+              pcp_mask:
+                description: Allow PCP values to be optionally coupled with a mask
+                  in a single classifier
+                type: int
+                required: false
+              dei:
+                description: Discard Eligibility Indication
+                type: str
+                choices:
+                  - discard-eligible
+                  - not-discard-eligible
+                required: false
               vlan_id:
-                description: A specific value of VLAN Tag VLAN-ID
+                description: A specific value of VLAN Tag VLAN-ID.
                 type: int
-                required: true
+                required: false
+              vlan_id_max:
+                description: The maximum value of VLAN ID for ranged VLAN-ID values.
+                type: int
+                required: false
+          mpls_labels:
+            description: List of MPLS labels.
+            type: list
+            elements: dict
+            suboptions:
+              label:
+                description: No description available
+                type: int
+                required: false
+              mpls_label:
+                description: A specific value of mpls-label.
+                type: int
+                required: false
+              tc_value:
+                description: A specific value of mpls TC.
+                type: int
+                required: false
+          dscp_min:
+            description: The minimum value of DSCP.
+            type: int
+            required: false
+          dscp_max:
+            description: The maximum value of DSCP for ranged DSCP values in a single
+              classifier. Mutually exclusive to dscp-mask
+            type: int
+            required: false
+          dscp_mask:
+            description: Allow DSCP values to be optionally coupled with a mask in
+              a single classifier. Mutually exclusive to dscp-max
+            type: int
+            required: false
+          source_address:
+            description: Classification on IP source-address (v4/v6) and masking.
+            oneOf:
+              - type: str
+              - type: str
+            required: false
+          destination_address:
+            description: Classification on IP destination-address (v4/v6) and masking.
+            oneOf:
+              - type: str
+              - type: str
+            required: false
+          source_min:
+            description: Exact/Minimum value of L4 source port number.
+            type: int
+            required: false
+          source_max:
+            description: Maximum value of L4 source port number.
+            type: int
+            required: false
+          destination_min:
+            description: Exact/Minimum value of L4 destination port number.
+            type: int
+            required: false
+          destination_max:
+            description: Maximum value of L4 destination port number.
+            type: int
+            required: false
+          min_prot:
+            description: Exact/Minimum value of IP protocol.
+            type: int
+            required: false
+          max_prot:
+            description: Maximum value of IP protocol.
+            type: int
+            required: false
+          base_ethertype:
+            description: Base Ethernet type.
+            type: int
+            required: false
+          ip_fragment:
+            description: IP-fragment bit true/false
+            type: bool
+            required: false
+          l4_application:
+            description: L4 application.
+            type: str
+            choices:
+              - twamp
+            required: false
+          tcp_flags:
+            description: List of TCP flags.
+            type: str
+            required: false
+          source_mac:
+            description: Source MAC address.
+            type: str
+            required: false
+          source_mac_mask:
+            description: The mask of source MAC address.
+            type: str
+            required: false
+          destination_mac:
+            description: Destination MAC address.
+            type: str
+            required: false
+          destination_mac_mask:
+            description: The mask of destination MAC address.
+            type: str
+            required: false
+          local_termination:
+            description: Classification of frames which are locally terminated.
+            type: bool
+            required: false
+          icmp_type:
+            description: ICMP type.
+            type: int
+            required: false
+          icmp_message_type:
+            description: ICMP Message type.
+            type: str
+            choices:
+              - echo-reply
+              - destination-unreachable
+              - redirect-message
+              - echo-request
+              - router-advertisement
+              - router-solicitation
+              - time-exceeded
+              - parameter-problem
+              - timestamp
+              - timestamp-reply
+            required: false
+          ip_version:
+            description: To specify the IP version for the classifier.
+            type: str
+            choices:
+              - ipv4
+              - ipv6
+            required: false
+          internal_cos:
+            description: To specify the Internal Class-Of-Service for the classifier.
+            type: int
+            required: false
+          internal_cos_mask:
+            description: Allow internal-COS values to be optionally coupled with a
+              mask in a single classifier.
+            type: int
+            required: false
   state:
     choices:
       - merged

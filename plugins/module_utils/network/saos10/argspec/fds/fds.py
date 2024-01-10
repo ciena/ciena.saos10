@@ -57,10 +57,41 @@ class FdsArgs(object):  # pylint: disable=R0903
                 "queue_group_indirection": {"type": "str"},
                 "initiate_l2_transform": {
                     "type": "dict",
-                    "options": {"frame_type": {"type": "str", "choices": ["stack"]}},
+                    "options": {
+                        "vlan_stack": {
+                            "type": "list",
+                            "elements": "dict",
+                            "options": {
+                                "tag": {"type": "int"},
+                                "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
+                                "push_pcp": {
+                                    "type": "str",
+                                    "choices": [
+                                        "pcp-0",
+                                        "pcp-1",
+                                        "pcp-2",
+                                        "pcp-3",
+                                        "pcp-4",
+                                        "pcp-5",
+                                        "pcp-6",
+                                        "pcp-7",
+                                        "map",
+                                    ],
+                                },
+                                "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
+                                "push_vid": {"type": "int", "required": True},
+                            },
+                        }
+                    },
                 },
                 "initiate_cos_to_frame_map": {"type": "str"},
-                "initiate_frame_to_cos": {"type": "str", "choices": ["map", "fixed"]},
+                "initiate_frame_to_cos_map_policy": {
+                    "type": "str",
+                    "choices": ["outer-tag", "inner-tag", "mpls-tc", "dscp"],
+                },
+                "initiate_frame_to_cos_map": {"type": "str"},
+                "cos": {"type": "int"},
+                "color": {"type": "str", "choices": ["green", "yellow", "red"]},
             },
         },
         "state": {"type": "str", "default": "merged", "choices": ["merged", "overridden", "deleted"]},

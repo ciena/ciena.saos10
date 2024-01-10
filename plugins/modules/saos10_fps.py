@@ -52,14 +52,6 @@ options:
         description: A editable string used to describe this entry.
         type: str
         required: false
-      type:
-        description: ''
-        type: str
-        choices:
-          - q-in-q
-          - mpls-pw
-          - uni
-          - other
       name:
         description: This object indicates the flow point identifier. The identifier
           is a text string that is used to identify a flow point. Unique string values
@@ -75,6 +67,10 @@ options:
       logical_port:
         description: The logical-port associated with the flow-point.
         type: str
+        required: false
+      svlan:
+        description: A flow-point of type q-in-q, svlan is outer vlan tag.
+        type: int
         required: false
       mtu_size:
         description: This object indicates the configured EVC maximum service frame
@@ -99,12 +95,131 @@ options:
               objects but objects that will always be specified.
             type: str
             required: false
-          frame_type:
-            description: ''
+          vlan_stack:
+            description: This configures VLAN stack on the flow-point.
+            type: list
+            elements: dict
+            suboptions:
+              tag:
+                description: Dependent on the xform operation, the tag numbers are
+                  stamp => '1' represents outermost tag, '2' next outermost (next
+                  inner) pop => '1' represents pop outermost, '2' represents pop outermost,
+                  (always pop from outer) push => '1' represents push outermost, '2'
+                  represents push outermost (always push to outer)
+                type: int
+                required: false
+              push_tpid:
+                description: This pushes the chosen tag-protocol-identifier in the
+                  frame
+                type: str
+                choices:
+                  - tpid-8100
+                  - tpid-88a8
+                  - tpid-9100
+                required: false
+              push_pcp:
+                description: This chooses how a priority code point (PCP) is determined
+                  on a vlan tag being pushed onto a frame (pcp-value/map). The PCP
+                  can be used to prioritize different classes of traffic.
+                type: str
+                choices:
+                  - pcp-0
+                  - pcp-1
+                  - pcp-2
+                  - pcp-3
+                  - pcp-4
+                  - pcp-5
+                  - pcp-6
+                  - pcp-7
+                  - map
+                required: false
+              push_dei:
+                description: This enables/disables pushing drop eligibility indicator
+                  to indicate frames eligible to be dropped in the presence of congestion.
+                type: str
+                choices:
+                  - enabled
+                  - disabled
+                required: false
+              push_vid:
+                description: This pushes configured VLAN id to the frame.
+                type: int
+                required: true
+              stamp_tpid:
+                description: This swaps the existing Tag protocol identifier in frame
+                  with the chosen one .
+                type: str
+                choices:
+                  - no-op
+                  - tpid-8100
+                  - tpid-88a8
+                  - tpid-9100
+                required: false
+              stamp_pcp:
+                description: This swaps the existing Priority code point in frame
+                  with the chosen one .
+                type: str
+                choices:
+                  - pcp-0
+                  - pcp-1
+                  - pcp-2
+                  - pcp-3
+                  - pcp-4
+                  - pcp-5
+                  - pcp-6
+                  - pcp-7
+                  - no-op
+                  - map
+                required: false
+              stamp_dei:
+                description: Enables/Disables swapping the Drop eligible indicator
+                  in frame .
+                type: str
+                choices:
+                  - no-op
+                  - enabled
+                  - disabled
+                required: false
+              stamp_vid_value:
+                description: The vlan identifier that is used for swapping.
+                type: int
+                required: false
+          untagged_tpid:
+            description: The Tag protocol identifier to be added to an untagged frame
+              .
             type: str
             choices:
-              - stack
-              - untagged
+              - tpid-8100
+              - tpid-88a8
+              - tpid-9100
+            required: false
+          untagged_pcp:
+            description: This configures the chosen priority code point which can
+              be used to prioritize different classes of traffic.
+            type: str
+            choices:
+              - pcp-0
+              - pcp-1
+              - pcp-2
+              - pcp-3
+              - pcp-4
+              - pcp-5
+              - pcp-6
+              - pcp-7
+              - map
+            required: false
+          untagged_dei:
+            description: This enables/disables drop eligibility indicator to indicate
+              untagged frames eligible to be dropped in the presence of congestion.
+            type: str
+            choices:
+              - enabled
+              - disabled
+            required: false
+          untagged_vid:
+            description: This configures the untagged vlan identifier .
+            type: int
+            required: false
       egress_l2_transform:
         description: Egress L2-transform configured on this flow-point.
         type: list
@@ -115,30 +230,167 @@ options:
               objects but objects that will always be specified.
             type: str
             required: false
-          frame_type:
-            description: ''
+          vlan_stack:
+            description: This configures VLAN stack on the flow-point.
+            type: list
+            elements: dict
+            suboptions:
+              tag:
+                description: Dependent on the xform operation, the tag numbers are
+                  stamp => '1' represents outermost tag, '2' next outermost (next
+                  inner) pop => '1' represents pop outermost, '2' represents pop outermost,
+                  (always pop from outer) push => '1' represents push outermost, '2'
+                  represents push outermost (always push to outer)
+                type: int
+                required: false
+              push_tpid:
+                description: This pushes the chosen tag-protocol-identifier in the
+                  frame
+                type: str
+                choices:
+                  - tpid-8100
+                  - tpid-88a8
+                  - tpid-9100
+                required: false
+              push_pcp:
+                description: This chooses how a priority code point (PCP) is determined
+                  on a vlan tag being pushed onto a frame (pcp-value/map). The PCP
+                  can be used to prioritize different classes of traffic.
+                type: str
+                choices:
+                  - pcp-0
+                  - pcp-1
+                  - pcp-2
+                  - pcp-3
+                  - pcp-4
+                  - pcp-5
+                  - pcp-6
+                  - pcp-7
+                  - map
+                required: false
+              push_dei:
+                description: This enables/disables pushing drop eligibility indicator
+                  to indicate frames eligible to be dropped in the presence of congestion.
+                type: str
+                choices:
+                  - enabled
+                  - disabled
+                required: false
+              push_vid:
+                description: This pushes configured VLAN id to the frame.
+                type: int
+                required: true
+              stamp_tpid:
+                description: This swaps the existing Tag protocol identifier in frame
+                  with the chosen one .
+                type: str
+                choices:
+                  - no-op
+                  - tpid-8100
+                  - tpid-88a8
+                  - tpid-9100
+                required: false
+              stamp_pcp:
+                description: This swaps the existing Priority code point in frame
+                  with the chosen one .
+                type: str
+                choices:
+                  - pcp-0
+                  - pcp-1
+                  - pcp-2
+                  - pcp-3
+                  - pcp-4
+                  - pcp-5
+                  - pcp-6
+                  - pcp-7
+                  - no-op
+                  - map
+                required: false
+              stamp_dei:
+                description: Enables/Disables swapping the Drop eligible indicator
+                  in frame .
+                type: str
+                choices:
+                  - no-op
+                  - enabled
+                  - disabled
+                required: false
+              stamp_vid_value:
+                description: The vlan identifier that is used for swapping.
+                type: int
+                required: false
+          untagged_tpid:
+            description: The Tag protocol identifier to be added to an untagged frame
+              .
             type: str
             choices:
-              - stack
-              - untagged
-      ingress_l3_transform:
-        description: ''
+              - tpid-8100
+              - tpid-88a8
+              - tpid-9100
+            required: false
+          untagged_pcp:
+            description: This configures the chosen priority code point which can
+              be used to prioritize different classes of traffic.
+            type: str
+            choices:
+              - pcp-0
+              - pcp-1
+              - pcp-2
+              - pcp-3
+              - pcp-4
+              - pcp-5
+              - pcp-6
+              - pcp-7
+              - map
+            required: false
+          untagged_dei:
+            description: This enables/disables drop eligibility indicator to indicate
+              untagged frames eligible to be dropped in the presence of congestion.
+            type: str
+            choices:
+              - enabled
+              - disabled
+            required: false
+          untagged_vid:
+            description: This configures the untagged vlan identifier .
+            type: int
+            required: false
+      ingress_remark_dscp_value:
+        description: Remark the ingress L2-Switched packet with the DSCP value.
+        type: int
+        required: false
+      egress_remark_dscp_value:
+        description: Remark the egress L2-Switched packet with the DSCP value.
+        type: int
+        required: false
+      map_policy:
+        description: The fields of frame to map to internal cos and color.
         type: str
         choices:
-          - map
-          - remark-dscp
-      egress_l3_transform:
-        description: ''
+          - outer-tag
+          - inner-tag
+          - mpls-tc
+          - dscp
+          - dscp-mpls-tc
+        required: false
+      frame_to_cos_map:
+        description: A mapping resolving an incoming frame to internal Color and Cos.
+        type: str
+        required: false
+      cos:
+        description: An internal label defining the baseline for Class-Of-Service
+          treatment of a frame as it switches through the device.
+        type: int
+        required: false
+      color:
+        description: An internal label assigned to frame defining the treatment of
+          a frame as it switches through the device.
         type: str
         choices:
-          - map
-          - remark-dscp
-      frame_to_cos:
-        description: ''
-        type: str
-        choices:
-          - map
-          - fixed
+          - green
+          - yellow
+          - red
+        required: false
       cos_to_frame_map:
         description: A mapping resolving an internal color and cos to frame pcp+dei,
           dscp, mpls-tc.
@@ -240,7 +492,7 @@ options:
             type: int
             required: false
           vlan_id:
-            description: ''
+            description: No description available
             type: int
             required: false
   state:

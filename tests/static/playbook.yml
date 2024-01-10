@@ -45,7 +45,7 @@
       ciena.saos10.saos10_fps:
         config:
           - name: foo
-            fd-_ame: foo
+            fd_name: foo
             logical_port: 1
         state: merged
       connection: netconf

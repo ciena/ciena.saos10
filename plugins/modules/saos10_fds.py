@@ -107,23 +107,96 @@ options:
           an L3-frame injected via this forwarding domain to L2 datapath.
         type: dict
         suboptions:
-          frame_type:
-            description: ''
-            type: str
-            choices:
-              - stack
+          vlan_stack:
+            description: For an L2-frame that is initiated/injected via this forwarding
+              domain, this specifies the VLAN related l2-transform to be applied to
+              the frame.
+            type: list
+            elements: dict
+            suboptions:
+              tag:
+                description: Dependent on the transform operation, the tag numbers
+                  are push => '1' represents push outermost, '2' represents push outermost
+                  (always push to outer)
+                type: int
+                required: false
+              push_tpid:
+                description: Represents the TPID value of the vlan tag for the tag
+                  being pushed
+                type: str
+                choices:
+                  - tpid-8100
+                  - tpid-88a8
+                  - tpid-9100
+                required: false
+              push_pcp:
+                description: Represents the PCP value of the vlan tag for the tag
+                  being pushed. When the PCP value is mapped using a cos-to-frame-map,
+                  'map' is specified.
+                type: str
+                choices:
+                  - pcp-0
+                  - pcp-1
+                  - pcp-2
+                  - pcp-3
+                  - pcp-4
+                  - pcp-5
+                  - pcp-6
+                  - pcp-7
+                  - map
+                required: false
+              push_dei:
+                description: Represents the DEI value of the vlan tag for the tag
+                  being pushed.
+                type: str
+                choices:
+                  - enabled
+                  - disabled
+                required: false
+              push_vid:
+                description: Represents the VID value of the vlan tag for the tag
+                  being pushed
+                type: int
+                required: true
       initiate_cos_to_frame_map:
         description: For an L2-frame that is initiated/injected via this forwarding
           domain, this specifies the cos-to-frame map to use for a cos-to-frame map
           policy of 'mapped' from the initiate-l2-transform config.
         type: str
         required: false
-      initiate_frame_to_cos:
-        description: ''
+      initiate_frame_to_cos_map_policy:
+        description: For an L2-frame that is initiated/injected via this forwarding
+          domain, this specifies the frame-to-cos-map sub-policy to use when when
+          the policy is mapped.
         type: str
         choices:
-          - map
-          - fixed
+          - outer-tag
+          - inner-tag
+          - mpls-tc
+          - dscp
+        required: false
+      initiate_frame_to_cos_map:
+        description: For an L2-frame that is initiated/injected via this forwarding
+          domain, this specifies the frame-to-cos map to use for an initiate frame-to-cos
+          map policy of 'mapped'.
+        type: str
+        required: false
+      cos:
+        description: For an L2-frame that is initiated/injected via this forwarding
+          domain, this specifies the fixed cos value to use when when the policy is
+          fixed.
+        type: int
+        required: false
+      color:
+        description: For an L2-frame that is initiated/injected via this forwarding
+          domain, this specifies the fixed color value to use when when the policy
+          is fixed.
+        type: str
+        choices:
+          - green
+          - yellow
+          - red
+        required: false
   state:
     choices:
       - merged
