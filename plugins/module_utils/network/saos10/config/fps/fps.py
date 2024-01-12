@@ -112,6 +112,7 @@ class Fps(ConfigBase):
         state = self._module.params["state"]
         state_methods = {
             "merged": self._state_merged,
+            "deleted": self._state_deleted,
         }
         config_dict = state_methods[state](want, have) if state in self.ACTION_STATES else {}
         return config_dict
@@ -182,4 +183,12 @@ class Fps(ConfigBase):
             if w_item in have:
                 continue
             response.append(w_item)
+        return response
+
+    def _state_deleted(self, want, have):
+        response = []
+        if not want:
+            want = have
+        for config in want:
+            response.append({"name": config["name"]})
         return response
