@@ -1,8 +1,13 @@
 # Ciena SAOS 10 Collection Release Notes
 
-## v1.6.5
+## v1.7.0
 ### Fixed
 - Runtime definitions
+- Added missing `saos10_command` module
+- Added full yang config support for:
+  - fps
+  - classifiers
+  - fds
 
 ## v1.6.4
 ### Added
