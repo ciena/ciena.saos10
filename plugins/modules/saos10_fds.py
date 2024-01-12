@@ -30,6 +30,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+
 DOCUMENTATION = """
 ---
 module: saos10_fds
@@ -180,7 +181,25 @@ options:
         required: false
 
 """
-
+RETURN = """
+before:
+  description: The configuration prior to the model invocation.
+  returned: always
+  sample: >
+    The configuration returned will always be in the same format
+     of the parameters above.
+after:
+  description: The resulting configuration model invocation.
+  returned: when changed
+  sample: >
+    The configuration returned will always be in the same format
+     of the parameters above.
+xml:
+  description: The set of xml commands pushed to the remote device.
+  returned: always
+  type: list
+  sample: ['<system xmlns="http://openconfig.net/yang/system"><config><hostname>foo</hostname></config></system>']
+"""
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.fds.fds import (
