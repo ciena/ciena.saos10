@@ -39,8 +39,8 @@ Name | Description
 [ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_classifiers_module.rst)|Manage classifiers on Ciena SAOS 10 devices
 [ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_command_module.rst)|Run commands on remote devices running Ciena SAOS 10
 [ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
-[ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|Manage forwarding domains on Ciena SAOS 10 devices
-[ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|Manage flow points on Ciena SAOS 10 devices
+[ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|Manage Forwarding Domains on Ciena SAOS 10 devices
+[ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|Manage Flow Points on Ciena SAOS 10 devices
 [ciena.saos10.xml_diff](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.xml_diff_module.rst)|return diff for a pair of xml inputs
 
 <!--end collection content-->

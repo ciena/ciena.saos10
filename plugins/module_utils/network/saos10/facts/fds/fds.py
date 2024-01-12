@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
@@ -72,15 +72,15 @@ class FdsFacts(object):
 
         if not data:
             config_filter = """
-                <waveserver-fds xmlns="urn:ciena:params:xml:ns:yang:ciena-ws:ciena-mef-fd">
-                </waveserver-fds>
+                <fds xmlns="urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fd">
+                </fds>
                 """
             data = get(self._module, filter=("subtree", config_filter))
 
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resources = data.xpath("/rpc-reply/data/waveserver-fds/fds")
+        resources = data.xpath("/rpc-reply/data/fds/fds")
         objs = []
         for resource in resources:
             if resource:

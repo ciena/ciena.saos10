@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
@@ -72,7 +72,7 @@ class FpsFacts(object):
 
         if not data:
             config_filter = """
-                <fps xmlns="urn:ciena:params:xml:ns:yang:ciena-pn::ciena-mef-fp">
+                <fps xmlns="urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fp">
                 </fps>
                 """
             data = get(self._module, filter=("subtree", config_filter))

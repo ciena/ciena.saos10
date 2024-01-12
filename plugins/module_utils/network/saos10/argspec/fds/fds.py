@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -43,18 +43,16 @@ class FdsArgs(object):  # pylint: disable=R0903
             "elements": "dict",
             "options": {
                 "description": {"type": "str"},
-                "name": {"type": "str"},
-                "mode": {
-                    "type": "str",
-                    "choices": ["vlan", "vpls", "vpws", "fxc", "tdm-vpls", "tdm-vpws", "evpn-vpws", "evpn-vpls"],
-                },
-                "vlan_id": {"type": "int"},
-                "mac_learning": {"type": "str", "choices": ["enabled", "disabled"]},
-                "l2cp_profile": {"type": "str"},
-                "flood_containment_profile": {"type": "str"},
-                "pfg_profile": {"type": "str"},
+                "color": {"type": "str", "choices": ["green", "yellow", "red"]},
+                "cos": {"type": "int"},
                 "cos_queue_map": {"type": "str"},
-                "queue_group_indirection": {"type": "str"},
+                "flood_containment_profile": {"type": "str"},
+                "initiate_cos_to_frame_map": {"type": "str"},
+                "initiate_frame_to_cos_map": {"type": "str"},
+                "initiate_frame_to_cos_map_policy": {
+                    "type": "str",
+                    "choices": ["outer-tag", "inner-tag", "mpls-tc", "dscp"],
+                },
                 "initiate_l2_transform": {
                     "type": "dict",
                     "options": {
@@ -62,8 +60,7 @@ class FdsArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
-                                "tag": {"type": "int"},
-                                "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
+                                "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
                                 "push_pcp": {
                                     "type": "str",
                                     "choices": [
@@ -78,21 +75,23 @@ class FdsArgs(object):  # pylint: disable=R0903
                                         "map",
                                     ],
                                 },
-                                "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
+                                "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
                                 "push_vid": {"type": "int", "required": True},
+                                "tag": {"type": "int"},
                             },
                         }
                     },
                 },
-                "initiate_cos_to_frame_map": {"type": "str"},
-                "initiate_frame_to_cos_map_policy": {
+                "l2cp_profile": {"type": "str"},
+                "mac_learning": {"type": "str", "choices": ["enabled", "disabled"]},
+                "mode": {
                     "type": "str",
-                    "choices": ["outer-tag", "inner-tag", "mpls-tc", "dscp"],
+                    "choices": ["vlan", "vpls", "vpws", "fxc", "tdm-vpls", "tdm-vpws", "evpn-vpws", "evpn-vpls"],
                 },
-                "initiate_frame_to_cos_map": {"type": "str"},
-                "cos": {"type": "int"},
-                "color": {"type": "str", "choices": ["green", "yellow", "red"]},
+                "name": {"type": "str"},
+                "pfg_profile": {"type": "str"},
+                "queue_group_indirection": {"type": "str"},
+                "vlan_id": {"type": "int"},
             },
-        },
-        "state": {"type": "str", "default": "merged", "choices": ["merged", "overridden", "deleted"]},
+        }
     }  # pylint: disable=C0301

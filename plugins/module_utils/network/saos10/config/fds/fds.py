@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
@@ -36,8 +36,8 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.
     config_is_diff,
 )
 
-NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-ws:ciena-mef-fd"
-ROOT_KEY = "waveserver-fds"
+NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fd"
+ROOT_KEY = "fds"
 RESOURCE = "fds"
 XML_ITEMS = "fd"
 

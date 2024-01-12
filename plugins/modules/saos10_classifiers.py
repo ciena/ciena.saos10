@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -30,212 +30,34 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {"metadata_version": "1.1", "status": ["preview"], "supported_by": "network"}
-
 DOCUMENTATION = """
 ---
 module: saos10_classifiers
-version_added: "1.0.0"
 short_description: Manage classifiers on Ciena SAOS 10 devices
-description: This module provides declarative management of a classifier
+description: This module provides declarative management of a classifier on Ciena SAOS 10 devices.
 author: Jeff Groom (@jgroom33)
-requirements:
-  - ncclient (>=v0.6.4)
-  - xmltodict (>=0.12.0)
 options:
   config:
-    description: List of classifier templates. Classifiers can be referenced by various
-      entities (flow-point/access-flow/qos-flow etc.) to define their incoming classification.
+    description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.) to define
+      their incoming classification.
     type: list
     elements: dict
     suboptions:
-      name:
-        description: A unique name for the classifier.
-        type: str
-        required: false
-      filter_operation:
-        description: Choose the scope of application of the rule
-        type: str
-        choices:
-          - match-all
-          - match-any
-        required: false
       filter_entry:
         description: Add one filtering rule for this classifier.
         type: list
         elements: dict
         suboptions:
-          filter_parameter:
-            description: Indicates which filter parameter is used by this filter entry
+          any:
+            description: Accept any classification. Wide-Open classifier
             type: str
-            choices:
-              - vtag-stack
-              - mpls-label-stack
-              - dscp
-              - source-ip
-              - destination-ip
-              - l4-source-port
-              - l4-destination-port
-              - ip-protocol
-              - base-etype
-              - any
-              - ip-fragment
-              - l4-application
-              - tcp-flags
-              - source-mac
-              - destination-mac
-              - local-termination
-              - icmp
-              - ip-version
-              - internal-cos
-            required: false
-          logical_not:
-            description: Opposite of what is specified in the filter-parameters. If
-              the filter-parameter specifies a tpid as tpid-8100, then anything other
-              than tpid-8100 is considered an acceptable packet.
-            type: bool
-            required: false
-          untagged_exclude_priority_tagged:
-            description: Untagged exclude priority tagged.
-            type: bool
-            required: false
-          l2cp_exclude_priority_tagged:
-            description: L2CP exclude priority tagged.
-            type: bool
-            required: false
-          vtags:
-            description: List of VLAN tags.
-            type: list
-            elements: dict
-            suboptions:
-              tag:
-                description: "'1' represents outer most tag, '2' next outer most,
-                  etc"
-                type: int
-                required: false
-              tpid:
-                description: A specific value of VLAN Tag EtherType.
-                type: str
-                choices:
-                  - tpid-8100
-                  - tpid-88a8
-                  - tpid-9100
-                required: false
-              pcp:
-                description: A specific value of VLAN Tag PCP.
-                type: int
-                required: false
-              pcp_mask:
-                description: Allow PCP values to be optionally coupled with a mask
-                  in a single classifier
-                type: int
-                required: false
-              dei:
-                description: Discard Eligibility Indication
-                type: str
-                choices:
-                  - discard-eligible
-                  - not-discard-eligible
-                required: false
-              vlan_id:
-                description: A specific value of VLAN Tag VLAN-ID.
-                type: int
-                required: false
-              vlan_id_max:
-                description: The maximum value of VLAN ID for ranged VLAN-ID values.
-                type: int
-                required: false
-          mpls_labels:
-            description: List of MPLS labels.
-            type: list
-            elements: dict
-            suboptions:
-              label:
-                description: No description available
-                type: int
-                required: false
-              mpls_label:
-                description: A specific value of mpls-label.
-                type: int
-                required: false
-              tc_value:
-                description: A specific value of mpls TC.
-                type: int
-                required: false
-          dscp_min:
-            description: The minimum value of DSCP.
-            type: int
-            required: false
-          dscp_max:
-            description: The maximum value of DSCP for ranged DSCP values in a single
-              classifier. Mutually exclusive to dscp-mask
-            type: int
-            required: false
-          dscp_mask:
-            description: Allow DSCP values to be optionally coupled with a mask in
-              a single classifier. Mutually exclusive to dscp-max
-            type: int
-            required: false
-          source_address:
-            description: Classification on IP source-address (v4/v6) and masking.
-            oneOf:
-              - type: str
-              - type: str
-            required: false
-          destination_address:
-            description: Classification on IP destination-address (v4/v6) and masking.
-            oneOf:
-              - type: str
-              - type: str
-            required: false
-          source_min:
-            description: Exact/Minimum value of L4 source port number.
-            type: int
-            required: false
-          source_max:
-            description: Maximum value of L4 source port number.
-            type: int
-            required: false
-          destination_min:
-            description: Exact/Minimum value of L4 destination port number.
-            type: int
-            required: false
-          destination_max:
-            description: Maximum value of L4 destination port number.
-            type: int
-            required: false
-          min_prot:
-            description: Exact/Minimum value of IP protocol.
-            type: int
-            required: false
-          max_prot:
-            description: Maximum value of IP protocol.
-            type: int
             required: false
           base_ethertype:
             description: Base Ethernet type.
             type: int
             required: false
-          ip_fragment:
-            description: IP-fragment bit true/false
-            type: bool
-            required: false
-          l4_application:
-            description: L4 application.
-            type: str
-            choices:
-              - twamp
-            required: false
-          tcp_flags:
-            description: List of TCP flags.
-            type: str
-            required: false
-          source_mac:
-            description: Source MAC address.
-            type: str
-            required: false
-          source_mac_mask:
-            description: The mask of source MAC address.
+          destination_address:
+            description: Classification on IP destination-address (v4/v6) and masking.
             type: str
             required: false
           destination_mac:
@@ -246,95 +68,200 @@ options:
             description: The mask of destination MAC address.
             type: str
             required: false
-          local_termination:
-            description: Classification of frames which are locally terminated.
-            type: bool
-            required: false
-          icmp_type:
-            description: ICMP type.
+          destination_max:
+            description: Maximum value of L4 destination port number.
             type: int
+            required: false
+          destination_min:
+            description: Exact/Minimum value of L4 destination port number.
+            type: int
+            required: false
+          dscp_mask:
+            description: Allow DSCP values to be optionally coupled with a mask in a single classifier. Mutually exclusive to dscp-max
+            type: int
+            required: false
+          dscp_max:
+            description: The maximum value of DSCP for ranged DSCP values in a single classifier. Mutually exclusive to dscp-mask
+            type: int
+            required: false
+          dscp_min:
+            description: The minimum value of DSCP.
+            type: int
+            required: false
+          filter_parameter:
+            description: Indicates which filter parameter is used by this filter entry
+            type: str
             required: false
           icmp_message_type:
             description: ICMP Message type.
             type: str
-            choices:
-              - echo-reply
-              - destination-unreachable
-              - redirect-message
-              - echo-request
-              - router-advertisement
-              - router-solicitation
-              - time-exceeded
-              - parameter-problem
-              - timestamp
-              - timestamp-reply
             required: false
-          ip_version:
-            description: To specify the IP version for the classifier.
-            type: str
             choices:
-              - ipv4
-              - ipv6
+            - echo-reply
+            - destination-unreachable
+            - redirect-message
+            - echo-request
+            - router-advertisement
+            - router-solicitation
+            - time-exceeded
+            - parameter-problem
+            - timestamp
+            - timestamp-reply
+          icmp_type:
+            description: ICMP type.
+            type: int
             required: false
           internal_cos:
             description: To specify the Internal Class-Of-Service for the classifier.
             type: int
             required: false
           internal_cos_mask:
-            description: Allow internal-COS values to be optionally coupled with a
-              mask in a single classifier.
+            description: Allow internal-COS values to be optionally coupled with a mask in a single classifier.
             type: int
             required: false
-  state:
-    choices:
-      - merged
-      - overridden
-      - deleted
-    default: merged
-    description:
-      - The state the configuration should be left in
-    type: str
-"""
-EXAMPLES = """
-# Using merged
+          ip_fragment:
+            description: IP-fragment bit true/false
+            type: bool
+            required: false
+          ip_version:
+            description: To specify the IP version for the classifier.
+            type: str
+            required: false
+            choices:
+            - ipv4
+            - ipv6
+          l2cp_exclude_priority_tagged:
+            description: L2CP exclude priority tagged.
+            type: bool
+            required: false
+          l4_application:
+            description: L4 application.
+            type: str
+            required: false
+            choices:
+            - twamp
+          local_termination:
+            description: Classification of frames which are locally terminated.
+            type: bool
+            required: false
+          logical_not:
+            description: Opposite of what is specified in the filter-parameters. If the filter-parameter specifies a tpid as tpid-8100, then anything
+              other than tpid-8100 is considered an acceptable packet.
+            type: bool
+            required: false
+          max_prot:
+            description: Maximum value of IP protocol.
+            type: int
+            required: false
+          min_prot:
+            description: Exact/Minimum value of IP protocol.
+            type: int
+            required: false
+          mpls_labels:
+            description: List of MPLS labels.
+            type: list
+            elements: dict
+            suboptions:
+              label:
+                description: No description available
+                type: int
+                required: false
+              label_any:
+                description: Any value of mpls-label.
+                type: str
+                required: false
+              mpls_label:
+                description: A specific value of mpls-label.
+                type: int
+                required: false
+              tc_any:
+                description: Any value of mpls TC.
+                type: str
+                required: false
+              tc_value:
+                description: A specific value of mpls TC.
+                type: int
+                required: false
+          source_address:
+            description: Classification on IP source-address (v4/v6) and masking.
+            type: str
+            required: false
+          source_mac:
+            description: Source MAC address.
+            type: str
+            required: false
+          source_mac_mask:
+            description: The mask of source MAC address.
+            type: str
+            required: false
+          source_max:
+            description: Maximum value of L4 source port number.
+            type: int
+            required: false
+          source_min:
+            description: Exact/Minimum value of L4 source port number.
+            type: int
+            required: false
+          tcp_flags:
+            description: List of TCP flags.
+            type: str
+            required: false
+          untagged_exclude_priority_tagged:
+            description: Untagged exclude priority tagged.
+            type: bool
+            required: false
+          vtags:
+            description: List of VLAN tags.
+            type: list
+            elements: dict
+            suboptions:
+              dei:
+                description: Discard Eligibility Indication
+                type: str
+                required: false
+                choices:
+                - discard-eligible
+                - not-discard-eligible
+              pcp:
+                description: A specific value of VLAN Tag PCP.
+                type: int
+                required: false
+              pcp_mask:
+                description: Allow PCP values to be optionally coupled with a mask in a single classifier
+                type: int
+                required: false
+              tag:
+                description: '''1'' represents outer most tag, ''2'' next outer most, etc'
+                type: int
+                required: false
+              tpid:
+                description: A specific value of VLAN Tag EtherType.
+                type: str
+                required: false
+                choices:
+                - tpid-8100
+                - tpid-88a8
+                - tpid-9100
+              vlan_id:
+                description: A specific value of VLAN Tag VLAN-ID.
+                type: int
+                required: false
+              vlan_id_max:
+                description: The maximum value of VLAN ID for ranged VLAN-ID values.
+                type: int
+                required: false
+      filter_operation:
+        description: Choose the scope of application of the rule
+        type: str
+        required: false
+        choices:
+        - match-all
+        - match-any
+      name:
+        description: A unique name for the classifier.
+        type: str
+        required: false
 
-- name: Configure classifier
-  ciena.saos10.saos10_classifiers:
-    config:
-      - name: untagged
-        filter_entry:
-          - filter_parameter: vtag-stack
-            untagged_exclude_priority_tagged: false
-      - name: foo-100
-        filter_entry:
-          - filter_parameter: vtag-stack
-            vtags:
-              - tag: 1
-                vlan_id: 100
-    state: merged
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  type: dict
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  type: dict
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-xml:
-  description: The set of xml commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['<system xmlns="http://openconfig.net/yang/system"><config><hostname>foo</hostname></config></system>']
 """
 
 
