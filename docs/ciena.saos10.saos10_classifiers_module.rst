@@ -915,6 +915,25 @@ Parameters
                 </td>
             </tr>
 
+            <tr>
+                <td colspan="4">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li><div style="color: blue"><b>merged</b>&nbsp;&larr;</div></li>
+                                    <li>deleted</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>The state of the configuration after module completion.</div>
+                </td>
+            </tr>
     </table>
     <br/>
 

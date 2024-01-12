@@ -200,5 +200,6 @@ class FpsArgs(object):  # pylint: disable=R0903
                 "svlan": {"type": "int"},
                 "uni": {"type": "str"},
             },
-        }
+        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},
     }  # pylint: disable=C0301

@@ -93,5 +93,6 @@ class FdsArgs(object):  # pylint: disable=R0903
                 "queue_group_indirection": {"type": "str"},
                 "vlan_id": {"type": "int"},
             },
-        }
+        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},
     }  # pylint: disable=C0301

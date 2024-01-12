@@ -179,6 +179,13 @@ options:
         description: The id of VLAN associated with forwarding-domain.
         type: int
         required: false
+  state:
+    description: The state of the configuration after module completion.
+    type: str
+    choices:
+    - merged
+    - deleted
+    default: merged
 
 """
 EXAMPLES = """

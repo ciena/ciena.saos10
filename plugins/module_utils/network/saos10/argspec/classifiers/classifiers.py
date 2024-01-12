@@ -119,5 +119,6 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                 "filter_operation": {"type": "str", "choices": ["match-all", "match-any"]},
                 "name": {"type": "str"},
             },
-        }
+        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},
     }  # pylint: disable=C0301
