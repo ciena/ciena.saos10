@@ -467,6 +467,32 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    # Using merged
+
+    - name: Configure forwarding domain
+      ciena.saos10.saos10_fds:
+        config:
+          - name: remote-fd
+            mode: vpls
+            initiate-l2-transform:
+              vlan-stack:
+                - tag: 1
+                  push-tpid: tpid-8100
+                  push-pcp: map
+                  push-vid: 127
+        state: merged
+    # Using deleted
+
+    - name: Delete forwading domain
+      ciena.saos10.saos10_fds:
+        config:
+          - name: remote-fd
+        state: deleted
 
 
 

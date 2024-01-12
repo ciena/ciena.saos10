@@ -1342,6 +1342,27 @@ Parameters
 
 
 
+Examples
+--------
+
+.. code-block:: yaml
+
+    # Using merged
+
+    - name: Configure flow point
+      ciena.saos10.saos10_fps:
+        config:
+          - name: fp1
+            fd-name: foo
+            logical-port: 1
+        state: merged
+    # Using deleted
+
+    - name: delete flow point
+      ciena.saos10.saos10_fps:
+        config:
+          - name: fp1
+        state: deleted
 
 
 

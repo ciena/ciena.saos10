@@ -264,6 +264,33 @@ options:
         required: false
 
 """
+EXAMPLES = """
+# Using merged
+
+- name: Configure classifier
+  ciena.saos10.saos10_classifiers:
+    config:
+      - name: untagged
+        filter_entry:
+          - filter_parameter: vtag-stack
+            untagged_exclude_priority_tagged: false
+      - name: foo-100
+        filter_entry:
+          - filter_parameter: vtag-stack
+            vtags:
+              - tag: 1
+                vlan_id: 100
+    state: merged
+# Using deleted
+
+- name: Delete classifier
+  ciena.saos10.saos10_classifiers:
+    config:
+      - name: untagged
+      - name: foo-100
+    state: deleted
+"""
+
 RETURN = """
 before:
   description: The configuration prior to the model invocation.
