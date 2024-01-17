@@ -1,12 +1,10 @@
 ---
 - hosts: all
-  collections:
-    - ciena.saos10
   gather_facts: false
   name: Gather facts for ciena device Saos 10
   connection: netconf
   tasks:
-    - name: get device facts for Saos 10
+    - name: Get device facts for Saos 10
       ciena.saos10.saos10_facts:
         gather_subset:
           - all
@@ -15,8 +13,8 @@
           - classifiers
           - fps
       connection: netconf
-    - name: print facts
-      debug:
+    - name: Print facts
+      ansible.builtin.debug:
         var: ansible_facts
     - name: Test diag shell
       ansible.builtin.include_tasks: test-diag-shell.yml
@@ -24,11 +22,11 @@
       ciena.saos10.saos10_classifiers:
         config:
           - name: foo-100
-            filter-entry:
-              - filter-parameter: vtag-stack
+            filter_entry:
+              - filter_parameter: vtag-stack
                 vtags:
                   - tag: 1
-                    vlan-id: 100
+                    vlan_id: 100
         state: merged
       connection: netconf
     - name: Configure fds
@@ -36,19 +34,19 @@
         config:
           - name: foo
             mode: vpls
-            initiate-l2-transform:
-              vlan-stack:
+            initiate_l2_transform:
+              vlan_stack:
                 - tag: 1
-                  push-tpid: tpid-8100
-                  push-vid: 202
+                  push_tpid: tpid-8100
+                  push_vid: 202
         state: merged
       connection: netconf
     - name: Configure fps
       ciena.saos10.saos10_fps:
         config:
           - name: foo
-            fd-name: foo
-            logical-port: 1
+            fd_name: foo
+            logical_port: 1
         state: merged
       connection: netconf
     ##### DELETIONS
@@ -58,12 +56,12 @@
           - name: foo
         state: deleted
       connection: netconf
-    - name: delete fds
+    - name: Delete fds
       ciena.saos10.saos10_fds:
         config:
           - name: foo
         state: deleted
-    - name: delete Classifier
+    - name: Delete Classifier
       ciena.saos10.saos10_classifiers:
         config:
           - name: foo-100

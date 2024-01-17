@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -25,28 +25,181 @@
 """
 The arg spec for the saos10_fps module
 """
+from __future__ import absolute_import, division, print_function
+
+
+__metaclass__ = type
 
 
 class FpsArgs(object):  # pylint: disable=R0903
-    """The arg spec for the saos10_fps module
-    """
+    """The arg spec for the saos10_fps module"""
 
     def __init__(self, **kwargs):
         pass
 
     argument_spec = {
         "config": {
+            "type": "list",
             "elements": "dict",
             "options": {
-                "fd-name": {"type": "str"},
-                "logical-port": {"type": "str"},
-                "name": {"required": True, "type": "str"},
+                "description": {"type": "str"},
+                "admin_state": {"type": "str", "choices": ["enabled", "disabled"]},
+                "classifier_list": {"type": "str"},
+                "classifier_list_precedence": {"type": "int"},
+                "color": {"type": "str", "choices": ["green", "yellow", "red"]},
+                "cos": {"type": "int"},
+                "cos_to_frame_map": {"type": "str"},
+                "egress_l2_transform": {
+                    "type": "list",
+                    "elements": "dict",
+                    "options": {
+                        "egress_name": {"type": "str"},
+                        "untagged_dei": {"type": "str", "choices": ["enabled", "disabled"]},
+                        "untagged_pcp": {
+                            "type": "str",
+                            "choices": ["pcp-0", "pcp-1", "pcp-2", "pcp-3", "pcp-4", "pcp-5", "pcp-6", "pcp-7", "map"],
+                        },
+                        "untagged_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
+                        "untagged_vid": {"type": "int"},
+                        "vlan_stack": {
+                            "type": "list",
+                            "elements": "dict",
+                            "options": {
+                                "no_op": {"type": "str"},
+                                "pop_type": {"type": "str"},
+                                "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
+                                "push_pcp": {
+                                    "type": "str",
+                                    "choices": [
+                                        "pcp-0",
+                                        "pcp-1",
+                                        "pcp-2",
+                                        "pcp-3",
+                                        "pcp-4",
+                                        "pcp-5",
+                                        "pcp-6",
+                                        "pcp-7",
+                                        "map",
+                                    ],
+                                },
+                                "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
+                                "push_vid": {"type": "int", "required": True},
+                                "stamp_dei": {"type": "str", "choices": ["no-op", "enabled", "disabled"]},
+                                "stamp_pcp": {
+                                    "type": "str",
+                                    "choices": [
+                                        "pcp-0",
+                                        "pcp-1",
+                                        "pcp-2",
+                                        "pcp-3",
+                                        "pcp-4",
+                                        "pcp-5",
+                                        "pcp-6",
+                                        "pcp-7",
+                                        "no-op",
+                                        "map",
+                                    ],
+                                },
+                                "stamp_tpid": {
+                                    "type": "str",
+                                    "choices": ["no-op", "tpid-8100", "tpid-88a8", "tpid-9100"],
+                                },
+                                "stamp_vid_value": {"type": "int"},
+                                "tag": {"type": "int"},
+                            },
+                        },
+                    },
+                },
+                "egress_l3_mapped": {"type": "str"},
+                "egress_remark_dscp_value": {"type": "int"},
+                "fd_name": {"type": "str"},
+                "flood_containment_profile": {"type": "str"},
+                "frame_to_cos_map": {"type": "str"},
+                "ingress_l2_transform": {
+                    "type": "list",
+                    "elements": "dict",
+                    "options": {
+                        "ingress_name": {"type": "str"},
+                        "untagged_dei": {"type": "str", "choices": ["enabled", "disabled"]},
+                        "untagged_pcp": {
+                            "type": "str",
+                            "choices": ["pcp-0", "pcp-1", "pcp-2", "pcp-3", "pcp-4", "pcp-5", "pcp-6", "pcp-7", "map"],
+                        },
+                        "untagged_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
+                        "untagged_vid": {"type": "int"},
+                        "vlan_stack": {
+                            "type": "list",
+                            "elements": "dict",
+                            "options": {
+                                "no_op": {"type": "str"},
+                                "pop_type": {"type": "str"},
+                                "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
+                                "push_pcp": {
+                                    "type": "str",
+                                    "choices": [
+                                        "pcp-0",
+                                        "pcp-1",
+                                        "pcp-2",
+                                        "pcp-3",
+                                        "pcp-4",
+                                        "pcp-5",
+                                        "pcp-6",
+                                        "pcp-7",
+                                        "map",
+                                    ],
+                                },
+                                "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
+                                "push_vid": {"type": "int", "required": True},
+                                "stamp_dei": {"type": "str", "choices": ["no-op", "enabled", "disabled"]},
+                                "stamp_pcp": {
+                                    "type": "str",
+                                    "choices": [
+                                        "pcp-0",
+                                        "pcp-1",
+                                        "pcp-2",
+                                        "pcp-3",
+                                        "pcp-4",
+                                        "pcp-5",
+                                        "pcp-6",
+                                        "pcp-7",
+                                        "no-op",
+                                        "map",
+                                    ],
+                                },
+                                "stamp_tpid": {
+                                    "type": "str",
+                                    "choices": ["no-op", "tpid-8100", "tpid-88a8", "tpid-9100"],
+                                },
+                                "stamp_vid_value": {"type": "int"},
+                                "tag": {"type": "int"},
+                            },
+                        },
+                    },
+                },
+                "ingress_l3_mapped": {"type": "str"},
+                "ingress_remark_dscp_value": {"type": "int"},
+                "logical_port": {"type": "str"},
+                "mac_learning": {"type": "str", "choices": ["enabled", "disabled"]},
+                "map_policy": {"type": "str", "choices": ["outer-tag", "inner-tag", "mpls-tc", "dscp", "dscp-mpls-tc"]},
+                "meter_profile": {"type": "str"},
+                "mpls_pw": {"type": "str"},
+                "mtu_size": {"type": "int"},
+                "name": {"type": "str"},
+                "normalized_vid": {
+                    "type": "list",
+                    "elements": "dict",
+                    "options": {"tag": {"type": "int"}, "vlan_id": {"type": "int"}},
+                },
+                "other": {"type": "str"},
+                "pfg_group": {
+                    "type": "str",
+                    "choices": ["leaf", "root", "dynamic", "mesh", "spoke", "group-A", "group-B", "group-C", "group-D"],
+                },
+                "queue_group_instance": {"type": "str"},
+                "stats_collection": {"type": "str", "choices": ["on", "off"]},
+                "svlan": {"type": "int"},
+                "uni": {"type": "str"},
             },
-            "type": "list",
         },
-        "state": {
-            "choices": ["merged", "overridden", "deleted"],
-            "default": "merged",
-            "type": "str",
-        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},
     }  # pylint: disable=C0301

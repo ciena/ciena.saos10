@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -25,29 +25,44 @@
 """
 The arg spec for the saos10_fds module
 """
+from __future__ import absolute_import, division, print_function
+
+
+__metaclass__ = type
 
 
 class FdsArgs(object):  # pylint: disable=R0903
-    """The arg spec for the saos10_fds module
-    """
+    """The arg spec for the saos10_fds module"""
 
     def __init__(self, **kwargs):
         pass
 
     argument_spec = {
         "config": {
+            "type": "list",
             "elements": "dict",
             "options": {
-                "initiate-l2-transform": {
+                "description": {"type": "str"},
+                "color": {"type": "str", "choices": ["green", "yellow", "red"]},
+                "cos": {"type": "int"},
+                "cos_queue_map": {"type": "str"},
+                "flood_containment_profile": {"type": "str"},
+                "initiate_cos_to_frame_map": {"type": "str"},
+                "initiate_frame_to_cos_map": {"type": "str"},
+                "initiate_frame_to_cos_map_policy": {
+                    "type": "str",
+                    "choices": ["outer-tag", "inner-tag", "mpls-tc", "dscp"],
+                },
+                "initiate_l2_transform": {
+                    "type": "dict",
                     "options": {
-                        "vlan-stack": {
+                        "vlan_stack": {
+                            "type": "list",
                             "elements": "dict",
                             "options": {
-                                "push-dei": {
-                                    "choices": ["enabled", "disabled"],
+                                "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
+                                "push_pcp": {
                                     "type": "str",
-                                },
-                                "push-pcp": {
                                     "choices": [
                                         "pcp-0",
                                         "pcp-1",
@@ -59,42 +74,25 @@ class FdsArgs(object):  # pylint: disable=R0903
                                         "pcp-7",
                                         "map",
                                     ],
-                                    "type": "str",
                                 },
-                                "push-tpid": {
-                                    "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"],
-                                    "default": "tpid-8100",
-                                    "type": "str",
-                                },
-                                "push-vid": {"required": True, "type": "str"},
+                                "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
+                                "push_vid": {"type": "int", "required": True},
                                 "tag": {"type": "int"},
                             },
-                            "type": "list",
                         }
                     },
-                    "type": "dict",
                 },
+                "l2cp_profile": {"type": "str"},
+                "mac_learning": {"type": "str", "choices": ["enabled", "disabled"]},
                 "mode": {
-                    "choices": [
-                        "vpls",
-                        "vpws",
-                        "fxc",
-                        "tdm-vpls",
-                        "tdm-vpws",
-                        "evpn-vpws",
-                        "evpn-vpls",
-                    ],
                     "type": "str",
+                    "choices": ["vlan", "vpls", "vpws", "fxc", "tdm-vpls", "tdm-vpws", "evpn-vpws", "evpn-vpls"],
                 },
-                "name": {"required": True, "type": "str"},
-                "pfg-profile": {"type": "str"},
-                "vlan-id": {"type": "int"},
+                "name": {"type": "str"},
+                "pfg_profile": {"type": "str"},
+                "queue_group_indirection": {"type": "str"},
+                "vlan_id": {"type": "int"},
             },
-            "type": "list",
         },
-        "state": {
-            "choices": ["merged", "overridden", "deleted"],
-            "default": "merged",
-            "type": "str",
-        },
+        "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},
     }  # pylint: disable=C0301

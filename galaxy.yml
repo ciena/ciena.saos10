@@ -1,10 +1,10 @@
 ---
 namespace: ciena
 name: saos10
-version: 1.6.5
+version: 1.7.0
 authors:
   - Jeff Groom (github.com/jgroom33)
-description: Ansible collection for Ciena's Waveserver 5
+description: Ansible collection for Ciena's SAOS 10
 dependencies:
   ansible.netcommon: ">=2.5.1"
 license_file: LICENSE

@@ -21,8 +21,9 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-cliconf: saos10
-author: jgroom@ciena.com
+name: saos10
+author:
+  - Jeff Groom (@jgroom33)
 short_description: Use saos10 cliconf to run command on Ciena saos10 platform
 description:
   - This saos10 plugin provides low level abstraction apis for
@@ -63,7 +64,7 @@ class Cliconf(CliconfBase):
 
         return device_info
 
-    def get_config(self, source="running", format="text", flags=None):
+    def get_config(self, source="running", flags=None, format="text"):
         cmd = "show running"
         out = self.send_command(cmd)
         return out
@@ -82,8 +83,8 @@ class Cliconf(CliconfBase):
         prompt=None,
         answer=None,
         sendonly=False,
-        output=None,
         newline=True,
+        output=None,
         check_all=False,
     ):
         if not command:
@@ -111,9 +112,7 @@ class Cliconf(CliconfBase):
 
             output = cmd.pop("output", None)
             if output:
-                raise ValueError(
-                    "'output' value %s is not supported for run_commands" % output
-                )
+                raise ValueError("'output' value %s is not supported for run_commands" % output)
 
             try:
                 out = self.send_command(**cmd)

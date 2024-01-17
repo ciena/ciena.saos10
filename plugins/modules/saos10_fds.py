@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -30,101 +30,163 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
 
 DOCUMENTATION = """
 ---
 module: saos10_fds
-version_added: 1.5.0
-short_description: Manage forwarding domains on Ciena SAOS 10 devices
-description: This module provides declarative management of a forwarding domain
-author: Ciena
-requirements:
-  - ncclient (>=v0.6.4)
-  - xmltodict (>=0.12.0)
+short_description: Manage Forwarding Domains on Ciena SAOS 10 devices
+description: This module provides declarative management of a forwarding domain on Ciena SAOS 10 devices.
+author: Jeff Groom (@jgroom33)
 options:
   config:
-    description: A dictionary of forwarding domain options
+    description: The list of configured forwarding domains on the device.
     type: list
     elements: dict
     suboptions:
-      name:
-        description: A unique name for the forwarding domain
+      description:
+        description: This is string used to describe the Forwarding Domain.
         type: str
-        required: True
-      mode:
-        description: Forwarding mode of the forwarding-domain 
+        required: false
+      color:
+        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the fixed color value to use when when
+          the policy is fixed.
         type: str
+        required: false
         choices:
-          - vpls
-          - vpws
-          - fxc
-          - tdm-vpls
-          - tdm-vpws
-          - evpn-vpws
-          - evpn-vpls
-      vlan-id:
-        description: The id of VLAN associated with forwarding-domain.
+        - green
+        - yellow
+        - red
+      cos:
+        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the fixed cos value to use when when
+          the policy is fixed.
         type: int
-      pfg-profile:
-        description: Reference to a Private Forwarding Group Profile.
+        required: false
+      cos_queue_map:
+        description: Reference to queue-map for hierarchical shaping/scheduling.
         type: str
-      initiate-l2-transform:
-        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the l2-transform to be applied to the frame. e.g. an L3-frame injected via this forwarding domain to L2 datapath.
+        required: false
+      flood_containment_profile:
+        description: Reference to a Flood Containment Profile definition.
+        type: str
+        required: false
+      initiate_cos_to_frame_map:
+        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the cos-to-frame map to use for a cos-to-frame
+          map policy of 'mapped' from the initiate-l2-transform config.
+        type: str
+        required: false
+      initiate_frame_to_cos_map:
+        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the frame-to-cos map to use for an
+          initiate frame-to-cos map policy of 'mapped'.
+        type: str
+        required: false
+      initiate_frame_to_cos_map_policy:
+        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the frame-to-cos-map sub-policy to
+          use when when the policy is mapped.
+        type: str
+        required: false
+        choices:
+        - outer-tag
+        - inner-tag
+        - mpls-tc
+        - dscp
+      initiate_l2_transform:
+        description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the l2-transform to be applied to the
+          frame. e.g. an L3-frame injected via this forwarding domain to L2 datapath.
         type: dict
         suboptions:
-          vlan-stack:
-            description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the VLAN related l2-transform to be applied to the frame.
+          vlan_stack:
+            description: For an L2-frame that is initiated/injected via this forwarding domain, this specifies the VLAN related l2-transform to
+              be applied to the frame.
             type: list
             elements: dict
             suboptions:
-              tag:
-                description: Dependent on the transform operation, the tag numbers are push => '1' represents push outermost, '2' represents push outermost (always push to outer)
-                type: int
-              push-tpid:
-                description: Represents the TPID value of the vlan tag for the tag being pushed
-                type: str
-                default: tpid-8100
-                choices:
-                  - tpid-8100
-                  - tpid-88a8
-                  - tpid-9100
-              push-pcp:
-                description: Represents the PCP value of the vlan tag for the tag being pushed. When the PCP value is mapped using a cos-to-frame-map, 'map' is specified.
-                type: str
-                choices:
-                  - pcp-0
-                  - pcp-1
-                  - pcp-2
-                  - pcp-3
-                  - pcp-4
-                  - pcp-5
-                  - pcp-6
-                  - pcp-7
-                  - map
-              push-dei:
+              push_dei:
                 description: Represents the DEI value of the vlan tag for the tag being pushed.
                 type: str
+                required: false
                 choices:
-                  - enabled
-                  - disabled
-              push-vid:
-                description: Represents the VID value of the vlan tag for the tag being pushed
+                - enabled
+                - disabled
+              push_pcp:
+                description: Represents the PCP value of the vlan tag for the tag being pushed. When the PCP value is mapped using a cos-to-frame-map,
+                  'map' is specified.
                 type: str
-                required: True
+                required: false
+                choices:
+                - pcp-0
+                - pcp-1
+                - pcp-2
+                - pcp-3
+                - pcp-4
+                - pcp-5
+                - pcp-6
+                - pcp-7
+                - map
+              push_tpid:
+                description: Represents the TPID value of the vlan tag for the tag being pushed
+                type: str
+                required: false
+                choices:
+                - tpid-8100
+                - tpid-88a8
+                - tpid-9100
+              push_vid:
+                description: Represents the VID value of the vlan tag for the tag being pushed
+                type: int
+                required: true
+              tag:
+                description: Dependent on the transform operation, the tag numbers are push => '1' represents push outermost, '2' represents push
+                  outermost (always push to outer)
+                type: int
+                required: false
+      l2cp_profile:
+        description: Reference to a Layer 2 Control Protocol Tunneling Profile.
+        type: str
+        required: false
+      mac_learning:
+        description: Enable/disable MAC learning for this forwarding-domain.
+        type: str
+        required: false
+        choices:
+        - enabled
+        - disabled
+      mode:
+        description: Forwarding mode of the forwarding-domain
+        type: str
+        required: false
+        choices:
+        - vlan
+        - vpls
+        - vpws
+        - fxc
+        - tdm-vpls
+        - tdm-vpws
+        - evpn-vpws
+        - evpn-vpls
+      name:
+        description: An administratively assigned string, which may be used to identify the forwarding domain.
+        type: str
+        required: false
+      pfg_profile:
+        description: Reference to a Private Forwarding Group Profile.
+        type: str
+        required: false
+      queue_group_indirection:
+        description: Reference to queue-group-indirection for hierarchical shaping/scheduling.
+        type: str
+        required: false
+      vlan_id:
+        description: The id of VLAN associated with forwarding-domain.
+        type: int
+        required: false
   state:
+    description: The state of the configuration after module completion.
+    type: str
     choices:
     - merged
-    - overridden
     - deleted
     default: merged
-    description:
-    - The state the configuration should be left in
-    type: str
+
 """
 EXAMPLES = """
 # Using merged
@@ -141,24 +203,6 @@ EXAMPLES = """
               push-pcp: map
               push-vid: 127
     state: merged
-
-
-# Using overridden
-
-- name: Configure forwarding domain
-  ciena.saos10.saos10_fds:
-    config:
-      - name: remote-fd
-        mode: vpls
-        initiate-l2-transform:
-          vlan-stack:
-            - tag: 1
-              push-tpid: tpid-8100
-              push-pcp: map
-              push-vid: 127
-    state: overridden
-
-
 # Using deleted
 
 - name: Delete forwading domain
@@ -166,19 +210,20 @@ EXAMPLES = """
     config:
       - name: remote-fd
     state: deleted
-
-
 """
+
 RETURN = """
 before:
   description: The configuration prior to the model invocation.
   returned: always
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
 after:
   description: The resulting configuration model invocation.
   returned: when changed
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
@@ -188,7 +233,6 @@ xml:
   type: list
   sample: ['<system xmlns="http://openconfig.net/yang/system"><config><hostname>foo</hostname></config></system>']
 """
-
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.fds.fds import (
@@ -205,9 +249,7 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(
-        argument_spec=FdsArgs.argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=FdsArgs.argument_spec, supports_check_mode=True)
 
     result = Fds(module).execute_module()
     module.exit_json(**result)

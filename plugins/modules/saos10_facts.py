@@ -21,27 +21,44 @@ description:
   or disable collection of additional facts.
 version_added: 1.0.0
 author:
-- Jeff Groom
-notes:
-- Tested against SAOS 10-4.
+  - Jeff Groom (@jgroom33)
 options:
   gather_subset:
     description:
     - When supplied, this argument will restrict the facts collected to a given subset.  Possible
-      values for this argument include all, default, config, and neighbors. Can specify
-      a list of values to include a larger subset. Values can also be used with an
-      initial C(M(!)) to specify that a specific subset should not be collected.
+      values for this argument include C(all), C(default), C(config), C(min). Can specify
+      a list of values to include a larger subset.
     required: false
-    default: '!config'
+    default:
+    - '!config'
+    type: list
+    elements: str
+  config_format:
+    description:
+    - The I(config_format) argument specifies the format of the configuration when
+      serializing output from the device. This argument is applicable only when C(config)
+      value is present in I(gather_subset). The I(config_format) should be supported
+      by the waveserver version running on device. This value is not applicable while fetching
+      old style facts that is when C(ofacts) value is present in value if I(gather_subset)
+      value. This option is valid only for C(gather_subset) values.
+    type: str
+    required: false
+    default: xml
+    choices:
+    - xml
+    - text
+    - json
   gather_network_resources:
     description:
-      - When supplied, this argument will restrict the facts collected
-        to a given subset. Possible values for this argument include
-        all and the resources like interfaces, vlans etc.
-        Can specify a list of values to include a larger subset. Values
-        can also be used with an initial C(M(!)) to specify that a
-        specific subset should not be collected.
+    - When supplied, this argument will restrict the facts collected to a given subset.
+      Possible values for this argument include all and the resources like interfaces,
+      vlans etc. Can specify a list of values to include a larger subset. Values can
+      also be used with an initial C(!) to specify that a specific subset should
+      not be collected. Valid subsets are 'all', 'interfaces'
     required: false
+    type: list
+    elements: str
+    version_added: "0.0.1"
 """
 
 EXAMPLES = """
@@ -53,15 +70,10 @@ EXAMPLES = """
 # Collect only the classifiers facts
 - saos10_facts:
     gather_subset:
-      - !all
-      - !min
+      - "!all"
+      - "!min"
     gather_network_resources:
       - classifiers
-
-# Do not collect classifiers facts
-- saos10_facts:
-    gather_network_resources:
-      - "!classifiers"
 
 # Collect classifiers and minimal default facts
 - saos10_facts:
@@ -124,15 +136,11 @@ def main():
     :returns: ansible_facts
     """
 
-    module = AnsibleModule(
-        argument_spec=FactsArgs.argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=FactsArgs.argument_spec, supports_check_mode=True)
 
     warnings = []
     if module.params["gather_subset"] == "!config":
-        warnings.append(
-            "default value for `gather_subset` will be changed to `min` from `!config` v2.11 onwards"
-        )
+        warnings.append("default value for `gather_subset` will be changed to `min` from `!config` v2.11 onwards")
 
     result = Facts(module).get_facts()
 

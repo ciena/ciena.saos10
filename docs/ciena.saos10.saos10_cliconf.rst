@@ -35,7 +35,7 @@ Status
 Authors
 ~~~~~~~
 
-- jgroom@ciena.com
+- Jeff Groom (@jgroom33)
 
 
 .. hint::

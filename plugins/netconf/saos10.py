@@ -1,10 +1,29 @@
+#
+# (c) 2017 Red Hat Inc.
+#
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+#
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 DOCUMENTATION = """
-author: Jeff Groom
-netconf: saos10
+author:
+  - Jeff Groom (@jgroom33)
+name: saos10
 short_description: Use saos10 netconf plugin to run netconf commands on Ciena saos10
   platform
 description:
@@ -14,22 +33,25 @@ version_added: 1.0.0
 options:
   ncclient_device_handler:
     type: str
-    default: default
+    default: alu
     description:
     - Specifies the ncclient device handler name for Ciena saos10 network os. To
       identify the ncclient device handler name refer ncclient library documentation.
 """
 
 import json
-import re
 
-from ansible.module_utils._text import to_text, to_native
-from ansible.errors import AnsibleConnectionFailure
-from ansible.plugins.netconf import NetconfBase, ensure_ncclient
+from ansible_collections.ansible.netcommon.plugins.plugin_utils.netconf_base import (
+    NetconfBase,
+    ensure_ncclient,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.netconf import (
+    remove_namespaces,
+)
 
 try:
-    from ncclient import manager
-    from ncclient.transport.errors import SSHUnknownHostError
+    from ncclient.operations import RPCError
+    from ncclient.xml_ import to_ele, to_xml
 
     HAS_NCCLIENT = True
 except (
@@ -40,71 +62,63 @@ except (
 
 
 class Netconf(NetconfBase):
-    def get_text(self, ele, tag):
-        try:
-            return to_text(ele.find(tag).text, errors="surrogate_then_replace").strip()
-        except AttributeError:
-            pass
-
     def get_capabilities(self):
         result = dict()
         result["rpc"] = self.get_base_rpc() + [
-            "commit",
-            "discard_changes",
-            "lock",
-            "unlock",
-            "execute_rpc",
-            "load_configuration",
             "get_configuration",
-            "reboot",
-            "halt",
         ]
         result["network_api"] = "netconf"
         result["device_info"] = self.get_device_info()
         result["server_capabilities"] = list(self.m.server_capabilities)
         result["client_capabilities"] = list(self.m.client_capabilities)
         result["session_id"] = self.m.session_id
-        result["device_operations"] = self.get_device_operations(
-            result["server_capabilities"]
-        )
+        result["device_operations"] = self.get_device_operations(result["server_capabilities"])
         return json.dumps(result)
 
     @ensure_ncclient
     def get_device_info(self):
-        device_info = dict()
+        device_info = {}
         device_info["network_os"] = "saos10"
+        filter = """
+        <filter>
+            <components xmlns="http://openconfig.net/yang/platform"/>
+            <system xmlns="http://openconfig.net/yang/system"><config><hostname/></config></system>
+            <software-state xmlns="http://www.ciena.com/ns/yang/ciena-software-mgmt"/>
+        </filter>
+        """
+        filter = to_ele(filter)
+        response = self.get(filter=filter, remove_ns=True)
+        root = to_ele(response)
+        model = self._extract_xpath(
+            root, "//components/component[1]/component-properties/component-property[name = 'hw-model']/value"
+        )
+        network_os_version = self._extract_xpath(root, "/data/software-state/running-package/package-version")
+        hostname = self._extract_xpath(root, "//system/config/hostname")
+        serial_number = self._extract_xpath(root, "//component[1]/state/serial-no")
+        platform = self._extract_xpath(root, "//components/component[1]/state/name")
+
+        device_info["network_os_platform"] = platform
+        device_info["network_os_serialnum"] = serial_number
+        device_info["network_os_hostname"] = hostname
+        device_info["network_os_version"] = network_os_version
+        device_info["network_os_model"] = model
+
         return device_info
 
-    @staticmethod
-    @ensure_ncclient
-    def guess_network_os(obj):
-        """
-        Guess the remote network os name
-        :param obj: Netconf connection class object
-        :return: Network OS name
-        """
+    def get(self, filter=None, with_defaults=None, remove_ns=False):
+        if isinstance(filter, list):
+            filter = tuple(filter)
         try:
-            m = manager.connect(
-                host=obj._play_context.remote_addr,
-                port=obj._play_context.port or 830,
-                username=obj._play_context.remote_user,
-                password=obj._play_context.password,
-                key_filename=obj.key_filename,
-                hostkey_verify=obj.get_option("host_key_checking"),
-                look_for_keys=obj.get_option("look_for_keys"),
-                allow_agent=obj._play_context.allow_agent,
-                timeout=obj.get_option("persistent_connect_timeout"),
-                # We need to pass in the path to the ssh_config file when guessing
-                # the network_os so that a jumphost is correctly used if defined
-                ssh_config=obj._ssh_config,
-            )
-        except SSHUnknownHostError as exc:
-            raise AnsibleConnectionFailure(to_native(exc))
+            response = self.m.get(filter=filter, with_defaults=with_defaults)
+            if remove_ns:
+                result = remove_namespaces(response)
+            else:
+                result = response.data_xml if hasattr(response, "data_xml") else response.xml
+            return result
+        except RPCError as exc:
+            raise Exception(to_xml(exc.xml))
 
-        guessed_os = None
-        for c in m.server_capabilities:
-            if re.search("saos-10", c):
-                guessed_os = "saos10"
-
-        m.close_session()
-        return guessed_os
+    def _extract_xpath(self, root, xpath_str, default=None):
+        """Extract data using XPath and return text or default."""
+        result = root.xpath(xpath_str)
+        return result[0].text if result else default

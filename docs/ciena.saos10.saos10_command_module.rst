@@ -39,7 +39,8 @@ Parameters
                     <b>commands</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                          / <span style="color: red">required</span>
                     </div>
                 </td>
@@ -55,7 +56,7 @@ Parameters
                     <b>interval</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">integer</span>
                     </div>
                 </td>
                 <td>
@@ -71,7 +72,7 @@ Parameters
                     <b>match</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
@@ -90,7 +91,7 @@ Parameters
                     <b>retries</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">integer</span>
                     </div>
                 </td>
                 <td>
@@ -106,7 +107,8 @@ Parameters
                     <b>wait_for</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">-</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
@@ -244,4 +246,4 @@ Status
 Authors
 ~~~~~~~
 
-- Jeff Groom
+- Jeff Groom (@jgroom33)

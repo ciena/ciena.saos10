@@ -1,9 +1,9 @@
-.. _ciena.saos10.xmldiff_module:
+.. _ciena.saos10.xml_diff_module:
 
 
-********************
-ciena.saos10.xmldiff
-********************
+*********************
+ciena.saos10.xml_diff
+*********************
 
 **return diff for a pair of xml inputs**
 
@@ -76,55 +76,50 @@ Examples
 
 .. code-block:: yaml
 
-    # Consider the following
-    # OLD XML string:
-    # <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-    #   <agg-global xmlns="urn:ietf:params:xml:ns:yang:ciena-ieee-lag">
-    #     <global-admin-state>enabled</global-admin-state>
-    #     <marker-timeout xmlns="urn:ietf:params:xml:ns:yang:ciena-ext-lag">50</marker-timeout>
-    #   </agg-global>
-    #   <alarms xmlns="urn:ietf:params:xml:ns:yang:ietf-alarms">
-    #     <control>
-    #       <max-alarm-status-changes>16</max-alarm-status-changes>
-    #       <notify-status-changes>false</notify-status-changes>
-    #     </control>
-    #   </alarms>
-    #   <system xmlns="http://openconfig.net/yang/system">
-    #     <config>
-    #       <hostname>5162-1</hostname>
-    #       <contact xmlns="http://www.ciena.com/ns/yang/ciena-system">Customer Support, Ciena</contact>
-    #       <description xmlns="http://www.ciena.com/ns/yang/ciena-system">5162</description>
-    #       <location xmlns="http://www.ciena.com/ns/yang/ciena-system">Not Specified</location>
-    #     </config>
-    #   </system>
-    # </config>
-
-    # NEW XML string:
-    # <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-    #   <agg-global xmlns="urn:ietf:params:xml:ns:yang:ciena-ieee-lag">
-    #     <global-admin-state>enabled</global-admin-state>
-    #     <marker-timeout xmlns="urn:ietf:params:xml:ns:yang:ciena-ext-lag">50</marker-timeout>
-    #   </agg-global>
-    #   <alarms xmlns="urn:ietf:params:xml:ns:yang:ietf-alarms">
-    #     <control>
-    #       <max-alarm-status-changes>16</max-alarm-status-changes>
-    #       <notify-status-changes>false</notify-status-changes>
-    #     </control>
-    #   </alarms>
-    #   <system xmlns="http://openconfig.net/yang/system">
-    #     <config>
-    #       <hostname>5162-1</hostname>
-    #       <contact xmlns="http://www.ciena.com/ns/yang/ciena-system">Customer Support, Ciena</contact>
-    #       <description xmlns="http://www.ciena.com/ns/yang/ciena-system">5162</description>
-    #       <location xmlns="http://www.ciena.com/ns/yang/ciena-system">34.8908084,-40.820916</location>
-    #     </config>
-    #   </system>
-    # </config>
-
     - name: Get config differences
       ciena.saos10.saos10_xmldiff:
-        new: {{ new_xml }}
-        old: {{ old_xml }}
+        new: |
+            <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+                <agg-global xmlns="urn:ietf:params:xml:ns:yang:ciena-ieee-lag">
+                    <global-admin-state>enabled</global-admin-state>
+                    <marker-timeout xmlns="urn:ietf:params:xml:ns:yang:ciena-ext-lag">50</marker-timeout>
+                </agg-global>
+                <alarms xmlns="urn:ietf:params:xml:ns:yang:ietf-alarms">
+                    <control>
+                    <max-alarm-status-changes>16</max-alarm-status-changes>
+                    <notify-status-changes>false</notify-status-changes>
+                    </control>
+                </alarms>
+                <system xmlns="http://openconfig.net/yang/system">
+                    <config>
+                    <hostname>5162-1</hostname>
+                    <contact xmlns="http://www.ciena.com/ns/yang/ciena-system">Customer Support, Ciena</contact>
+                    <description xmlns="http://www.ciena.com/ns/yang/ciena-system">5162</description>
+                    <location xmlns="http://www.ciena.com/ns/yang/ciena-system">34.8908084,-40.820916</location>
+                    </config>
+                </system>
+            </config>
+        old: |
+            <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+              <agg-global xmlns="urn:ietf:params:xml:ns:yang:ciena-ieee-lag">
+                <global-admin-state>enabled</global-admin-state>
+                <marker-timeout xmlns="urn:ietf:params:xml:ns:yang:ciena-ext-lag">50</marker-timeout>
+              </agg-global>
+              <alarms xmlns="urn:ietf:params:xml:ns:yang:ietf-alarms">
+                <control>
+                  <max-alarm-status-changes>16</max-alarm-status-changes>
+                  <notify-status-changes>false</notify-status-changes>
+                </control>
+              </alarms>
+              <system xmlns="http://openconfig.net/yang/system">
+                <config>
+                  <hostname>5162-1</hostname>
+                  <contact xmlns="http://www.ciena.com/ns/yang/ciena-system">Customer Support, Ciena</contact>
+                  <description xmlns="http://www.ciena.com/ns/yang/ciena-system">5162</description>
+                  <location xmlns="http://www.ciena.com/ns/yang/ciena-system">Not Specified</location>
+                </config>
+              </system>
+            </config>
 
 
 
@@ -153,6 +148,14 @@ Common return values are documented `here <https://docs.ansible.com/ansible/late
                 <td>
                             <div>An XML string of the resulting differences</div>
                     <br/>
+                        <div style="font-size: smaller"><b>Sample:</b></div>
+                        <div style="font-size: smaller; color: blue; word-wrap: break-word; word-break: break-all;">&lt;config xmlns=&quot;urn:ietf:params:xml:ns:netconf:base:1.0&quot;&gt;
+      &lt;system xmlns=&quot;http://openconfig.net/yang/system&quot;&gt;
+        &lt;config&gt;
+          &lt;hostname&gt;5162-1&lt;/hostname&gt;
+        &lt;/config&gt;
+      &lt;/system&gt;
+    &lt;/config&gt;</div>
                 </td>
             </tr>
     </table>

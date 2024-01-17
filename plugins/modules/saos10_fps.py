@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2021 Ciena
+# Copyright 2023 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -30,48 +30,464 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "network",
-}
 
 DOCUMENTATION = """
 ---
 module: saos10_fps
-version_added: 1.5.0
-short_description: Manage flow points on Ciena SAOS 10 devices
-description: This module provides declarative management of a flow point
-author: Ciena
-requirements:
-  - ncclient (>=v0.6.4)
-  - xmltodict (>=0.12.0)
+short_description: Manage Flow Points on Ciena SAOS 10 devices
+description: This module provides declarative management of a flow point on Ciena SAOS 10 devices.
+author: Jeff Groom (@jgroom33)
 options:
   config:
-    description: A dictionary of flow point options
+    description: A list of all mef-fp configuration entries.
     type: list
     elements: dict
     suboptions:
-      name:
-        description: This object indicates the flow point identifier.
+      description:
+        description: A editable string used to describe this entry.
         type: str
-        required: True
-      logical-port:
+        required: false
+      admin_state:
+        description: Enable/disable the admin state.
+        type: str
+        required: false
+        choices:
+        - enabled
+        - disabled
+      classifier_list:
+        description: List of classifier templates referenced by flow-point to define their incoming classification.
+        type: str
+      classifier_list_precedence:
+        description: A precedence value for the flow-point. Lower values take precedence over higher values.
+        type: int
+        required: false
+      color:
+        description: An internal label assigned to frame defining the treatment of a frame as it switches through the device.
+        type: str
+        required: false
+        choices:
+        - green
+        - yellow
+        - red
+      cos:
+        description: An internal label defining the baseline for Class-Of-Service treatment of a frame as it switches through the device.
+        type: int
+        required: false
+      cos_to_frame_map:
+        description: A mapping resolving an internal color and cos to frame pcp+dei, dscp, mpls-tc.
+        type: str
+        required: false
+      egress_l2_transform:
+        description: Egress L2-transform configured on this flow-point.
+        type: list
+        elements: dict
+        suboptions:
+          egress_name:
+            description: Need a key for this list. It cannot be a choice of several objects but objects that will always be specified.
+            type: str
+            required: false
+          untagged_dei:
+            description: This enables/disables drop eligibility indicator to indicate untagged frames eligible to be dropped in the presence of
+              congestion.
+            type: str
+            required: false
+            choices:
+            - enabled
+            - disabled
+          untagged_pcp:
+            description: This configures the chosen priority code point which can be used to prioritize different classes of traffic.
+            type: str
+            required: false
+            choices:
+            - pcp-0
+            - pcp-1
+            - pcp-2
+            - pcp-3
+            - pcp-4
+            - pcp-5
+            - pcp-6
+            - pcp-7
+            - map
+          untagged_tpid:
+            description: The Tag protocol identifier to be added to an untagged frame .
+            type: str
+            required: false
+            choices:
+            - tpid-8100
+            - tpid-88a8
+            - tpid-9100
+          untagged_vid:
+            description: This configures the untagged vlan identifier .
+            type: int
+            required: false
+          vlan_stack:
+            description: This configures VLAN stack on the flow-point.
+            type: list
+            elements: dict
+            suboptions:
+              no_op:
+                description: No Operation chosen for swapping vlan identifier.
+                type: str
+                required: false
+              pop_type:
+                description: This removes the outermost tag of the frame.
+                type: str
+                required: false
+              push_dei:
+                description: This enables/disables pushing drop eligibility indicator to indicate frames eligible to be dropped in the presence
+                  of congestion.
+                type: str
+                required: false
+                choices:
+                - enabled
+                - disabled
+              push_pcp:
+                description: This chooses how a priority code point (PCP) is determined on a vlan tag being pushed onto a frame (pcp-value/map).
+                  The PCP can be used to prioritize different classes of traffic.
+                type: str
+                required: false
+                choices:
+                - pcp-0
+                - pcp-1
+                - pcp-2
+                - pcp-3
+                - pcp-4
+                - pcp-5
+                - pcp-6
+                - pcp-7
+                - map
+              push_tpid:
+                description: This pushes the chosen tag-protocol-identifier in the frame
+                type: str
+                required: false
+                choices:
+                - tpid-8100
+                - tpid-88a8
+                - tpid-9100
+              push_vid:
+                description: This pushes configured VLAN id to the frame.
+                type: int
+                required: true
+              stamp_dei:
+                description: Enables/Disables swapping the Drop eligible indicator in frame .
+                type: str
+                required: false
+                choices:
+                - no-op
+                - enabled
+                - disabled
+              stamp_pcp:
+                description: This swaps the existing Priority code point in frame with the chosen one .
+                type: str
+                required: false
+                choices:
+                - pcp-0
+                - pcp-1
+                - pcp-2
+                - pcp-3
+                - pcp-4
+                - pcp-5
+                - pcp-6
+                - pcp-7
+                - no-op
+                - map
+              stamp_tpid:
+                description: This swaps the existing Tag protocol identifier in frame with the chosen one .
+                type: str
+                required: false
+                choices:
+                - no-op
+                - tpid-8100
+                - tpid-88a8
+                - tpid-9100
+              stamp_vid_value:
+                description: The vlan identifier that is used for swapping.
+                type: int
+                required: false
+              tag:
+                description: Dependent on the xform operation, the tag numbers are stamp => '1' represents outermost tag, '2' next outermost (next
+                  inner) pop => '1' represents pop outermost, '2' represents pop outermost, (always pop from outer) push => '1' represents push
+                  outermost, '2' represents push outermost (always push to outer)
+                type: int
+                required: false
+      egress_l3_mapped:
+        description: For an egress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.
+        type: str
+        required: false
+      egress_remark_dscp_value:
+        description: Remark the egress L2-Switched packet with the DSCP value.
+        type: int
+        required: false
+      fd_name:
+        description: The forwarding domain that the flow-point is attached to.
+        type: str
+        required: false
+      flood_containment_profile:
+        description: Reference to a Flood Containment Profile definition.
+        type: str
+        required: false
+      frame_to_cos_map:
+        description: A mapping resolving an incoming frame to internal Color and Cos.
+        type: str
+        required: false
+      ingress_l2_transform:
+        description: Ingress L2-transform configured on this flow-point.
+        type: list
+        elements: dict
+        suboptions:
+          ingress_name:
+            description: Need a key for this list. It cannot be a choice of several objects but objects that will always be specified.
+            type: str
+            required: false
+          untagged_dei:
+            description: This enables/disables drop eligibility indicator to indicate untagged frames eligible to be dropped in the presence of
+              congestion.
+            type: str
+            required: false
+            choices:
+            - enabled
+            - disabled
+          untagged_pcp:
+            description: This configures the chosen priority code point which can be used to prioritize different classes of traffic.
+            type: str
+            required: false
+            choices:
+            - pcp-0
+            - pcp-1
+            - pcp-2
+            - pcp-3
+            - pcp-4
+            - pcp-5
+            - pcp-6
+            - pcp-7
+            - map
+          untagged_tpid:
+            description: The Tag protocol identifier to be added to an untagged frame .
+            type: str
+            required: false
+            choices:
+            - tpid-8100
+            - tpid-88a8
+            - tpid-9100
+          untagged_vid:
+            description: This configures the untagged vlan identifier .
+            type: int
+            required: false
+          vlan_stack:
+            description: This configures VLAN stack on the flow-point.
+            type: list
+            elements: dict
+            suboptions:
+              no_op:
+                description: No Operation chosen for swapping vlan identifier.
+                type: str
+                required: false
+              pop_type:
+                description: This removes the outermost tag of the frame.
+                type: str
+                required: false
+              push_dei:
+                description: This enables/disables pushing drop eligibility indicator to indicate frames eligible to be dropped in the presence
+                  of congestion.
+                type: str
+                required: false
+                choices:
+                - enabled
+                - disabled
+              push_pcp:
+                description: This chooses how a priority code point (PCP) is determined on a vlan tag being pushed onto a frame (pcp-value/map).
+                  The PCP can be used to prioritize different classes of traffic.
+                type: str
+                required: false
+                choices:
+                - pcp-0
+                - pcp-1
+                - pcp-2
+                - pcp-3
+                - pcp-4
+                - pcp-5
+                - pcp-6
+                - pcp-7
+                - map
+              push_tpid:
+                description: This pushes the chosen tag-protocol-identifier in the frame
+                type: str
+                required: false
+                choices:
+                - tpid-8100
+                - tpid-88a8
+                - tpid-9100
+              push_vid:
+                description: This pushes configured VLAN id to the frame.
+                type: int
+                required: true
+              stamp_dei:
+                description: Enables/Disables swapping the Drop eligible indicator in frame .
+                type: str
+                required: false
+                choices:
+                - no-op
+                - enabled
+                - disabled
+              stamp_pcp:
+                description: This swaps the existing Priority code point in frame with the chosen one .
+                type: str
+                required: false
+                choices:
+                - pcp-0
+                - pcp-1
+                - pcp-2
+                - pcp-3
+                - pcp-4
+                - pcp-5
+                - pcp-6
+                - pcp-7
+                - no-op
+                - map
+              stamp_tpid:
+                description: This swaps the existing Tag protocol identifier in frame with the chosen one .
+                type: str
+                required: false
+                choices:
+                - no-op
+                - tpid-8100
+                - tpid-88a8
+                - tpid-9100
+              stamp_vid_value:
+                description: The vlan identifier that is used for swapping.
+                type: int
+                required: false
+              tag:
+                description: Dependent on the xform operation, the tag numbers are stamp => '1' represents outermost tag, '2' next outermost (next
+                  inner) pop => '1' represents pop outermost, '2' represents pop outermost, (always pop from outer) push => '1' represents push
+                  outermost, '2' represents push outermost (always push to outer)
+                type: int
+                required: false
+      ingress_l3_mapped:
+        description: For an ingress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.
+        type: str
+        required: false
+      ingress_remark_dscp_value:
+        description: Remark the ingress L2-Switched packet with the DSCP value.
+        type: int
+        required: false
+      logical_port:
         description: The logical-port associated with the flow-point.
         type: str
-      fd-name:
-        description: The name of the forwarding domain.
+        required: false
+      mac_learning:
+        description: Enable/disable the MAC learning of flow-point.
         type: str
-
+        required: false
+        choices:
+        - enabled
+        - disabled
+      map_policy:
+        description: The fields of frame to map to internal cos and color.
+        type: str
+        required: false
+        choices:
+        - outer-tag
+        - inner-tag
+        - mpls-tc
+        - dscp
+        - dscp-mpls-tc
+      meter_profile:
+        description: A reference to a Meter Profile.
+        type: str
+        required: false
+      mpls_pw:
+        description: The type of flow-point is MPLS pseudowire.
+        type: str
+        required: false
+      mtu_size:
+        description: This object indicates the configured EVC maximum service frame format size. It must be less than or equal to the max-mtu-size.
+          Vendors may choose to go beyond this limit.
+        type: int
+        required: false
+      name:
+        description: This object indicates the flow point identifier. The identifier is a text string that is used to identify a flow point. Unique
+          string values are chosen to uniquely identify the flow point. Octet values of 0x00 through 0x1f are illegal. MEF 26.1 restricts the
+          maximum size identifiers to 45 octets.
+        type: str
+        required: false
+      normalized_vid:
+        description: Used to represent normalized-vid values for EVPN FXC, e.g. MPLS label + vid lookup. The tag number represents the position
+          of the normalized-vid. tag '1' represents outer most tag, tag '2' next outer most, etc. Note that the normalized-vid is used in conjunction
+          with an ingress-l2-transform of the same flow-point. That is, an ingress-l2-xform operation of push/stamp is generally used to ensure
+          that the frame contains the normalized-vid in flow-point to EVPN service-tunnel direction. In the case of the ingress-l2-transform stamp
+          operation; - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid tag 1 (outer). - ingress-l2-transform stamp tag 2 (next
+          outer) matches normalized-vid tag 2 (next outer (aka inner)). In the case of the ingress-l2-transform push operation; - ingress-l2-transform
+          push tag 1 (outer most) matches normalized-vid tag 1 (outer), when 1 tag is being pushed via the ingress-l2-transform. - ingress-l2-transform
+          push tag 2 (next outer most) matches normalized-vid tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform. - ingress-l2-transform
+          push tag 1 (outer most) matches normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform.
+        type: list
+        elements: dict
+        suboptions:
+          tag:
+            description: The tag number represents the position of the normalized-vid. '1' represents outer most tag, '2' next outer most, etc.
+              Note that the normalized-vid is used in conjunction with an ingress-l2-transform of the same flow-point. That is, an ingress-l2-xform
+              operation of push/stamp is generally used to ensure that the frame contains the normalized-vid in flow-point to EVPN service-tunnel
+              direction. In the case of the ingress-l2-transform stamp operation; - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid
+              tag 1 (outer). - ingress-l2-transform stamp tag 2 (next outer) matches normalized-vid tag 2 (next outer (aka inner)). In the case
+              of the ingress-l2-transform push operation; - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag 1 (outer),
+              when 1 tag is being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid
+              tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 1 (outer most) matches
+              normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform.
+            type: int
+            required: false
+          vlan_id:
+            description: No description available
+            type: int
+            required: false
+      other:
+        description: A flow-point with no specific type
+        type: str
+        required: false
+      pfg_group:
+        description: The Private-Forwarding-Group that the flow-point belongs to for the scope of a Private-Forwarding-Group-Profile. Can be leaf/root
+          for a PFG-profile with PFG-type of leaf-and-root or spokemesh-and-leafroot. Can be mesh/spoke for a PFG-profile with PFG-type of spoke-and-mesh
+          or spokemesh-and-leafroot. Can be groupA/B/C/D for a PFG-profile with PFG-type of pfg-groups. Can be leaf/root/dynamic for a PFG-profile
+          with PFG-type dynamic-leaf-and-root
+        type: str
+        required: false
+        choices:
+        - leaf
+        - root
+        - dynamic
+        - mesh
+        - spoke
+        - group-A
+        - group-B
+        - group-C
+        - group-D
+      queue_group_instance:
+        description: A reference to a Queue Group Instance.
+        type: str
+        required: false
+      stats_collection:
+        description: Determines whether stats collection will be turned on or not for a flow-point
+        type: str
+        required: false
+        choices:
+        - 'on'
+        - 'off'
+      svlan:
+        description: A flow-point of type q-in-q, svlan is outer vlan tag.
+        type: int
+        required: false
+      uni:
+        description: The type of flow-point is uni-port.
+        type: str
+        required: false
   state:
+    description: The state of the configuration after module completion.
+    type: str
     choices:
     - merged
-    - overridden
     - deleted
     default: merged
-    description:
-    - The state the configuration should be left in
-    type: str
+
 """
 EXAMPLES = """
 # Using merged
@@ -83,19 +499,6 @@ EXAMPLES = """
         fd-name: foo
         logical-port: 1
     state: merged
-
-
-# Using overridden
-
-- name: Configure flow point
-  ciena.saos10.saos10_fps:
-    config:
-      - name: fp1
-        fd-name: foo
-        logical-port: 1
-    state: overridden
-
-
 # Using deleted
 
 - name: delete flow point
@@ -103,19 +506,20 @@ EXAMPLES = """
     config:
       - name: fp1
     state: deleted
-
-
 """
+
 RETURN = """
 before:
   description: The configuration prior to the model invocation.
   returned: always
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
 after:
   description: The resulting configuration model invocation.
   returned: when changed
+  type: dict
   sample: >
     The configuration returned will always be in the same format
      of the parameters above.
@@ -125,7 +529,6 @@ xml:
   type: list
   sample: ['<system xmlns="http://openconfig.net/yang/system"><config><hostname>foo</hostname></config></system>']
 """
-
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.fps.fps import (
@@ -142,9 +545,7 @@ def main():
 
     :returns: the result form module invocation
     """
-    module = AnsibleModule(
-        argument_spec=FpsArgs.argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=FpsArgs.argument_spec, supports_check_mode=True)
 
     result = Fps(module).execute_module()
     module.exit_json(**result)

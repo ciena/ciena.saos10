@@ -8,7 +8,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 DOCUMENTATION = """
 module: saos10_command
-author: Jeff Groom
+author:
+  - Jeff Groom (@jgroom33)
 short_description: Run commands on remote devices running Ciena SAOS 10
 description:
 - Sends arbitrary commands to a saos node and returns the results read from the device.
@@ -28,6 +29,8 @@ options:
       and I(prompt). Common answers are 'y' or "\\r" (carriage return, must be double
       quotes). See examples.
     required: true
+    type: list
+    elements: str
   wait_for:
     description:
     - List of conditions to evaluate against the output of the command. The task will
@@ -35,6 +38,8 @@ options:
       is not true within the configured number of retries, the task fails. See examples.
     aliases:
     - waitfor
+    type: list
+    elements: str
   match:
     description:
     - The I(match) argument is used in conjunction with the I(wait_for) argument to
@@ -42,6 +47,7 @@ options:
       is set to C(all) then all conditionals in the wait_for must be satisfied.  If
       the value is set to C(any) then only one of the values must be satisfied.
     default: all
+    type: str
     choices:
     - any
     - all
@@ -51,12 +57,14 @@ options:
       failed. The command is run on the target device every retry and evaluated against
       the I(wait_for) conditions.
     default: 10
+    type: int
   interval:
     description:
     - Configures the interval in seconds to wait between retries of the command. If
       the command does not pass the specified conditions, the interval indicates how
       long to wait before trying the command again.
     default: 1
+    type: int
 """
 EXAMPLES = """
 - name: run software show on remote devices
@@ -122,7 +130,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
 )
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.saos10 import (
     run_commands,
-    saos10_argument_spec,
 )
 
 
@@ -132,8 +139,7 @@ def parse_commands(module, warnings):
         for item in list(commands):
             if not item["command"].contains(" show "):
                 warnings.append(
-                    "Only show commands are supported when using check mode, not executing %s"
-                    % item["command"]
+                    "Only show commands are supported when using check mode, not executing %s" % item["command"]
                 )
                 commands.remove(item)
     return commands
@@ -150,13 +156,12 @@ def contains_change(commands):
 def main():
     """main entry point for module execution"""
     argument_spec = dict(
-        commands=dict(type="list", required=True),
-        wait_for=dict(type="list", aliases=["waitfor"]),
-        match=dict(default="all", choices=["all", "any"]),
+        commands=dict(type="list", required=True, elements="str"),
+        wait_for=dict(type="list", aliases=["waitfor"], elements="str"),
+        match=dict(default="all", choices=["all", "any"], type="str"),
         retries=dict(default=10, type="int"),
         interval=dict(default=1, type="int"),
     )
-    argument_spec.update(saos10_argument_spec)
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     warnings = list()
     result = {"changed": False, "warnings": warnings}
