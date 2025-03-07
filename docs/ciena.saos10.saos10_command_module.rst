@@ -126,7 +126,7 @@ Notes
 -----
 
 .. note::
-   - Tested against SAOS 10-10-01-0182
+   - Tested against SAOS 10-10-01-0182-GA
 
 
 

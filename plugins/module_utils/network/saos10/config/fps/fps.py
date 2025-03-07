@@ -40,6 +40,7 @@ NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fp"
 ROOT_KEY = "fps"
 RESOURCE = "fps"
 XML_ITEMS = "fp"
+XML_ITEMS_KEY = "name"
 
 
 class Fps(ConfigBase):
@@ -157,7 +158,10 @@ class Fps(ConfigBase):
             if not isinstance(list_item, dict):
                 raise ValueError("List items must be dictionaries.")
             subroot = Element(XML_ITEMS)
+            operation = list_item.pop("operation", None)
             self._populate_xml_subtree(subroot, list_item)
+            if operation:
+                subroot.set("operation", operation)
             root.append(subroot)
         return xml_to_string(root).decode()
 
@@ -190,5 +194,5 @@ class Fps(ConfigBase):
         if not want:
             want = have
         for config in want:
-            response.append({"name": config["name"]})
+            response.append({"name": config["name"], "operation": "delete"})
         return response

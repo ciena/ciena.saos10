@@ -40,6 +40,7 @@ NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-pn::ciena-mef-classifier"
 ROOT_KEY = "classifiers"
 RESOURCE = "classifiers"
 XML_ITEMS = "classifier"
+XML_ITEMS_KEY = "name"
 
 
 class Classifiers(ConfigBase):
@@ -157,7 +158,10 @@ class Classifiers(ConfigBase):
             if not isinstance(list_item, dict):
                 raise ValueError("List items must be dictionaries.")
             subroot = Element(XML_ITEMS)
+            operation = list_item.pop("operation", None)
             self._populate_xml_subtree(subroot, list_item)
+            if operation:
+                subroot.set("operation", operation)
             root.append(subroot)
         return xml_to_string(root).decode()
 
@@ -190,5 +194,5 @@ class Classifiers(ConfigBase):
         if not want:
             want = have
         for config in want:
-            response.append({"name": config["name"]})
+            response.append({"name": config["name"], "operation": "delete"})
         return response
