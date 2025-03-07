@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -34,9 +34,10 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_classifiers
-short_description: Manage classifiers on Ciena SAOS 10 devices
-description: This module provides declarative management of a classifier on Ciena SAOS 10 devices.
-author: Jeff Groom (@jgroom33)
+short_description: Manage classifiers on Ciena saos10 devices
+description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define
+  their incoming classification.
+author: Ciena
 options:
   config:
     description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.) to define
@@ -164,9 +165,9 @@ options:
             elements: dict
             suboptions:
               label:
-                description: No description available
+                description: No description available (mpls-labels list key)
                 type: int
-                required: false
+                required: true
               label_any:
                 description: Any value of mpls-label.
                 type: str
@@ -232,9 +233,9 @@ options:
                 type: int
                 required: false
               tag:
-                description: '''1'' represents outer most tag, ''2'' next outer most, etc'
+                description: '''1'' represents outer most tag, ''2'' next outer most, etc (vtags list key)'
                 type: int
-                required: false
+                required: true
               tpid:
                 description: A specific value of VLAN Tag EtherType.
                 type: str
@@ -259,9 +260,9 @@ options:
         - match-all
         - match-any
       name:
-        description: A unique name for the classifier.
+        description: A unique name for the classifier. (classifier list key)
         type: str
-        required: false
+        required: true
   state:
     description: The state of the configuration after module completion.
     type: str

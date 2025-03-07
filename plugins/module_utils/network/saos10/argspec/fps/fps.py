@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -42,6 +42,7 @@ class FpsArgs(object):  # pylint: disable=R0903
             "type": "list",
             "elements": "dict",
             "options": {
+                "name": {"type": "str", "required": True},
                 "description": {"type": "str"},
                 "admin_state": {"type": "str", "choices": ["enabled", "disabled"]},
                 "classifier_list": {"type": "str"},
@@ -65,6 +66,8 @@ class FpsArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
+                                "push_vid": {"type": "int", "required": True},
+                                "tag": {"type": "int", "required": True},
                                 "no_op": {"type": "str"},
                                 "pop_type": {"type": "str"},
                                 "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
@@ -83,7 +86,6 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     ],
                                 },
                                 "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
-                                "push_vid": {"type": "int", "required": True},
                                 "stamp_dei": {"type": "str", "choices": ["no-op", "enabled", "disabled"]},
                                 "stamp_pcp": {
                                     "type": "str",
@@ -105,7 +107,6 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     "choices": ["no-op", "tpid-8100", "tpid-88a8", "tpid-9100"],
                                 },
                                 "stamp_vid_value": {"type": "int"},
-                                "tag": {"type": "int"},
                             },
                         },
                     },
@@ -131,6 +132,8 @@ class FpsArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
+                                "push_vid": {"type": "int", "required": True},
+                                "tag": {"type": "int", "required": True},
                                 "no_op": {"type": "str"},
                                 "pop_type": {"type": "str"},
                                 "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
@@ -149,7 +152,6 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     ],
                                 },
                                 "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
-                                "push_vid": {"type": "int", "required": True},
                                 "stamp_dei": {"type": "str", "choices": ["no-op", "enabled", "disabled"]},
                                 "stamp_pcp": {
                                     "type": "str",
@@ -171,7 +173,6 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     "choices": ["no-op", "tpid-8100", "tpid-88a8", "tpid-9100"],
                                 },
                                 "stamp_vid_value": {"type": "int"},
-                                "tag": {"type": "int"},
                             },
                         },
                     },
@@ -184,16 +185,28 @@ class FpsArgs(object):  # pylint: disable=R0903
                 "meter_profile": {"type": "str"},
                 "mpls_pw": {"type": "str"},
                 "mtu_size": {"type": "int"},
-                "name": {"type": "str"},
                 "normalized_vid": {
                     "type": "list",
                     "elements": "dict",
-                    "options": {"tag": {"type": "int"}, "vlan_id": {"type": "int"}},
+                    "options": {"tag": {"type": "int", "required": True}, "vlan_id": {"type": "int"}},
                 },
                 "other": {"type": "str"},
                 "pfg_group": {
                     "type": "str",
-                    "choices": ["leaf", "root", "dynamic", "mesh", "spoke", "group-A", "group-B", "group-C", "group-D"],
+                    "choices": [
+                        "leaf",
+                        "root",
+                        "dynamic",
+                        "mesh",
+                        "spoke",
+                        "group-A",
+                        "group-B",
+                        "group-C",
+                        "group-D",
+                        "hub",
+                        "rx-hub-tx-spoke",
+                        "rx-spoke-tx-hub",
+                    ],
                 },
                 "queue_group_instance": {"type": "str"},
                 "stats_collection": {"type": "str", "choices": ["on", "off"]},

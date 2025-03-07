@@ -4,7 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-The saos10_fds class
+The saos10_bgp class
 It is in this file where the current configuration (as dict)
 is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
@@ -36,22 +36,22 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.
     config_is_diff,
 )
 
-NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fd"
-ROOT_KEY = "fds"
-RESOURCE = "fds"
-XML_ITEMS = "fd"
+NAMESPACE = "http://ciena.com/ns/yang/ciena-bgp"
+ROOT_KEY = "bgp"
+RESOURCE = "bgp"
+XML_ITEMS = "instance"
 
 
-class Fds(ConfigBase):
+class Bgp(ConfigBase):
     """
-    The saos10_fds class
+    The saos10_bgp class
     """
 
     gather_subset = ["!all", "!min"]
     gather_network_resources = [RESOURCE]
 
     def __init__(self, module):
-        super(Fds, self).__init__(module)
+        super(Bgp, self).__init__(module)
 
     def get_facts(self):
         """Get the 'facts' (the current configuration)

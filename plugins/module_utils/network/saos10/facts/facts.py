@@ -27,8 +27,13 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
     FpsFacts,
 )
 
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.bgp.bgp import (
+    BgpFacts,
+)
+
 FACT_LEGACY_SUBSETS = dict(default=Default, config=Config)
 FACT_RESOURCE_SUBSETS = dict(
+    bgp=BgpFacts,
     fps=FpsFacts,
     fds=FdsFacts,
     classifiers=ClassifiersFacts,

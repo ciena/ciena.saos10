@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -34,9 +34,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_fps
-short_description: Manage Flow Points on Ciena SAOS 10 devices
-description: This module provides declarative management of a flow point on Ciena SAOS 10 devices.
-author: Jeff Groom (@jgroom33)
+short_description: Manage fps on Ciena saos10 devices
+description: A List of flow-points.
+author: Ciena
 options:
   config:
     description: A list of all mef-fp configuration entries.
@@ -207,9 +207,9 @@ options:
               tag:
                 description: Dependent on the xform operation, the tag numbers are stamp => '1' represents outermost tag, '2' next outermost (next
                   inner) pop => '1' represents pop outermost, '2' represents pop outermost, (always pop from outer) push => '1' represents push
-                  outermost, '2' represents push outermost (always push to outer)
+                  outermost, '2' represents push outermost (always push to outer) (vlan-stack list key)
                 type: int
-                required: false
+                required: true
       egress_l3_mapped:
         description: For an egress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.
         type: str
@@ -360,9 +360,9 @@ options:
               tag:
                 description: Dependent on the xform operation, the tag numbers are stamp => '1' represents outermost tag, '2' next outermost (next
                   inner) pop => '1' represents pop outermost, '2' represents pop outermost, (always pop from outer) push => '1' represents push
-                  outermost, '2' represents push outermost (always push to outer)
+                  outermost, '2' represents push outermost (always push to outer) (vlan-stack list key)
                 type: int
-                required: false
+                required: true
       ingress_l3_mapped:
         description: For an ingress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.
         type: str
@@ -408,9 +408,9 @@ options:
       name:
         description: This object indicates the flow point identifier. The identifier is a text string that is used to identify a flow point. Unique
           string values are chosen to uniquely identify the flow point. Octet values of 0x00 through 0x1f are illegal. MEF 26.1 restricts the
-          maximum size identifiers to 45 octets.
+          maximum size identifiers to 45 octets. (fp list key)
         type: str
-        required: false
+        required: true
       normalized_vid:
         description: Used to represent normalized-vid values for EVPN FXC, e.g. MPLS label + vid lookup. The tag number represents the position
           of the normalized-vid. tag '1' represents outer most tag, tag '2' next outer most, etc. Note that the normalized-vid is used in conjunction
@@ -433,9 +433,9 @@ options:
               of the ingress-l2-transform push operation; - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag 1 (outer),
               when 1 tag is being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid
               tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 1 (outer most) matches
-              normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform.
+              normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform. (normalized-vid list key)
             type: int
-            required: false
+            required: true
           vlan_id:
             description: No description available
             type: int
@@ -448,7 +448,8 @@ options:
         description: The Private-Forwarding-Group that the flow-point belongs to for the scope of a Private-Forwarding-Group-Profile. Can be leaf/root
           for a PFG-profile with PFG-type of leaf-and-root or spokemesh-and-leafroot. Can be mesh/spoke for a PFG-profile with PFG-type of spoke-and-mesh
           or spokemesh-and-leafroot. Can be groupA/B/C/D for a PFG-profile with PFG-type of pfg-groups. Can be leaf/root/dynamic for a PFG-profile
-          with PFG-type dynamic-leaf-and-root
+          with PFG-type dynamic-leaf-and-root. Can be hub/spoke/dynamic(none/hub/spoke)for a PFG-profile with PFG-type dynamic-hub-and-spoke.
+          Can be hub/spoke/dynamic(none/rx-hub-tx-spoke/rx-spoke-tx-hub/hub/spoke) for a PFG-profile with PFG-type of dynamic-tx-enable-hub-and-spoke.
         type: str
         required: false
         choices:
@@ -461,6 +462,9 @@ options:
         - group-B
         - group-C
         - group-D
+        - hub
+        - rx-hub-tx-spoke
+        - rx-spoke-tx-hub
       queue_group_instance:
         description: A reference to a Queue Group Instance.
         type: str

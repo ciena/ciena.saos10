@@ -4,7 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-The saos10 fds fact class
+The saos10 bgp fact class
 It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
@@ -28,8 +28,8 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.netconf.netconf import (
     get,
 )
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.fds.fds import (
-    FdsArgs,
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.bgp.bgp import (
+    BgpArgs,
 )
 
 try:
@@ -42,12 +42,12 @@ except ImportError:
     HAS_LXML = False
 
 
-class FdsFacts(object):
-    """The saos10 fds fact class"""
+class BgpFacts(object):
+    """The saos10 bgp fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = FdsArgs.argument_spec
+        self.argument_spec = BgpArgs.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:
@@ -60,7 +60,7 @@ class FdsFacts(object):
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """Populate the facts for fds
+        """Populate the facts for bgp
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf
@@ -72,15 +72,15 @@ class FdsFacts(object):
 
         if not data:
             config_filter = """
-                <fds xmlns="urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fd">
-                </fds>
+                <bgp xmlns="http://ciena.com/ns/yang/ciena-bgp">
+                </bgp>
                 """
             data = get(self._module, filter=("subtree", config_filter))
 
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resources = data.xpath("/rpc-reply/data/fds/fds")
+        resources = data.xpath("/rpc-reply/data/bgp/bgp")
         objs = []
         for resource in resources:
             if resource:
@@ -90,10 +90,10 @@ class FdsFacts(object):
 
         facts = {}
         if objs:
-            facts["fds"] = []
+            facts["bgp"] = []
             params = utils.validate_config(self.argument_spec, {"config": objs})
             for cfg in params["config"]:
-                facts["fds"].append(utils.remove_empties(cfg))
+                facts["bgp"].append(utils.remove_empties(cfg))
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts

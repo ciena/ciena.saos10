@@ -5,7 +5,7 @@
 ciena.saos10.saos10_classifiers
 *******************************
 
-**Manage classifiers on Ciena SAOS 10 devices**
+**Manage classifiers on Ciena saos10 devices**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_classifiers
 
 Synopsis
 --------
-- This module provides declarative management of a classifier on Ciena SAOS 10 devices.
+- List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define their incoming classification.
 
 
 
@@ -519,12 +519,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>No description available</div>
+                        <div>No description available (mpls-labels list key)</div>
                 </td>
             </tr>
             <tr>
@@ -809,12 +810,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>&#x27;1&#x27; represents outer most tag, &#x27;2&#x27; next outer most, etc</div>
+                        <div>&#x27;1&#x27; represents outer most tag, &#x27;2&#x27; next outer most, etc (vtags list key)</div>
                 </td>
             </tr>
             <tr>
@@ -906,12 +908,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>A unique name for the classifier.</div>
+                        <div>A unique name for the classifier. (classifier list key)</div>
                 </td>
             </tr>
 
@@ -1048,4 +1051,4 @@ Status
 Authors
 ~~~~~~~
 
-- Jeff Groom (@jgroom33)
+- Ciena

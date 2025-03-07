@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -42,6 +42,7 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
             "type": "list",
             "elements": "dict",
             "options": {
+                "name": {"type": "str", "required": True},
                 "filter_entry": {
                     "type": "list",
                     "elements": "dict",
@@ -87,7 +88,7 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
-                                "label": {"type": "int"},
+                                "label": {"type": "int", "required": True},
                                 "label_any": {"type": "str"},
                                 "mpls_label": {"type": "int"},
                                 "tc_any": {"type": "str"},
@@ -105,10 +106,10 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
+                                "tag": {"type": "int", "required": True},
                                 "dei": {"type": "str", "choices": ["discard-eligible", "not-discard-eligible"]},
                                 "pcp": {"type": "int"},
                                 "pcp_mask": {"type": "int"},
-                                "tag": {"type": "int"},
                                 "tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
                                 "vlan_id": {"type": "int"},
                                 "vlan_id_max": {"type": "int"},
@@ -117,7 +118,6 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                     },
                 },
                 "filter_operation": {"type": "str", "choices": ["match-all", "match-any"]},
-                "name": {"type": "str"},
             },
         },
         "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},

@@ -5,7 +5,7 @@
 ciena.saos10.saos10_fds
 ***********************
 
-**Manage Forwarding Domains on Ciena SAOS 10 devices**
+**Manage fds on Ciena saos10 devices**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_fds
 
 Synopsis
 --------
-- This module provides declarative management of a forwarding domain on Ciena SAOS 10 devices.
+- List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs etc).
 
 
 
@@ -324,12 +324,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Dependent on the transform operation, the tag numbers are push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer)</div>
+                        <div>Dependent on the transform operation, the tag numbers are push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer) (vlan-stack list key)</div>
                 </td>
             </tr>
 
@@ -404,12 +405,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>An administratively assigned string, which may be used to identify the forwarding domain.</div>
+                        <div>An administratively assigned string, which may be used to identify the forwarding domain. (fd list key)</div>
                 </td>
             </tr>
             <tr>
@@ -591,4 +593,4 @@ Status
 Authors
 ~~~~~~~
 
-- Jeff Groom (@jgroom33)
+- Ciena

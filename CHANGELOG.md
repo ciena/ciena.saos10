@@ -1,5 +1,13 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.8.0
+### Added
+- bgp module
+### Removed
+- xml_diff module
+### Changes
+- Specify Mandatory fields in the module documentation
+
 ## v1.7.0
 ### Fixed
 - Runtime definitions

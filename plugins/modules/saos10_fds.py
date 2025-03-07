@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -34,9 +34,10 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_fds
-short_description: Manage Forwarding Domains on Ciena SAOS 10 devices
-description: This module provides declarative management of a forwarding domain on Ciena SAOS 10 devices.
-author: Jeff Groom (@jgroom33)
+short_description: Manage fds on Ciena saos10 devices
+description: List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs
+  etc).
+author: Ciena
 options:
   config:
     description: The list of configured forwarding domains on the device.
@@ -136,9 +137,9 @@ options:
                 required: true
               tag:
                 description: Dependent on the transform operation, the tag numbers are push => '1' represents push outermost, '2' represents push
-                  outermost (always push to outer)
+                  outermost (always push to outer) (vlan-stack list key)
                 type: int
-                required: false
+                required: true
       l2cp_profile:
         description: Reference to a Layer 2 Control Protocol Tunneling Profile.
         type: str
@@ -164,9 +165,9 @@ options:
         - evpn-vpws
         - evpn-vpls
       name:
-        description: An administratively assigned string, which may be used to identify the forwarding domain.
+        description: An administratively assigned string, which may be used to identify the forwarding domain. (fd list key)
         type: str
-        required: false
+        required: true
       pfg_profile:
         description: Reference to a Private Forwarding Group Profile.
         type: str
