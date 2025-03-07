@@ -45,7 +45,7 @@ class FpsArgs(object):  # pylint: disable=R0903
                 "name": {"type": "str", "required": True},
                 "description": {"type": "str"},
                 "admin_state": {"type": "str", "choices": ["enabled", "disabled"]},
-                "classifier_list": {"type": "str"},
+                "classifier_list": {"type": "list", "elements": "str"},
                 "classifier_list_precedence": {"type": "int"},
                 "color": {"type": "str", "choices": ["green", "yellow", "red"]},
                 "cos": {"type": "int"},

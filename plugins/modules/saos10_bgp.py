@@ -55,8 +55,12 @@ options:
               type:
                 description: Send/Receive additional paths to/from peers. Parameters relating to the advertisement and receipt of multiple paths
                   for a single NLRI (add-paths)
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - receive
+                - send
               best_count:
                 description: Best <2-3> paths in additional paths to be selected
                 type: int
@@ -485,8 +489,13 @@ options:
                 required: false
               attribute_unchanged:
                 description: Advertise unchanged BGP attributes to the specified peer.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - as-path
+                - next-hop
+                - med
               default_originate:
                 description: The default originate is used to indicate that all routes be sent regardless of the Route Target filter values.
                 type: bool
@@ -577,8 +586,12 @@ options:
                 suboptions:
                   direction:
                     description: Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)
-                    type: str
+                    type: list
                     required: true
+                    elements: str
+                    choices:
+                    - in
+                    - out
                   name:
                     description: Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)
                     type: str
@@ -665,7 +678,11 @@ options:
           local_as_options:
             description: Local-as options; no-prepend - not prepend local-as to incoming updates from eBGP peers. replace-as - not prepend true-as
               to outgoing updates to eBGP peers.
-            type: str
+            type: list
+            elements: list
+            choices:
+            - no-prepend
+            - replace-as
           lockout:
             description: BGP lockout feature is useful to inform/force its peer to avoid itself for any traffic for prefixes it has advertised
               to its neighbors. When a BGP neighbor (or through peer group) is locked out 1 iBGP routes are refreshed to the iBGP peer(s) with
@@ -821,8 +838,13 @@ options:
                 required: false
               attribute_unchanged:
                 description: Advertise unchanged BGP attributes to the specified peer.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - as-path
+                - next-hop
+                - med
               default_originate:
                 description: The default originate is used to indicate that all routes be sent regardless of the Route Target filter values.
                 type: bool
@@ -913,8 +935,12 @@ options:
                 suboptions:
                   direction:
                     description: Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)
-                    type: str
+                    type: list
                     required: true
+                    elements: str
+                    choices:
+                    - in
+                    - out
                   name:
                     description: Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)
                     type: str
@@ -1001,7 +1027,11 @@ options:
           local_as_options:
             description: Local-as options; no-prepend - not prepend local-as to incoming updates from eBGP peers. replace-as - not prepend true-as
               to outgoing updates to eBGP peers.
-            type: str
+            type: list
+            elements: list
+            choices:
+            - no-prepend
+            - replace-as
           lockout:
             description: BGP lockout feature is useful to inform/force its peer to avoid itself for any traffic for prefixes it has advertised
               to its neighbors. When a BGP neighbor (or through peer group) is locked out 1 iBGP routes are refreshed to the iBGP peer(s) with
@@ -1273,8 +1303,13 @@ options:
                     required: false
                   attribute_unchanged:
                     description: Advertise unchanged BGP attributes to the specified peer.
-                    type: str
+                    type: list
                     required: false
+                    elements: str
+                    choices:
+                    - as-path
+                    - next-hop
+                    - med
                   bfd:
                     description: Configure bidirectional forwarding detection for BGP.
                     type: dict
@@ -1339,7 +1374,11 @@ options:
                   local_as_options:
                     description: Local-as options; no-prepend - not prepend local-as to incoming updates from eBGP peers. replace-as - not prepend
                       true-as to outgoing updates to eBGP peers.
-                    type: str
+                    type: list
+                    elements: list
+                    choices:
+                    - no-prepend
+                    - replace-as
                   lockout:
                     description: BGP lockout feature is useful to inform/force its peer to avoid itself for any traffic for prefixes it has advertised
                       to its neighbors. When a BGP neighbor (or through peer group) is locked out 1 iBGP routes are refreshed to the iBGP peer(s)
@@ -1422,8 +1461,12 @@ options:
                     suboptions:
                       direction:
                         description: Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)
-                        type: str
+                        type: list
                         required: true
+                        elements: str
+                        choices:
+                        - in
+                        - out
                       name:
                         description: Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)
                         type: str

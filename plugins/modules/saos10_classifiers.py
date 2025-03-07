@@ -206,8 +206,19 @@ options:
             required: false
           tcp_flags:
             description: List of TCP flags.
-            type: str
+            type: list
             required: false
+            elements: str
+            choices:
+            - fin
+            - syn
+            - rst
+            - psh
+            - ack
+            - urg
+            - ece
+            - cwr
+            - ns
           untagged_exclude_priority_tagged:
             description: Untagged exclude priority tagged.
             type: bool

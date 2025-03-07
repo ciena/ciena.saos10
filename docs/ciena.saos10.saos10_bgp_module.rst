@@ -153,10 +153,15 @@ Parameters
                     <b>type</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>receive</li>
+                                    <li>send</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Send/Receive additional paths to/from peers. Parameters relating to the advertisement and receipt of multiple paths for a single NLRI (add-paths)</div>
@@ -1728,10 +1733,16 @@ Parameters
                     <b>attribute_unchanged</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>as-path</li>
+                                    <li>next-hop</li>
+                                    <li>med</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Advertise unchanged BGP attributes to the specified peer.</div>
@@ -2098,11 +2109,16 @@ Parameters
                     <b>direction</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                          / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>in</li>
+                                    <li>out</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)</div>
@@ -2502,10 +2518,15 @@ Parameters
                     <b>local_as_options</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=list</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no-prepend</li>
+                                    <li>replace-as</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Local-as options; no-prepend - not prepend local-as to incoming updates from eBGP peers. replace-as - not prepend true-as to outgoing updates to eBGP peers.</div>
@@ -3115,10 +3136,16 @@ Parameters
                     <b>attribute_unchanged</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>as-path</li>
+                                    <li>next-hop</li>
+                                    <li>med</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Advertise unchanged BGP attributes to the specified peer.</div>
@@ -3485,11 +3512,16 @@ Parameters
                     <b>direction</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                          / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>in</li>
+                                    <li>out</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)</div>
@@ -3889,10 +3921,15 @@ Parameters
                     <b>local_as_options</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=list</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no-prepend</li>
+                                    <li>replace-as</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Local-as options; no-prepend - not prepend local-as to incoming updates from eBGP peers. replace-as - not prepend true-as to outgoing updates to eBGP peers.</div>
@@ -4999,10 +5036,16 @@ Parameters
                     <b>attribute_unchanged</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>as-path</li>
+                                    <li>next-hop</li>
+                                    <li>med</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Advertise unchanged BGP attributes to the specified peer.</div>
@@ -5308,10 +5351,15 @@ Parameters
                     <b>local_as_options</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=list</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>no-prepend</li>
+                                    <li>replace-as</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Local-as options; no-prepend - not prepend local-as to incoming updates from eBGP peers. replace-as - not prepend true-as to outgoing updates to eBGP peers.</div>
@@ -5647,11 +5695,16 @@ Parameters
                     <b>direction</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                          / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>in</li>
+                                    <li>out</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)</div>

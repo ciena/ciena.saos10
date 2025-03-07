@@ -56,7 +56,8 @@ options:
         - disabled
       classifier_list:
         description: List of classifier templates referenced by flow-point to define their incoming classification.
-        type: str
+        type: list
+        elements: str
       classifier_list_precedence:
         description: A precedence value for the flow-point. Lower values take precedence over higher values.
         type: int

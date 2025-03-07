@@ -70,7 +70,7 @@ class BgpArgs(object):  # pylint: disable=R0903
                         "additional_paths": {
                             "type": "dict",
                             "options": {
-                                "type": {"type": "str"},
+                                "type": {"type": "list", "elements": "str", "choices": ["receive", "send"]},
                                 "best_count": {"type": "int"},
                                 "install": {"type": "bool"},
                                 "select_all": {"type": "bool"},
@@ -225,7 +225,11 @@ class BgpArgs(object):  # pylint: disable=R0903
                                 "allow_as_in": {"type": "int"},
                                 "allow_ebgp_sr": {"type": "str", "choices": ["enable", "disable"]},
                                 "allow_ebgp_vpn": {"type": "bool"},
-                                "attribute_unchanged": {"type": "str"},
+                                "attribute_unchanged": {
+                                    "type": "list",
+                                    "elements": "str",
+                                    "choices": ["as-path", "next-hop", "med"],
+                                },
                                 "default_originate": {"type": "bool"},
                                 "default_originate_vpn": {
                                     "type": "dict",
@@ -262,7 +266,12 @@ class BgpArgs(object):  # pylint: disable=R0903
                                     "type": "list",
                                     "elements": "dict",
                                     "options": {
-                                        "direction": {"type": "str", "required": True},
+                                        "direction": {
+                                            "type": "list",
+                                            "elements": "str",
+                                            "choices": ["in", "out"],
+                                            "required": True,
+                                        },
                                         "name": {"type": "str", "required": True},
                                     },
                                 },
@@ -282,7 +291,11 @@ class BgpArgs(object):  # pylint: disable=R0903
                         "hold_time": {"type": "int"},
                         "keepalive_interval": {"type": "int"},
                         "local_as": {"type": "int"},
-                        "local_as_options": {"type": "str"},
+                        "local_as_options": {
+                            "type": "list",
+                            "elements": "list",
+                            "choices": ["no-prepend", "replace-as"],
+                        },
                         "lockout": {"type": "bool"},
                         "minimum_advertisement_interval": {"type": "int"},
                         "passive": {"type": "bool"},
@@ -350,7 +363,11 @@ class BgpArgs(object):  # pylint: disable=R0903
                                 "allow_as_in": {"type": "int"},
                                 "allow_ebgp_sr": {"type": "str", "choices": ["enable", "disable"]},
                                 "allow_ebgp_vpn": {"type": "bool"},
-                                "attribute_unchanged": {"type": "str"},
+                                "attribute_unchanged": {
+                                    "type": "list",
+                                    "elements": "str",
+                                    "choices": ["as-path", "next-hop", "med"],
+                                },
                                 "default_originate": {"type": "bool"},
                                 "default_originate_vpn": {
                                     "type": "dict",
@@ -387,7 +404,12 @@ class BgpArgs(object):  # pylint: disable=R0903
                                     "type": "list",
                                     "elements": "dict",
                                     "options": {
-                                        "direction": {"type": "str", "required": True},
+                                        "direction": {
+                                            "type": "list",
+                                            "elements": "str",
+                                            "choices": ["in", "out"],
+                                            "required": True,
+                                        },
                                         "name": {"type": "str", "required": True},
                                     },
                                 },
@@ -407,7 +429,11 @@ class BgpArgs(object):  # pylint: disable=R0903
                         "hold_time": {"type": "int"},
                         "keepalive_interval": {"type": "int"},
                         "local_as": {"type": "int"},
-                        "local_as_options": {"type": "str"},
+                        "local_as_options": {
+                            "type": "list",
+                            "elements": "list",
+                            "choices": ["no-prepend", "replace-as"],
+                        },
                         "lockout": {"type": "bool"},
                         "minimum_advertisement_interval": {"type": "int"},
                         "passive": {"type": "bool"},
@@ -514,7 +540,11 @@ class BgpArgs(object):  # pylint: disable=R0903
                                         "allow_as_in": {"type": "int"},
                                         "allow_ebgp_vpn": {"type": "bool"},
                                         "as_override": {"type": "bool"},
-                                        "attribute_unchanged": {"type": "str"},
+                                        "attribute_unchanged": {
+                                            "type": "list",
+                                            "elements": "str",
+                                            "choices": ["as-path", "next-hop", "med"],
+                                        },
                                         "bfd": {
                                             "type": "dict",
                                             "options": {"enable": {"type": "bool"}, "multihop": {"type": "bool"}},
@@ -532,7 +562,11 @@ class BgpArgs(object):  # pylint: disable=R0903
                                         "hold_time": {"type": "int"},
                                         "keepalive_interval": {"type": "int"},
                                         "local_as": {"type": "int"},
-                                        "local_as_options": {"type": "str"},
+                                        "local_as_options": {
+                                            "type": "list",
+                                            "elements": "list",
+                                            "choices": ["no-prepend", "replace-as"],
+                                        },
                                         "lockout": {"type": "bool"},
                                         "minimum_advertisement_interval": {"type": "int"},
                                         "orf_mode": {"type": "str", "choices": ["both", "receive", "send"]},
@@ -564,7 +598,12 @@ class BgpArgs(object):  # pylint: disable=R0903
                                             "type": "list",
                                             "elements": "dict",
                                             "options": {
-                                                "direction": {"type": "str", "required": True},
+                                                "direction": {
+                                                    "type": "list",
+                                                    "elements": "str",
+                                                    "choices": ["in", "out"],
+                                                    "required": True,
+                                                },
                                                 "name": {"type": "str", "required": True},
                                             },
                                         },

@@ -100,7 +100,11 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                         "source_mac_mask": {"type": "str"},
                         "source_max": {"type": "int"},
                         "source_min": {"type": "int"},
-                        "tcp_flags": {"type": "str"},
+                        "tcp_flags": {
+                            "type": "list",
+                            "elements": "str",
+                            "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr", "ns"],
+                        },
                         "untagged_exclude_priority_tagged": {"type": "bool"},
                         "vtags": {
                             "type": "list",

@@ -3,6 +3,7 @@
 ## v1.8.0
 ### Added
 - bgp module
+- array lists of suboptions
 ### Removed
 - xml_diff module
 ### Changes

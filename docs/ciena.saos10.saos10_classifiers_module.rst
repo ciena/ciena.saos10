@@ -694,10 +694,22 @@ Parameters
                     <b>tcp_flags</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>fin</li>
+                                    <li>syn</li>
+                                    <li>rst</li>
+                                    <li>psh</li>
+                                    <li>ack</li>
+                                    <li>urg</li>
+                                    <li>ece</li>
+                                    <li>cwr</li>
+                                    <li>ns</li>
+                        </ul>
                 </td>
                 <td>
                         <div>List of TCP flags.</div>
