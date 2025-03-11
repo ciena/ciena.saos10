@@ -31,7 +31,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-class ClassifiersArgs(object):  # pylint: disable=R0903
+class classifiersArgs(object):  # pylint: disable=R0903
     """The arg spec for the saos10_classifiers module"""
 
     def __init__(self, **kwargs):
@@ -47,7 +47,33 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                     "type": "list",
                     "elements": "dict",
                     "options": {
-                        "any": {"type": "str"},
+                        "filter_parameter": {
+                            "type": "str",
+                            "choices": [
+                                "icmp",
+                                "base-etype",
+                                "dscp",
+                                "destination-mac",
+                                "ip-version",
+                                "ip-protocol",
+                                "ip-fragment",
+                                "internal-cos",
+                                "filter-param-type",
+                                "l4-destination-port",
+                                "source-ip",
+                                "any",
+                                "local-termination",
+                                "mpls-label",
+                                "source-mac",
+                                "l4-application",
+                                "l4-source-port",
+                                "vtag-stack",
+                                "tcp-flags",
+                                "destination-ip",
+                            ],
+                            "required": True,
+                        },
+                        "any": {"type": "list", "elements": "str", "choices": ["null"]},
                         "base_ethertype": {"type": "int"},
                         "destination_address": {"type": "str"},
                         "destination_mac": {"type": "str"},
@@ -57,7 +83,6 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                         "dscp_mask": {"type": "int"},
                         "dscp_max": {"type": "int"},
                         "dscp_min": {"type": "int"},
-                        "filter_parameter": {"type": "str"},
                         "icmp_message_type": {
                             "type": "str",
                             "choices": [
@@ -89,9 +114,9 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                             "elements": "dict",
                             "options": {
                                 "label": {"type": "int", "required": True},
-                                "label_any": {"type": "str"},
+                                "label_any": {"type": "list", "elements": "str", "choices": ["null"]},
                                 "mpls_label": {"type": "int"},
-                                "tc_any": {"type": "str"},
+                                "tc_any": {"type": "list", "elements": "str", "choices": ["null"]},
                                 "tc_value": {"type": "int"},
                             },
                         },

@@ -3,11 +3,14 @@
 ## v1.8.0
 ### Added
 - bgp module
+- isis module
+- logical-ports module
 - array lists of suboptions
 ### Removed
 - xml_diff module
 ### Changes
 - Specify Mandatory fields in the module documentation
+- Specify `key` for lists
 
 ## v1.7.0
 ### Fixed

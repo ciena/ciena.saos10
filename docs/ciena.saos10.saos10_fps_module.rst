@@ -5,7 +5,7 @@
 ciena.saos10.saos10_fps
 ***********************
 
-**Manage fps on Ciena saos10 devices**
+**Manage fps fp on Ciena saos10 devices.**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_fps
 
 Synopsis
 --------
-- A List of flow-points.
+- A List of flow-points.. A list of all mef-fp configuration entries.
 
 
 
@@ -196,12 +196,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Need a key for this list. It cannot be a choice of several objects but objects that will always be specified.</div>
+                        <div>Need a key for this list. It cannot be a choice of several objects but objects that will always be specified. (Key for list: egress-l2-transform)</div>
                 </td>
             </tr>
             <tr>
@@ -319,10 +320,14 @@ Parameters
                     <b>no_op</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>No Operation chosen for swapping vlan identifier.</div>
@@ -337,10 +342,14 @@ Parameters
                     <b>pop_type</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>This removes the outermost tag of the frame.</div>
@@ -550,7 +559,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Dependent on the xform operation, the tag numbers are stamp =&gt; &#x27;1&#x27; represents outermost tag, &#x27;2&#x27; next outermost (next inner) pop =&gt; &#x27;1&#x27; represents pop outermost, &#x27;2&#x27; represents pop outermost, (always pop from outer) push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer) (vlan-stack list key)</div>
+                        <div>Dependent on the xform operation, the tag numbers are stamp =&gt; &#x27;1&#x27; represents outermost tag, &#x27;2&#x27; next outermost (next inner) pop =&gt; &#x27;1&#x27; represents pop outermost, &#x27;2&#x27; represents pop outermost, (always pop from outer) push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer) (Key for list: vlan-stack)</div>
                 </td>
             </tr>
 
@@ -562,10 +571,14 @@ Parameters
                     <b>egress_l3_mapped</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>For an egress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.</div>
@@ -661,12 +674,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Need a key for this list. It cannot be a choice of several objects but objects that will always be specified.</div>
+                        <div>Need a key for this list. It cannot be a choice of several objects but objects that will always be specified. (Key for list: ingress-l2-transform)</div>
                 </td>
             </tr>
             <tr>
@@ -784,10 +798,14 @@ Parameters
                     <b>no_op</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>No Operation chosen for swapping vlan identifier.</div>
@@ -802,10 +820,14 @@ Parameters
                     <b>pop_type</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>This removes the outermost tag of the frame.</div>
@@ -1015,7 +1037,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Dependent on the xform operation, the tag numbers are stamp =&gt; &#x27;1&#x27; represents outermost tag, &#x27;2&#x27; next outermost (next inner) pop =&gt; &#x27;1&#x27; represents pop outermost, &#x27;2&#x27; represents pop outermost, (always pop from outer) push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer) (vlan-stack list key)</div>
+                        <div>Dependent on the xform operation, the tag numbers are stamp =&gt; &#x27;1&#x27; represents outermost tag, &#x27;2&#x27; next outermost (next inner) pop =&gt; &#x27;1&#x27; represents pop outermost, &#x27;2&#x27; represents pop outermost, (always pop from outer) push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer) (Key for list: vlan-stack)</div>
                 </td>
             </tr>
 
@@ -1027,10 +1049,14 @@ Parameters
                     <b>ingress_l3_mapped</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>For an ingress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.</div>
@@ -1134,10 +1160,14 @@ Parameters
                     <b>mpls_pw</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>The type of flow-point is MPLS pseudowire.</div>
@@ -1173,7 +1203,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>This object indicates the flow point identifier. The identifier is a text string that is used to identify a flow point. Unique string values are chosen to uniquely identify the flow point. Octet values of 0x00 through 0x1f are illegal. MEF 26.1 restricts the maximum size identifiers to 45 octets. (fp list key)</div>
+                        <div>This object indicates the flow point identifier. The identifier is a text string that is used to identify a flow point. Unique string values are chosen to uniquely identify the flow point. Octet values of 0x00 through 0x1f are illegal. MEF 26.1 restricts the maximum size identifiers to 45 octets. (Key for list: fp)</div>
                 </td>
             </tr>
             <tr>
@@ -1208,7 +1238,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The tag number represents the position of the normalized-vid. &#x27;1&#x27; represents outer most tag, &#x27;2&#x27; next outer most, etc. Note that the normalized-vid is used in conjunction with an ingress-l2-transform of the same flow-point. That is, an ingress-l2-xform operation of push/stamp is generally used to ensure that the frame contains the normalized-vid in flow-point to EVPN service-tunnel direction. In the case of the ingress-l2-transform stamp operation; - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid tag 1 (outer). - ingress-l2-transform stamp tag 2 (next outer) matches normalized-vid tag 2 (next outer (aka inner)). In the case of the ingress-l2-transform push operation; - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag 1 (outer), when 1 tag is being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform. (normalized-vid list key)</div>
+                        <div>The tag number represents the position of the normalized-vid. &#x27;1&#x27; represents outer most tag, &#x27;2&#x27; next outer most, etc. Note that the normalized-vid is used in conjunction with an ingress-l2-transform of the same flow-point. That is, an ingress-l2-xform operation of push/stamp is generally used to ensure that the frame contains the normalized-vid in flow-point to EVPN service-tunnel direction. In the case of the ingress-l2-transform stamp operation; - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid tag 1 (outer). - ingress-l2-transform stamp tag 2 (next outer) matches normalized-vid tag 2 (next outer (aka inner)). In the case of the ingress-l2-transform push operation; - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag 1 (outer), when 1 tag is being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform. (Key for list: normalized-vid)</div>
                 </td>
             </tr>
             <tr>
@@ -1236,10 +1266,14 @@ Parameters
                     <b>other</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>A flow-point with no specific type</div>
@@ -1334,10 +1368,14 @@ Parameters
                     <b>uni</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>The type of flow-point is uni-port.</div>

@@ -34,8 +34,8 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_bgp
-short_description: Manage bgp on Ciena saos10 devices
-description: Top level bgp container for bgp configuration
+short_description: Manage bgp instance on Ciena saos10 devices.
+description: Top level bgp container for bgp configuration. Top level bgp list with maximum number of instances 1
 author: Ciena
 options:
   config:
@@ -74,8 +74,8 @@ options:
                 type: bool
                 required: false
           afi:
-            description: Enter the IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (address-family
-              list key)
+            description: 'Enter the IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (Key for list:
+              address-family)'
             type: str
             required: true
             choices:
@@ -93,7 +93,7 @@ options:
             elements: dict
             suboptions:
               address:
-                description: Aggregate-prefix in prefix/length format (aggregate-address list key)
+                description: 'Aggregate-prefix in prefix/length format (Key for list: aggregate-address)'
                 type: str
                 required: true
               as_set:
@@ -105,6 +105,7 @@ options:
                 description: Summary-only path parameter advertises the prefix only, suppressing the more-specific routes to all peers.
                 type: bool
                 required: false
+            key: address
           allocate_label:
             description: Container to configure allocate-label attributes.
             type: dict
@@ -133,13 +134,14 @@ options:
             elements: dict
             suboptions:
               address:
-                description: Network address to be announced in prefix/length format (network list key)
+                description: 'Network address to be announced in prefix/length format (Key for list: network)'
                 type: str
                 required: true
               policy:
                 description: Routing Policy to apply to network
                 type: str
                 required: false
+            key: address
           network_synchronization:
             description: Enables IGP synchronization of BGP networked routes.
             type: bool
@@ -164,15 +166,16 @@ options:
                     type: str
                     required: false
                   tag:
-                    description: Tag could be instance id of OSPFv2, OSPFv3 or ISIS (instance list key)
+                    description: 'Tag could be instance id of OSPFv2, OSPFv3 or ISIS (Key for list: instance)'
                     type: str
                     required: true
+                key: tag
               policy:
                 description: Routing Policy to apply during redistribution
                 type: str
                 required: false
               protocol:
-                description: Protocol to redistribute into BGP (redistribute list key)
+                description: 'Protocol to redistribute into BGP (Key for list: redistribute)'
                 type: str
                 required: true
                 choices:
@@ -182,12 +185,13 @@ options:
                 - rip
                 - isis
                 - ospf
+            key: protocol
           route_reflector:
             description: Configure as route reflector for an address family
             type: bool
             required: false
           safi:
-            description: Configure sub address family such as unicast (address-family list key)
+            description: 'Configure sub address family such as unicast (Key for list: address-family)'
             type: str
             required: true
             choices:
@@ -234,6 +238,7 @@ options:
                 description: Name of the routemap to apply the filter to.
                 type: str
                 required: false
+        key: afi safi
       aigp_threshold:
         description: Readvertise AIGP value when IGP metric has increased/decreased beyond configured threshold percentage. Any IGP metric change
           within threshold percentage should not lead to AIGP re-advertisement. Value 0 indicates threshold is disabled and any IGP metric change
@@ -241,7 +246,7 @@ options:
         type: int
         required: false
       as:
-        description: Local autonomous system number. Uses the 32-bit as-number type from the model in RFC 6991. (instance list key)
+        description: 'Local autonomous system number. Uses the 32-bit as-number type from the model in RFC 6991. (Key for list: instance)'
         type: int
         required: true
       cluster_id:
@@ -301,7 +306,7 @@ options:
         elements: dict
         suboptions:
           name:
-            description: L2VPN services instance name. (l2vpn-vpls list key)
+            description: 'L2VPN services instance name. (Key for list: l2vpn-vpls)'
             type: str
             required: true
           route_distinguisher:
@@ -322,12 +327,12 @@ options:
                 - export
                 - both
               id:
-                description: Route-target ID. Creates lists of import and export route-target extended communities for the L2VPN instance. It
+                description: 'Route-target ID. Creates lists of import and export route-target extended communities for the L2VPN instance. It
                   specifies a target VPN extended community. Execute the once for each community. All routes with the specific route-target extended
-                  community are imported into all L2VPN instances with the same extended community as an import route-target. (route-target list
-                  key)
+                  community are imported into all L2VPN instances with the same extended community as an import route-target. (Key for list: route-target)'
                 type: str
                 required: true
+            key: id
           vpls_id:
             description: A VPLS ID is a BGP extended community value that identifies the VPLS domain. Manual configuration of this ID is optional
               because a default VPLS ID is generated using the BGP autonomous system number and the configured VPN ID. A VPLS ID can be composed
@@ -337,6 +342,7 @@ options:
               number, a colon, and a 16-bit number. 2;65536;3 .
             type: str
             required: false
+        key: name
       local_preference:
         description: BGP default local preference <0-4294967295> ,default value is 100 Local preference indicates the preferred path when there
           are multiple paths to the same destination
@@ -378,7 +384,7 @@ options:
             type: str
             required: false
           address:
-            description: Address of the BGP peer, either in IPv4 or IPv6 (peer list key)
+            description: 'Address of the BGP peer, either in IPv4 or IPv6 (Key for list: peer)'
             type: str
             required: true
           address_family:
@@ -421,15 +427,15 @@ options:
                 elements: dict
                 suboptions:
                   afi:
-                    description: VPNv4/VPNv6 address family (advertise-ip-prefix list key)
+                    description: 'VPNv4/VPNv6 address family (Key for list: advertise-ip-prefix)'
                     type: str
                     required: true
                     choices:
                     - vpnv4
                     - vpnv6
+                key: afi
               afi:
-                description: IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (address-family list
-                  key)
+                description: 'IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (Key for list: address-family)'
                 type: str
                 required: true
               aigp:
@@ -510,9 +516,10 @@ options:
                     elements: dict
                     suboptions:
                       name:
-                        description: VRF binding to which the default route needs to be originated. (vrf list key)
+                        description: 'VRF binding to which the default route needs to be originated. (Key for list: vrf)'
                         type: str
                         required: true
+                    key: name
               graceful_restart_helper:
                 description: Configure the router to advertise the Graceful Restart Capability to the neighbors. This configuration indicates
                   that the BGP speaker has the ability to preserve its forwarding state for the address family when BGP restarts.
@@ -541,16 +548,17 @@ options:
                 elements: dict
                 suboptions:
                   direction:
-                    description: The direction of application of the route map policy applies for the peer. (policy list key)
+                    description: 'The direction of application of the route map policy applies for the peer. (Key for list: policy)'
                     type: str
                     required: true
                     choices:
                     - in
                     - out
                   name:
-                    description: Route map name associated with the leaf (policy list key)
+                    description: 'Route map name associated with the leaf (Key for list: policy)'
                     type: str
                     required: true
+                key: name direction
               prefix_limit:
                 description: Configure the maximum number of prefixes that will be accepted from a peer
                 type: dict
@@ -585,7 +593,7 @@ options:
                 elements: dict
                 suboptions:
                   direction:
-                    description: Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)
+                    description: 'Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (Key for list: prefix-list)'
                     type: list
                     required: true
                     elements: str
@@ -593,9 +601,10 @@ options:
                     - in
                     - out
                   name:
-                    description: Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)
+                    description: 'Prefix List name. specify a prefix list for filtering BGP advertisements. (Key for list: prefix-list)'
                     type: str
                     required: true
+                key: name direction
               remove_private_as:
                 description: Remove private AS numbers from the outbound updates and do not advertise these to the internet. This command is used
                   with eBgp peers only.
@@ -606,7 +615,7 @@ options:
                 type: bool
                 required: false
               safi:
-                description: Configure sub address family such as unicast (address-family list key)
+                description: 'Configure sub address family such as unicast (Key for list: address-family)'
                 type: str
                 required: true
               soft_reconfiguration_inbound:
@@ -622,6 +631,7 @@ options:
                     description: Route map name associated with the leaf
                     type: str
                     required: false
+            key: afi safi
           bfd:
             description: Configure bidirectional forwarding detection for BGP
             type: dict
@@ -721,6 +731,7 @@ options:
             description: Allows internal BGP sessions to use any operational interface for TCP connections
             type: str
             required: false
+        key: address
       peer_group:
         description: List of peer groups and its related configuration
         type: list
@@ -770,15 +781,15 @@ options:
                 elements: dict
                 suboptions:
                   afi:
-                    description: VPNv4/VPNv6 address family (advertise-ip-prefix list key)
+                    description: 'VPNv4/VPNv6 address family (Key for list: advertise-ip-prefix)'
                     type: str
                     required: true
                     choices:
                     - vpnv4
                     - vpnv6
+                key: afi
               afi:
-                description: IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (address-family list
-                  key)
+                description: 'IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (Key for list: address-family)'
                 type: str
                 required: true
               aigp:
@@ -859,9 +870,10 @@ options:
                     elements: dict
                     suboptions:
                       name:
-                        description: VRF binding to which the default route needs to be originated. (vrf list key)
+                        description: 'VRF binding to which the default route needs to be originated. (Key for list: vrf)'
                         type: str
                         required: true
+                    key: name
               graceful_restart_helper:
                 description: Configure the router to advertise the Graceful Restart Capability to the neighbors. This configuration indicates
                   that the BGP speaker has the ability to preserve its forwarding state for the address family when BGP restarts.
@@ -890,16 +902,17 @@ options:
                 elements: dict
                 suboptions:
                   direction:
-                    description: The direction of application of the route map policy applies for the peer. (policy list key)
+                    description: 'The direction of application of the route map policy applies for the peer. (Key for list: policy)'
                     type: str
                     required: true
                     choices:
                     - in
                     - out
                   name:
-                    description: Route map name associated with the leaf (policy list key)
+                    description: 'Route map name associated with the leaf (Key for list: policy)'
                     type: str
                     required: true
+                key: name direction
               prefix_limit:
                 description: Configure the maximum number of prefixes that will be accepted from a peer
                 type: dict
@@ -934,7 +947,7 @@ options:
                 elements: dict
                 suboptions:
                   direction:
-                    description: Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)
+                    description: 'Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (Key for list: prefix-list)'
                     type: list
                     required: true
                     elements: str
@@ -942,9 +955,10 @@ options:
                     - in
                     - out
                   name:
-                    description: Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)
+                    description: 'Prefix List name. specify a prefix list for filtering BGP advertisements. (Key for list: prefix-list)'
                     type: str
                     required: true
+                key: name direction
               remove_private_as:
                 description: Remove private AS numbers from the outbound updates and do not advertise these to the internet. This command is used
                   with eBgp peers only.
@@ -955,7 +969,7 @@ options:
                 type: bool
                 required: false
               safi:
-                description: Configure sub address family such as unicast (address-family list key)
+                description: 'Configure sub address family such as unicast (Key for list: address-family)'
                 type: str
                 required: true
               soft_reconfiguration_inbound:
@@ -971,6 +985,7 @@ options:
                     description: Route map name associated with the leaf
                     type: str
                     required: false
+            key: afi safi
           bfd:
             description: Configure bidirectional forwarding detection for BGP peer group
             type: dict
@@ -1046,7 +1061,7 @@ options:
             type: int
             required: false
           name:
-            description: Name of the peer group template that can be attached to a peer (peer-group list key)
+            description: 'Name of the peer group template that can be attached to a peer (Key for list: peer-group)'
             type: str
             required: true
           passive:
@@ -1070,6 +1085,7 @@ options:
             description: Allows internal BGP sessions to use any operational interface for TCP connections
             type: str
             required: false
+        key: name
       route_selection_options:
         description: Parameters relating to options for route selection
         type: dict
@@ -1121,13 +1137,14 @@ options:
             elements: dict
             suboptions:
               lower_bound:
-                description: Lower value in the block.
+                description: 'Lower value in the block. (Key for list: srgb)'
                 type: int
-                required: false
+                required: true
               upper_bound:
-                description: Upper value in the block.
+                description: 'Upper value in the block. (Key for list: srgb)'
                 type: int
-                required: false
+                required: true
+            key: lower-bound upper-bound
           srv6:
             description: No description available
             type: dict
@@ -1142,7 +1159,7 @@ options:
         elements: dict
         suboptions:
           name:
-            description: Provides bgp address family to parent VRF binding. (vrf list key)
+            description: 'Provides bgp address family to parent VRF binding. (Key for list: vrf)'
             type: str
             required: true
           route_distinguisher:
@@ -1167,21 +1184,22 @@ options:
                 - export
                 - both
               id:
-                description: A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364).
+                description: 'A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364).
                   However, it has since taken on a more general role in BGP route filtering. A route target consists of three fields; a 2-octet
                   type field, an administrator field, and an assigned number field. According to the data formats for type 0, 1, and 2 defined
                   in RFC4360 and RFC5668, the encoding pattern is defined as; 0;2-octet-asn;4-octet-number 1;4-octet-ipv4addr;2-octet-number 2;4-octet-asn;2-octet-number.
-                  Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;1234567890;203. (route-target list key)
+                  Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;1234567890;203. (Key for list: route-target)'
                 type: str
                 required: true
+            key: id
           vrf_address_family:
             description: List of vrf address families such as ipv4 unicast
             type: list
             elements: dict
             suboptions:
               afi:
-                description: Vrf Address Family type enter the IPv4, address family mode allowing configuration of address-family specific parameters
-                  (vrf-address-family list key)
+                description: 'Vrf Address Family type enter the IPv4, address family mode allowing configuration of address-family specific parameters
+                  (Key for list: vrf-address-family)'
                 type: str
                 required: true
                 choices:
@@ -1193,7 +1211,7 @@ options:
                 elements: dict
                 suboptions:
                   address:
-                    description: Aggregate-prefix in prefix/length format (aggregate-address list key)
+                    description: 'Aggregate-prefix in prefix/length format (Key for list: aggregate-address)'
                     type: str
                     required: true
                   as_set:
@@ -1205,6 +1223,7 @@ options:
                     description: Summary-only path parameter advertises the prefix only, suppressing the more-specific routes to all peers.
                     type: bool
                     required: false
+                key: address
               auto_summary:
                 description: Enables sending summarized routes by a BGP speaker to its peers. Auto-summary can be enabled if certain routes have
                   already been advertised; in this case, configuring auto-summary advertises the summarized routes first, then corresponding non-summarized
@@ -1217,13 +1236,14 @@ options:
                 elements: dict
                 suboptions:
                   address:
-                    description: Network address to be announced in prefix/length format (network list key)
+                    description: 'Network address to be announced in prefix/length format (Key for list: network)'
                     type: str
                     required: true
                   policy:
                     description: Routing Policy to apply to network
                     type: str
                     required: false
+                key: address
               network_synchronization:
                 description: Enables IGP synchronization of BGP networked routes.
                 type: bool
@@ -1244,7 +1264,7 @@ options:
                     type: bool
                     required: false
                   address:
-                    description: Address of the BGP peer, either in IPv4 or IPv6 (peer list key)
+                    description: 'Address of the BGP peer, either in IPv4 or IPv6 (Key for list: peer)'
                     type: str
                     required: true
                   aigp:
@@ -1416,16 +1436,17 @@ options:
                     elements: dict
                     suboptions:
                       direction:
-                        description: The direction of application of the route map policy applies for the peer. (policy list key)
+                        description: 'The direction of application of the route map policy applies for the peer. (Key for list: policy)'
                         type: str
                         required: true
                         choices:
                         - in
                         - out
                       name:
-                        description: Route map name associated with the leaf (policy list key)
+                        description: 'Route map name associated with the leaf (Key for list: policy)'
                         type: str
                         required: true
+                    key: name direction
                   prefix_limit:
                     description: Configure the maximum number of prefixes that will be accepted from a peer
                     type: dict
@@ -1460,7 +1481,7 @@ options:
                     elements: dict
                     suboptions:
                       direction:
-                        description: Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)
+                        description: 'Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (Key for list: prefix-list)'
                         type: list
                         required: true
                         elements: str
@@ -1468,9 +1489,10 @@ options:
                         - in
                         - out
                       name:
-                        description: Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)
+                        description: 'Prefix List name. specify a prefix list for filtering BGP advertisements. (Key for list: prefix-list)'
                         type: str
                         required: true
+                    key: name direction
                   remote_as:
                     description: Remote AS number for this peer
                     type: int
@@ -1512,6 +1534,7 @@ options:
                     description: Allows internal BGP sessions to use any operational interface for TCP connections
                     type: str
                     required: false
+                key: address
               redistribute:
                 description: Inject routes from one routing process into another. Redistribution is used by routing protocols to advertise routes
                   that are learned by some other means, such as by another routing protocol or by static routes
@@ -1528,15 +1551,16 @@ options:
                         type: str
                         required: false
                       tag:
-                        description: Tag could be instance id of OSPFv2, OSPFv3 or ISIS (instance list key)
+                        description: 'Tag could be instance id of OSPFv2, OSPFv3 or ISIS (Key for list: instance)'
                         type: str
                         required: true
+                    key: tag
                   policy:
                     description: Routing Policy to apply during redistribution
                     type: str
                     required: false
                   protocol:
-                    description: Protocol to redistribute into BGP (redistribute list key)
+                    description: 'Protocol to redistribute into BGP (Key for list: redistribute)'
                     type: str
                     required: true
                     choices:
@@ -1546,6 +1570,7 @@ options:
                     - rip
                     - isis
                     - ospf
+                key: protocol
               route_target:
                 description: Route Target list that takes route target id and direction
                 type: list
@@ -1560,15 +1585,16 @@ options:
                     - export
                     - both
                   id:
-                    description: A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364).
+                    description: 'A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364).
                       However, it has since taken on a more general role in BGP route filtering. A route target consists of three fields; a 2-octet
                       type field, an administrator field, and an assigned number field. According to the data formats for type 0, 1, and 2 defined
                       in RFC4360 and RFC5668, the encoding pattern is defined as; 0;2-octet-asn;4-octet-number 1;4-octet-ipv4addr;2-octet-number
-                      2;4-octet-asn;2-octet-number. Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;65535;100. (route-target list key)
+                      2;4-octet-asn;2-octet-number. Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;65535;100. (Key for list: route-target)'
                     type: str
                     required: true
+                key: id
               safi:
-                description: VRF SAFI type. Configure sub address family such as unicast (vrf-address-family list key)
+                description: 'VRF SAFI type. Configure sub address family such as unicast (Key for list: vrf-address-family)'
                 type: str
                 required: true
                 choices:
@@ -1587,6 +1613,9 @@ options:
                   unless those routes are also present in an IGP (for example, OSPF).
                 type: bool
                 required: false
+            key: afi safi
+        key: name
+    key: as
   state:
     description: The state of the configuration after module completion.
     type: str

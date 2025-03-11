@@ -36,12 +36,15 @@ Name | Description
 ### Modules
 Name | Description
 --- | ---
-[ciena.saos10.saos10_bgp](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_bgp_module.rst)|Manage bgp on Ciena saos10 devices
+[ciena.saos10.saos10_bgp](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_bgp_module.rst)|Manage bgp instance on Ciena saos10 devices.
 [ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_classifiers_module.rst)|Manage classifiers on Ciena saos10 devices
 [ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_command_module.rst)|Run commands on remote devices running Ciena SAOS 10
 [ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
 [ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|Manage fds on Ciena saos10 devices
-[ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|Manage fps on Ciena saos10 devices
+[ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|Manage fps fp on Ciena saos10 devices.
+[ciena.saos10.saos10_isis](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_isis_module.rst)|Manage isis instance on Ciena saos10 devices.
+[ciena.saos10.saos10_ldp](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_ldp_module.rst)|Manage ldp on Ciena saos10 devices
+[ciena.saos10.saos10_logical_ports](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_logical_ports_module.rst)|Manage logical_ports logical_port on Ciena saos10 devices.
 
 <!--end collection content-->
 

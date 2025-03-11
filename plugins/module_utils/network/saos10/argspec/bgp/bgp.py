@@ -462,7 +462,10 @@ class BgpArgs(object):  # pylint: disable=R0903
                         "srgb": {
                             "type": "list",
                             "elements": "dict",
-                            "options": {"lower_bound": {"type": "int"}, "upper_bound": {"type": "int"}},
+                            "options": {
+                                "lower_bound": {"type": "int", "required": True},
+                                "upper_bound": {"type": "int", "required": True},
+                            },
                         },
                         "srv6": {"type": "dict", "options": {"locator": {"type": "str"}}},
                     },

@@ -136,8 +136,8 @@ options:
                 type: int
                 required: true
               tag:
-                description: Dependent on the transform operation, the tag numbers are push => '1' represents push outermost, '2' represents push
-                  outermost (always push to outer) (vlan-stack list key)
+                description: 'Dependent on the transform operation, the tag numbers are push => ''1'' represents push outermost, ''2'' represents
+                  push outermost (always push to outer) (Key for list: vlan-stack)'
                 type: int
                 required: true
       l2cp_profile:
@@ -165,7 +165,7 @@ options:
         - evpn-vpws
         - evpn-vpls
       name:
-        description: An administratively assigned string, which may be used to identify the forwarding domain. (fd list key)
+        description: 'An administratively assigned string, which may be used to identify the forwarding domain. (Key for list: fd)'
         type: str
         required: true
       pfg_profile:

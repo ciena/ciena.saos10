@@ -5,7 +5,7 @@
 ciena.saos10.saos10_bgp
 ***********************
 
-**Manage bgp on Ciena saos10 devices**
+**Manage bgp instance on Ciena saos10 devices.**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_bgp
 
 Synopsis
 --------
-- Top level bgp container for bgp configuration
+- Top level bgp container for bgp configuration. Top level bgp list with maximum number of instances 1
 
 
 
@@ -193,7 +193,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Enter the IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (address-family list key)</div>
+                        <div>Enter the IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (Key for list: address-family)</div>
                 </td>
             </tr>
             <tr>
@@ -230,7 +230,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Aggregate-prefix in prefix/length format (aggregate-address list key)</div>
+                        <div>Aggregate-prefix in prefix/length format (Key for list: aggregate-address)</div>
                 </td>
             </tr>
             <tr>
@@ -413,7 +413,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Network address to be announced in prefix/length format (network list key)</div>
+                        <div>Network address to be announced in prefix/length format (Key for list: network)</div>
                 </td>
             </tr>
             <tr>
@@ -550,7 +550,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Tag could be instance id of OSPFv2, OSPFv3 or ISIS (instance list key)</div>
+                        <div>Tag could be instance id of OSPFv2, OSPFv3 or ISIS (Key for list: instance)</div>
                 </td>
             </tr>
 
@@ -596,7 +596,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Protocol to redistribute into BGP (redistribute list key)</div>
+                        <div>Protocol to redistribute into BGP (Key for list: redistribute)</div>
                 </td>
             </tr>
 
@@ -647,7 +647,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Configure sub address family such as unicast (address-family list key)</div>
+                        <div>Configure sub address family such as unicast (Key for list: address-family)</div>
                 </td>
             </tr>
             <tr>
@@ -817,7 +817,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Local autonomous system number. Uses the 32-bit as-number type from the model in RFC 6991. (instance list key)</div>
+                        <div>Local autonomous system number. Uses the 32-bit as-number type from the model in RFC 6991. (Key for list: instance)</div>
                 </td>
             </tr>
             <tr>
@@ -1049,7 +1049,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>L2VPN services instance name. (l2vpn-vpls list key)</div>
+                        <div>L2VPN services instance name. (Key for list: l2vpn-vpls)</div>
                 </td>
             </tr>
             <tr>
@@ -1127,7 +1127,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Route-target ID. Creates lists of import and export route-target extended communities for the L2VPN instance. It specifies a target VPN extended community. Execute the once for each community. All routes with the specific route-target extended community are imported into all L2VPN instances with the same extended community as an import route-target. (route-target list key)</div>
+                        <div>Route-target ID. Creates lists of import and export route-target extended communities for the L2VPN instance. It specifies a target VPN extended community. Execute the once for each community. All routes with the specific route-target extended community are imported into all L2VPN instances with the same extended community as an import route-target. (Key for list: route-target)</div>
                 </td>
             </tr>
 
@@ -1292,7 +1292,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Address of the BGP peer, either in IPv4 or IPv6 (peer list key)</div>
+                        <div>Address of the BGP peer, either in IPv4 or IPv6 (Key for list: peer)</div>
                 </td>
             </tr>
             <tr>
@@ -1461,7 +1461,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>VPNv4/VPNv6 address family (advertise-ip-prefix list key)</div>
+                        <div>VPNv4/VPNv6 address family (Key for list: advertise-ip-prefix)</div>
                 </td>
             </tr>
 
@@ -1481,7 +1481,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (address-family list key)</div>
+                        <div>IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (Key for list: address-family)</div>
                 </td>
             </tr>
             <tr>
@@ -1826,7 +1826,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>VRF binding to which the default route needs to be originated. (vrf list key)</div>
+                        <div>VRF binding to which the default route needs to be originated. (Key for list: vrf)</div>
                 </td>
             </tr>
 
@@ -1938,7 +1938,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The direction of application of the route map policy applies for the peer. (policy list key)</div>
+                        <div>The direction of application of the route map policy applies for the peer. (Key for list: policy)</div>
                 </td>
             </tr>
             <tr>
@@ -1958,7 +1958,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Route map name associated with the leaf (policy list key)</div>
+                        <div>Route map name associated with the leaf (Key for list: policy)</div>
                 </td>
             </tr>
 
@@ -2121,7 +2121,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)</div>
+                        <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (Key for list: prefix-list)</div>
                 </td>
             </tr>
             <tr>
@@ -2141,7 +2141,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)</div>
+                        <div>Prefix List name. specify a prefix list for filtering BGP advertisements. (Key for list: prefix-list)</div>
                 </td>
             </tr>
 
@@ -2205,7 +2205,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Configure sub address family such as unicast (address-family list key)</div>
+                        <div>Configure sub address family such as unicast (Key for list: address-family)</div>
                 </td>
             </tr>
             <tr>
@@ -2864,7 +2864,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>VPNv4/VPNv6 address family (advertise-ip-prefix list key)</div>
+                        <div>VPNv4/VPNv6 address family (Key for list: advertise-ip-prefix)</div>
                 </td>
             </tr>
 
@@ -2884,7 +2884,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (address-family list key)</div>
+                        <div>IPv4, or VPNv4 address family mode allowing configuration of address-family specific parameters (Key for list: address-family)</div>
                 </td>
             </tr>
             <tr>
@@ -3229,7 +3229,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>VRF binding to which the default route needs to be originated. (vrf list key)</div>
+                        <div>VRF binding to which the default route needs to be originated. (Key for list: vrf)</div>
                 </td>
             </tr>
 
@@ -3341,7 +3341,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The direction of application of the route map policy applies for the peer. (policy list key)</div>
+                        <div>The direction of application of the route map policy applies for the peer. (Key for list: policy)</div>
                 </td>
             </tr>
             <tr>
@@ -3361,7 +3361,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Route map name associated with the leaf (policy list key)</div>
+                        <div>Route map name associated with the leaf (Key for list: policy)</div>
                 </td>
             </tr>
 
@@ -3524,7 +3524,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)</div>
+                        <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (Key for list: prefix-list)</div>
                 </td>
             </tr>
             <tr>
@@ -3544,7 +3544,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)</div>
+                        <div>Prefix List name. specify a prefix list for filtering BGP advertisements. (Key for list: prefix-list)</div>
                 </td>
             </tr>
 
@@ -3608,7 +3608,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Configure sub address family such as unicast (address-family list key)</div>
+                        <div>Configure sub address family such as unicast (Key for list: address-family)</div>
                 </td>
             </tr>
             <tr>
@@ -3988,7 +3988,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Name of the peer group template that can be attached to a peer (peer-group list key)</div>
+                        <div>Name of the peer group template that can be attached to a peer (Key for list: peer-group)</div>
                 </td>
             </tr>
             <tr>
@@ -4304,12 +4304,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Lower value in the block.</div>
+                        <div>Lower value in the block. (Key for list: srgb)</div>
                 </td>
             </tr>
             <tr>
@@ -4322,12 +4323,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Upper value in the block.</div>
+                        <div>Upper value in the block. (Key for list: srgb)</div>
                 </td>
             </tr>
 
@@ -4400,7 +4402,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Provides bgp address family to parent VRF binding. (vrf list key)</div>
+                        <div>Provides bgp address family to parent VRF binding. (Key for list: vrf)</div>
                 </td>
             </tr>
             <tr>
@@ -4479,7 +4481,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364). However, it has since taken on a more general role in BGP route filtering. A route target consists of three fields; a 2-octet type field, an administrator field, and an assigned number field. According to the data formats for type 0, 1, and 2 defined in RFC4360 and RFC5668, the encoding pattern is defined as; 0;2-octet-asn;4-octet-number 1;4-octet-ipv4addr;2-octet-number 2;4-octet-asn;2-octet-number. Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;1234567890;203. (route-target list key)</div>
+                        <div>A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364). However, it has since taken on a more general role in BGP route filtering. A route target consists of three fields; a 2-octet type field, an administrator field, and an assigned number field. According to the data formats for type 0, 1, and 2 defined in RFC4360 and RFC5668, the encoding pattern is defined as; 0;2-octet-asn;4-octet-number 1;4-octet-ipv4addr;2-octet-number 2;4-octet-asn;2-octet-number. Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;1234567890;203. (Key for list: route-target)</div>
                 </td>
             </tr>
 
@@ -4521,7 +4523,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Vrf Address Family type enter the IPv4, address family mode allowing configuration of address-family specific parameters (vrf-address-family list key)</div>
+                        <div>Vrf Address Family type enter the IPv4, address family mode allowing configuration of address-family specific parameters (Key for list: vrf-address-family)</div>
                 </td>
             </tr>
             <tr>
@@ -4560,7 +4562,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Aggregate-prefix in prefix/length format (aggregate-address list key)</div>
+                        <div>Aggregate-prefix in prefix/length format (Key for list: aggregate-address)</div>
                 </td>
             </tr>
             <tr>
@@ -4668,7 +4670,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Network address to be announced in prefix/length format (network list key)</div>
+                        <div>Network address to be announced in prefix/length format (Key for list: network)</div>
                 </td>
             </tr>
             <tr>
@@ -4772,7 +4774,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Address of the BGP peer, either in IPv4 or IPv6 (peer list key)</div>
+                        <div>Address of the BGP peer, either in IPv4 or IPv6 (Key for list: peer)</div>
                 </td>
             </tr>
             <tr>
@@ -5515,7 +5517,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The direction of application of the route map policy applies for the peer. (policy list key)</div>
+                        <div>The direction of application of the route map policy applies for the peer. (Key for list: policy)</div>
                 </td>
             </tr>
             <tr>
@@ -5536,7 +5538,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Route map name associated with the leaf (policy list key)</div>
+                        <div>Route map name associated with the leaf (Key for list: policy)</div>
                 </td>
             </tr>
 
@@ -5707,7 +5709,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (prefix-list list key)</div>
+                        <div>Direction of the filter (0=FILTER-IN |1=FILTER-OUT) (Key for list: prefix-list)</div>
                 </td>
             </tr>
             <tr>
@@ -5728,7 +5730,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Prefix List name. specify a prefix list for filtering BGP advertisements. (prefix-list list key)</div>
+                        <div>Prefix List name. specify a prefix list for filtering BGP advertisements. (Key for list: prefix-list)</div>
                 </td>
             </tr>
 
@@ -6000,7 +6002,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>Tag could be instance id of OSPFv2, OSPFv3 or ISIS (instance list key)</div>
+                        <div>Tag could be instance id of OSPFv2, OSPFv3 or ISIS (Key for list: instance)</div>
                 </td>
             </tr>
 
@@ -6048,7 +6050,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>Protocol to redistribute into BGP (redistribute list key)</div>
+                        <div>Protocol to redistribute into BGP (Key for list: redistribute)</div>
                 </td>
             </tr>
 
@@ -6113,7 +6115,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364). However, it has since taken on a more general role in BGP route filtering. A route target consists of three fields; a 2-octet type field, an administrator field, and an assigned number field. According to the data formats for type 0, 1, and 2 defined in RFC4360 and RFC5668, the encoding pattern is defined as; 0;2-octet-asn;4-octet-number 1;4-octet-ipv4addr;2-octet-number 2;4-octet-asn;2-octet-number. Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;65535;100. (route-target list key)</div>
+                        <div>A route target is an 8-octet BGP extended community initially identifying a set of sites in a BGP VPN (RFC 4364). However, it has since taken on a more general role in BGP route filtering. A route target consists of three fields; a 2-octet type field, an administrator field, and an assigned number field. According to the data formats for type 0, 1, and 2 defined in RFC4360 and RFC5668, the encoding pattern is defined as; 0;2-octet-asn;4-octet-number 1;4-octet-ipv4addr;2-octet-number 2;4-octet-asn;2-octet-number. Some valid examples are; 0;100;100, 1;1.1.1.1;100, and 2;65535;100. (Key for list: route-target)</div>
                 </td>
             </tr>
 
@@ -6136,7 +6138,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>VRF SAFI type. Configure sub address family such as unicast (vrf-address-family list key)</div>
+                        <div>VRF SAFI type. Configure sub address family such as unicast (Key for list: vrf-address-family)</div>
                 </td>
             </tr>
             <tr>

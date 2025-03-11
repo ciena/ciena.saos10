@@ -52,8 +52,11 @@ options:
         suboptions:
           any:
             description: Accept any classification. Wide-Open classifier
-            type: str
+            type: list
             required: false
+            elements: str
+            choices:
+            - 'null'
           base_ethertype:
             description: Base Ethernet type.
             type: int
@@ -91,9 +94,30 @@ options:
             type: int
             required: false
           filter_parameter:
-            description: Indicates which filter parameter is used by this filter entry
+            description: 'Indicates which filter parameter is used by this filter entry (Key for list: filter-entry)'
             type: str
-            required: false
+            required: true
+            choices:
+            - icmp
+            - base-etype
+            - dscp
+            - destination-mac
+            - ip-version
+            - ip-protocol
+            - ip-fragment
+            - internal-cos
+            - filter-param-type
+            - l4-destination-port
+            - source-ip
+            - any
+            - local-termination
+            - mpls-label
+            - source-mac
+            - l4-application
+            - l4-source-port
+            - vtag-stack
+            - tcp-flags
+            - destination-ip
           icmp_message_type:
             description: ICMP Message type.
             type: str
@@ -165,21 +189,27 @@ options:
             elements: dict
             suboptions:
               label:
-                description: No description available (mpls-labels list key)
+                description: 'No description available (Key for list: mpls-labels)'
                 type: int
                 required: true
               label_any:
                 description: Any value of mpls-label.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               mpls_label:
                 description: A specific value of mpls-label.
                 type: int
                 required: false
               tc_any:
                 description: Any value of mpls TC.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               tc_value:
                 description: A specific value of mpls TC.
                 type: int
@@ -244,7 +274,7 @@ options:
                 type: int
                 required: false
               tag:
-                description: '''1'' represents outer most tag, ''2'' next outer most, etc (vtags list key)'
+                description: '''1'' represents outer most tag, ''2'' next outer most, etc (Key for list: vtags)'
                 type: int
                 required: true
               tpid:
@@ -271,7 +301,7 @@ options:
         - match-all
         - match-any
       name:
-        description: A unique name for the classifier. (classifier list key)
+        description: 'A unique name for the classifier. (Key for list: classifier)'
         type: str
         required: true
   state:
