@@ -167,5 +167,5 @@ class LogicalPortsArgs(object):  # pylint: disable=R0903
                 },
             },
         },
-        "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},
+        "state": {"type": "str", "default": "merged", "choices": ["merged"]},
     }  # pylint: disable=C0301

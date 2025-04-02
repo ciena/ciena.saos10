@@ -31,10 +31,6 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
     BgpFacts,
 )
 
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.logical_ports.logical_ports import (
-    LogicalPortsFacts,
-)
-
 from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.isis.isis import (
     IsisFacts,
 )
@@ -43,11 +39,15 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
     LdpFacts,
 )
 
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.logical_ports.logical_ports import (
+    Logical_portsFacts,
+)
+
 FACT_LEGACY_SUBSETS = dict(default=Default, config=Config)
 FACT_RESOURCE_SUBSETS = dict(
+    logical_ports=Logical_portsFacts,
     ldp=LdpFacts,
     isis=IsisFacts,
-    logicalports=LogicalPortsFacts,
     bgp=BgpFacts,
     fps=FpsFacts,
     fds=FdsFacts,

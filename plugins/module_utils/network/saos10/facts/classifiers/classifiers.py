@@ -80,7 +80,7 @@ class ClassifiersFacts(object):
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resources = data.xpath("/rpc-reply/data/classifiers/classifiers")
+        resources = data.xpath("//classifiers/classifiers")
         objs = []
         for resource in resources:
             if resource:

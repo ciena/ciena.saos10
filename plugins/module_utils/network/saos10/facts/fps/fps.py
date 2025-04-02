@@ -80,7 +80,7 @@ class FpsFacts(object):
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resources = data.xpath("/rpc-reply/data/fps/fps")
+        resources = data.xpath("//fps/fps")
         objs = []
         for resource in resources:
             if resource:

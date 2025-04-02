@@ -5,7 +5,7 @@
 ciena.saos10.saos10_fps
 ***********************
 
-**Manage fps fp on Ciena saos10 devices.**
+**A List of flow-points.Manage the fps fp configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_fps
 
 Synopsis
 --------
-- A List of flow-points.. A list of all mef-fp configuration entries.
+- A List of flow-points. A list of all mef-fp configuration entries.
 
 
 
@@ -1398,7 +1398,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>

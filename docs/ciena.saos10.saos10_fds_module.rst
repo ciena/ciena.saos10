@@ -5,7 +5,7 @@
 ciena.saos10.saos10_fds
 ***********************
 
-**Manage fds on Ciena saos10 devices**
+**List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs etc).Manage the fds fd configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_fds
 
 Synopsis
 --------
-- List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs etc).
+- List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs   etc). The list of configured forwarding domains on the device.
 
 
 
@@ -479,7 +479,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>

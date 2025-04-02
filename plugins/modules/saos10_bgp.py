@@ -34,8 +34,8 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_bgp
-short_description: Manage bgp instance on Ciena saos10 devices.
-description: Top level bgp container for bgp configuration. Top level bgp list with maximum number of instances 1
+short_description: Top level bgp container for bgp configurationManage the bgp instance configuration of a Ciena saos10 device
+description: "Top level bgp container for bgp configuration\n Top level bgp list with maximum number of instances 1"
 author: Ciena
 options:
   config:
@@ -1617,7 +1617,8 @@ options:
         key: name
     key: as
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged

@@ -34,9 +34,11 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_classifiers
-short_description: Manage classifiers on Ciena saos10 devices
-description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define
-  their incoming classification.
+short_description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to
+  define their incoming classification.Manage the classifiers classifier configuration of a Ciena saos10 device
+description: "List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define\
+  \ their incoming classification.\n List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow\
+  \ etc.) to define their incoming classification."
 author: Ciena
 options:
   config:
@@ -98,26 +100,26 @@ options:
             type: str
             required: true
             choices:
-            - icmp
-            - base-etype
             - dscp
-            - destination-mac
-            - ip-version
+            - icmp
             - ip-protocol
-            - ip-fragment
-            - internal-cos
-            - filter-param-type
-            - l4-destination-port
-            - source-ip
-            - any
-            - local-termination
-            - mpls-label
-            - source-mac
-            - l4-application
-            - l4-source-port
-            - vtag-stack
             - tcp-flags
+            - filter-param-type
+            - internal-cos
+            - l4-application
+            - local-termination
+            - ip-version
             - destination-ip
+            - l4-destination-port
+            - any
+            - base-etype
+            - destination-mac
+            - vtag-stack
+            - l4-source-port
+            - source-ip
+            - ip-fragment
+            - source-mac
+            - mpls-label
           icmp_message_type:
             description: ICMP Message type.
             type: str
@@ -214,6 +216,7 @@ options:
                 description: A specific value of mpls TC.
                 type: int
                 required: false
+            key: label
           source_address:
             description: Classification on IP source-address (v4/v6) and masking.
             type: str
@@ -293,6 +296,8 @@ options:
                 description: The maximum value of VLAN ID for ranged VLAN-ID values.
                 type: int
                 required: false
+            key: tag
+        key: filter-parameter
       filter_operation:
         description: Choose the scope of application of the rule
         type: str
@@ -304,8 +309,10 @@ options:
         description: 'A unique name for the classifier. (Key for list: classifier)'
         type: str
         required: true
+    key: name
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged

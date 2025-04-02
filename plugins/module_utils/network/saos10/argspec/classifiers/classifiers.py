@@ -31,7 +31,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-class classifiersArgs(object):  # pylint: disable=R0903
+class ClassifiersArgs(object):  # pylint: disable=R0903
     """The arg spec for the saos10_classifiers module"""
 
     def __init__(self, **kwargs):
@@ -50,26 +50,26 @@ class classifiersArgs(object):  # pylint: disable=R0903
                         "filter_parameter": {
                             "type": "str",
                             "choices": [
-                                "icmp",
-                                "base-etype",
                                 "dscp",
-                                "destination-mac",
-                                "ip-version",
+                                "icmp",
                                 "ip-protocol",
-                                "ip-fragment",
-                                "internal-cos",
-                                "filter-param-type",
-                                "l4-destination-port",
-                                "source-ip",
-                                "any",
-                                "local-termination",
-                                "mpls-label",
-                                "source-mac",
-                                "l4-application",
-                                "l4-source-port",
-                                "vtag-stack",
                                 "tcp-flags",
+                                "filter-param-type",
+                                "internal-cos",
+                                "l4-application",
+                                "local-termination",
+                                "ip-version",
                                 "destination-ip",
+                                "l4-destination-port",
+                                "any",
+                                "base-etype",
+                                "destination-mac",
+                                "vtag-stack",
+                                "l4-source-port",
+                                "source-ip",
+                                "ip-fragment",
+                                "source-mac",
+                                "mpls-label",
                             ],
                             "required": True,
                         },

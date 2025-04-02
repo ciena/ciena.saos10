@@ -5,7 +5,7 @@
 ciena.saos10.saos10_bgp
 ***********************
 
-**Manage bgp instance on Ciena saos10 devices.**
+**Top level bgp container for bgp configurationManage the bgp instance configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_bgp
 
 Synopsis
 --------
-- Top level bgp container for bgp configuration. Top level bgp list with maximum number of instances 1
+- Top level bgp container for bgp configuration Top level bgp list with maximum number of instances 1
 
 
 
@@ -6220,7 +6220,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>

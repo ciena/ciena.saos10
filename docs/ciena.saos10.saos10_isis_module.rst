@@ -5,7 +5,7 @@
 ciena.saos10.saos10_isis
 ************************
 
-**Manage isis instance on Ciena saos10 devices.**
+**List of IS-IS structures.Manage the isis instance configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_isis
 
 Synopsis
 --------
-- List of IS-IS structures.. IS-IS structure
+- List of IS-IS structures. IS-IS structure
 
 
 
@@ -3382,7 +3382,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>
@@ -3398,26 +3398,17 @@ Examples
 
     # Using merged
 
-    - name: Configure TODO
-      ciena.saos10.saos10_TODO:
+    - name: Configure Instance
+      ciena.saos10.saos10_isis:
         config:
-          - name: untagged
-            filter_entry:
-              - filter_parameter: vtag-stack
-                untagged_exclude_priority_tagged: false
-          - name: foo-100
-            filter_entry:
-              - filter_parameter: vtag-stack
-                vtags:
-                  - tag: 1
-                    vlan_id: 100
+          - instance: 100
         state: merged
     # Using deleted
 
-    - name: Delete TODO
-      ciena.saos10.saos10_TODO:
+    - name: Delete Isis instance
+      ciena.saos10.saos10_isis:
         config:
-          - name: TODO
+          - instance: 100
         state: deleted
 
 

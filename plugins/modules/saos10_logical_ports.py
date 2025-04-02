@@ -34,9 +34,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_logical_ports
-short_description: Manage logical_ports logical_port on Ciena saos10 devices.
-description: List of logical-ports.. List of logical-ports. A Logical-Port can be mapped to an ETTP for a physical faceplate port, virtual-port
-  etc. or it may map to multiple ETTPs in support of Agg Ports.
+short_description: List of logical-ports.Manage the logical_ports logical_port configuration of a Ciena saos10 device
+description: "List of logical-ports.\n List of logical-ports. A Logical-Port can be mapped to an ETTP for a physical faceplate port, virtual-port\
+  \ etc. or it may map to multiple ETTPs in support of Agg Ports."
 author: Ciena
 options:
   config:
@@ -252,38 +252,24 @@ options:
         - rx-spoke-tx-hub
     key: name
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged
-    - deleted
     default: merged
 
 """
 EXAMPLES = """
 # Using merged
 
-- name: Configure TODO
-  ciena.saos10.saos10_TODO:
+- name: Configure logical port
+  ciena.saos10.saos10_logical_ports:
     config:
-      - name: untagged
-        filter_entry:
-          - filter_parameter: vtag-stack
-            untagged_exclude_priority_tagged: false
-      - name: foo-100
-        filter_entry:
-          - filter_parameter: vtag-stack
-            vtags:
-              - tag: 1
-                vlan_id: 100
+      - name: 1
+        description: foo
+        admin_state: disable
     state: merged
-# Using deleted
-
-- name: Delete TODO
-  ciena.saos10.saos10_TODO:
-    config:
-      - name: TODO
-    state: deleted
 """
 
 RETURN = """

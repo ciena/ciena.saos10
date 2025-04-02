@@ -34,8 +34,8 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_fps
-short_description: Manage fps fp on Ciena saos10 devices.
-description: A List of flow-points.. A list of all mef-fp configuration entries.
+short_description: A List of flow-points.Manage the fps fp configuration of a Ciena saos10 device
+description: "A List of flow-points.\n A list of all mef-fp configuration entries."
 author: Ciena
 options:
   config:
@@ -521,7 +521,8 @@ options:
         - 'null'
     key: name
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged

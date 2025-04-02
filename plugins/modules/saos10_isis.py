@@ -34,8 +34,8 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_isis
-short_description: Manage isis instance on Ciena saos10 devices.
-description: List of IS-IS structures.. IS-IS structure
+short_description: List of IS-IS structures.Manage the isis instance configuration of a Ciena saos10 device
+description: "List of IS-IS structures.\n IS-IS structure"
 author: Ciena
 options:
   config:
@@ -847,7 +847,8 @@ options:
         required: true
     key: tag
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged
@@ -858,26 +859,17 @@ options:
 EXAMPLES = """
 # Using merged
 
-- name: Configure TODO
-  ciena.saos10.saos10_TODO:
+- name: Configure Instance
+  ciena.saos10.saos10_isis:
     config:
-      - name: untagged
-        filter_entry:
-          - filter_parameter: vtag-stack
-            untagged_exclude_priority_tagged: false
-      - name: foo-100
-        filter_entry:
-          - filter_parameter: vtag-stack
-            vtags:
-              - tag: 1
-                vlan_id: 100
+      - instance: 100
     state: merged
 # Using deleted
 
-- name: Delete TODO
-  ciena.saos10.saos10_TODO:
+- name: Delete Isis instance
+  ciena.saos10.saos10_isis:
     config:
-      - name: TODO
+      - instance: 100
     state: deleted
 """
 

@@ -78,9 +78,9 @@ class LogicalPorts(ConfigBase):
 
         if config_dict:
             config_xml = self._create_xml_config_generic(config_dict)
-            kwargs = {"config": f"<config>{config_xml}</config>", "target": "running"}
+            config = '<nc:config xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">' f"{config_xml}" "</nc:config>"
             try:
-                self._module._connection.edit_config(**kwargs)
+                self._module._connection.edit_config(config=config, target="running")
             except Exception as e:
                 return {"failed": True, "msg": str(e)}
 

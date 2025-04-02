@@ -34,9 +34,10 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_fds
-short_description: Manage fds on Ciena saos10 devices
-description: List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs
-  etc).
+short_description: List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points,
+  MPLS-PWs etc).Manage the fds fd configuration of a Ciena saos10 device
+description: "List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs\
+  \ etc).\n The list of configured forwarding domains on the device."
 author: Ciena
 options:
   config:
@@ -140,6 +141,7 @@ options:
                   push outermost (always push to outer) (Key for list: vlan-stack)'
                 type: int
                 required: true
+            key: tag
       l2cp_profile:
         description: Reference to a Layer 2 Control Protocol Tunneling Profile.
         type: str
@@ -180,8 +182,10 @@ options:
         description: The id of VLAN associated with forwarding-domain.
         type: int
         required: false
+    key: name
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged

@@ -5,7 +5,7 @@
 ciena.saos10.saos10_classifiers
 *******************************
 
-**Manage classifiers on Ciena saos10 devices**
+**List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define their incoming classification.Manage the classifiers classifier configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_classifiers
 
 Synopsis
 --------
-- List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define their incoming classification.
+- List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define   their incoming classification. List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow   etc.) to define their incoming classification.
 
 
 
@@ -253,26 +253,26 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>icmp</li>
-                                    <li>base-etype</li>
                                     <li>dscp</li>
-                                    <li>destination-mac</li>
-                                    <li>ip-version</li>
+                                    <li>icmp</li>
                                     <li>ip-protocol</li>
-                                    <li>ip-fragment</li>
-                                    <li>internal-cos</li>
-                                    <li>filter-param-type</li>
-                                    <li>l4-destination-port</li>
-                                    <li>source-ip</li>
-                                    <li>any</li>
-                                    <li>local-termination</li>
-                                    <li>mpls-label</li>
-                                    <li>source-mac</li>
-                                    <li>l4-application</li>
-                                    <li>l4-source-port</li>
-                                    <li>vtag-stack</li>
                                     <li>tcp-flags</li>
+                                    <li>filter-param-type</li>
+                                    <li>internal-cos</li>
+                                    <li>l4-application</li>
+                                    <li>local-termination</li>
+                                    <li>ip-version</li>
                                     <li>destination-ip</li>
+                                    <li>l4-destination-port</li>
+                                    <li>any</li>
+                                    <li>base-etype</li>
+                                    <li>destination-mac</li>
+                                    <li>vtag-stack</li>
+                                    <li>l4-source-port</li>
+                                    <li>source-ip</li>
+                                    <li>ip-fragment</li>
+                                    <li>source-mac</li>
+                                    <li>mpls-label</li>
                         </ul>
                 </td>
                 <td>
@@ -981,7 +981,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>

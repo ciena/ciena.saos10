@@ -5,7 +5,7 @@
 ciena.saos10.saos10_logical_ports
 *********************************
 
-**Manage logical_ports logical_port on Ciena saos10 devices.**
+**List of logical-ports.Manage the logical_ports logical_port configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_logical_ports
 
 Synopsis
 --------
-- List of logical-ports.. List of logical-ports. A Logical-Port can be mapped to an ETTP for a physical faceplate port, virtual-port etc. or it may map to multiple ETTPs in support of Agg Ports.
+- List of logical-ports. List of logical-ports. A Logical-Port can be mapped to an ETTP for a physical faceplate port, virtual-port   etc. or it may map to multiple ETTPs in support of Agg Ports.
 
 
 
@@ -569,11 +569,10 @@ Parameters
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                     <li><div style="color: blue"><b>merged</b>&nbsp;&larr;</div></li>
-                                    <li>deleted</li>
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>
@@ -589,27 +588,13 @@ Examples
 
     # Using merged
 
-    - name: Configure TODO
-      ciena.saos10.saos10_TODO:
+    - name: Configure logical port
+      ciena.saos10.saos10_logical_ports:
         config:
-          - name: untagged
-            filter_entry:
-              - filter_parameter: vtag-stack
-                untagged_exclude_priority_tagged: false
-          - name: foo-100
-            filter_entry:
-              - filter_parameter: vtag-stack
-                vtags:
-                  - tag: 1
-                    vlan_id: 100
+          - name: 1
+            description: foo
+            admin_state: disable
         state: merged
-    # Using deleted
-
-    - name: Delete TODO
-      ciena.saos10.saos10_TODO:
-        config:
-          - name: TODO
-        state: deleted
 
 
 
