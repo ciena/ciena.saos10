@@ -6229,30 +6229,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    # Using merged
-
-    - name: Configure BGP
-      ciena.saos10.saos10_bgp:
-        config:
-          - as: 65001
-            address_family:
-              - afi: ipv4
-                safi: unicast
-                network:
-                  - address: 192.168.1.0/24
-        state: merged
-    # Using deleted
-
-    - name: Delete bgp
-      ciena.saos10.saos10_bgp:
-        state: deleted
-        config:
-          - as: 65001
 
 
 

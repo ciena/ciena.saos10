@@ -4,7 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-The saos10 ldp fact class
+The saos10 mpls fact class
 It is in this file the configuration is collected from the device
 for a given resource, parsed, and the facts tree is populated
 based on the configuration.
@@ -28,8 +28,8 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.netconf.netconf import (
     get,
 )
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.ldp.ldp import (
-    LdpArgs,
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.mpls.mpls import (
+    MplsArgs,
 )
 
 try:
@@ -42,12 +42,12 @@ except ImportError:
     HAS_LXML = False
 
 
-class LdpFacts(object):
-    """The saos10 ldp fact class"""
+class MplsFacts(object):
+    """The saos10 mpls fact class"""
 
     def __init__(self, module, subspec="config", options="options"):
         self._module = module
-        self.argument_spec = LdpArgs.argument_spec
+        self.argument_spec = MplsArgs.argument_spec
         spec = deepcopy(self.argument_spec)
         if subspec:
             if options:
@@ -60,7 +60,7 @@ class LdpFacts(object):
         self.generated_spec = utils.generate_dict(facts_argument_spec)
 
     def populate_facts(self, connection, ansible_facts, data=None):
-        """Populate the facts for ldp
+        """Populate the facts for mpls
         :param connection: the device connection
         :param ansible_facts: Facts dictionary
         :param data: previously collected conf
@@ -72,28 +72,21 @@ class LdpFacts(object):
 
         if not data:
             config_filter = """
-                <ldp xmlns="http://ciena.com/ns/yang/ciena/ciena-ldp">
-                </ldp>
+                <mpls xmlns="http://ciena.com/ns/yang/ciena-mpls">
+                </mpls>
                 """
             data = get(self._module, filter=("subtree", config_filter))
 
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resources = data.xpath("//ldp/ldp")
-        objs = []
-        for resource in resources:
-            if resource:
-                obj = self.render_config(self.generated_spec, resource)
-                if obj:
-                    objs.append(obj)
+        resource = data.xpath("//mpls")[0]
+        obj = self.render_config(self.generated_spec, resource)
 
         facts = {}
-        if objs:
-            facts["ldp"] = []
-            params = utils.validate_config(self.argument_spec, {"config": objs})
-            for cfg in params["config"]:
-                facts["ldp"].append(utils.remove_empties(cfg))
+        facts["mpls"] = {}
+        params = utils.validate_config(self.argument_spec, {"config": obj})
+        facts["mpls"] = params["config"]
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts

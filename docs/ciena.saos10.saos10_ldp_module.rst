@@ -5,7 +5,7 @@
 ciena.saos10.saos10_ldp
 ***********************
 
-**Manage ldp on Ciena saos10 devices**
+**Ldp config container.Manage the ldp instance configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_ldp
 
 Synopsis
 --------
-- Ldp config container.
+- Ldp config container. Tag is default ldp instance.
 
 
 
@@ -732,7 +732,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>
@@ -741,34 +741,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    # Using merged
-
-    - name: Configure TODO
-      ciena.saos10.saos10_TODO:
-        config:
-          - name: untagged
-            filter_entry:
-              - filter_parameter: vtag-stack
-                untagged_exclude_priority_tagged: false
-          - name: foo-100
-            filter_entry:
-              - filter_parameter: vtag-stack
-                vtags:
-                  - tag: 1
-                    vlan_id: 100
-        state: merged
-    # Using deleted
-
-    - name: Delete TODO
-      ciena.saos10.saos10_TODO:
-        config:
-          - name: TODO
-        state: deleted
 
 
 

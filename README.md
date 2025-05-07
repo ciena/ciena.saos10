@@ -43,8 +43,10 @@ Name | Description
 [ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs etc).Manage the fds fd configuration of a Ciena saos10 device
 [ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|A List of flow-points.Manage the fps fp configuration of a Ciena saos10 device
 [ciena.saos10.saos10_isis](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_isis_module.rst)|List of IS-IS structures.Manage the isis instance configuration of a Ciena saos10 device
-[ciena.saos10.saos10_ldp](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_ldp_module.rst)|Manage ldp on Ciena saos10 devices
-[ciena.saos10.saos10_logical_ports](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_logical_ports_module.rst)|List of logical-ports.Manage the logical_ports logical_port configuration of a Ciena saos10 device
+[ciena.saos10.saos10_ldp](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_ldp_module.rst)|Ldp config container.Manage the ldp instance configuration of a Ciena saos10 device
+[ciena.saos10.saos10_logical_ports](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_logical-ports_module.rst)|List of logical-ports.Manage the logical_ports logical_port configuration of a Ciena saos10 device
+[ciena.saos10.saos10_mpls](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_mpls_module.rst)|MPLS config container.Manage the mpls configuration of a Ciena saos10 device
+[ciena.saos10.saos10_ptps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_ptps_module.rst)|Physical Termination Point (PTP) configuration and operational data.Manage the ptps ptp configuration of a Ciena saos10 device
 
 <!--end collection content-->
 

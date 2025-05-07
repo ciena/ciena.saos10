@@ -4,7 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-The saos10_ldp class
+The saos10_mpls class
 It is in this file where the current configuration (as dict)
 is compared to the provided configuration (as dict) and the command set
 necessary to bring the current configuration to it's desired end-state is
@@ -36,23 +36,23 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.
     config_is_diff,
 )
 
-NAMESPACE = "http://ciena.com/ns/yang/ciena/ciena-ldp"
-ROOT_KEY = "ldp"
-RESOURCE = "ldp"
-XML_ITEMS = "instance"
-XML_ITEMS_KEY = "tag"
+NAMESPACE = "http://ciena.com/ns/yang/ciena-mpls"
+ROOT_KEY = "mpls"
+RESOURCE = "mpls"
+XML_ITEMS = "None"
+XML_ITEMS_KEY = "None"
 
 
-class Ldp(ConfigBase):
+class Mpls(ConfigBase):
     """
-    The saos10_ldp class
+    The saos10_mpls class
     """
 
     gather_subset = ["!all", "!min"]
     gather_network_resources = [RESOURCE]
 
     def __init__(self, module):
-        super(Ldp, self).__init__(module)
+        super(Mpls, self).__init__(module)
 
     def get_facts(self):
         """Get the 'facts' (the current configuration)
@@ -194,5 +194,5 @@ class Ldp(ConfigBase):
         if not want:
             want = have
         for config in want:
-            response.append({"tag": config["tag"], "operation": "delete"})
+            response.append({"None": config["None"], "operation": "delete"})
         return response

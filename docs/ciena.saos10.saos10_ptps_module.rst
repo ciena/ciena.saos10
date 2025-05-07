@@ -1,11 +1,11 @@
-.. _ciena.saos10.saos10_fds_module:
+.. _ciena.saos10.saos10_ptps_module:
 
 
-***********************
-ciena.saos10.saos10_fds
-***********************
+************************
+ciena.saos10.saos10_ptps
+************************
 
-**List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs etc).Manage the fds fd configuration of a Ciena saos10 device**
+**Physical Termination Point (PTP) configuration and operational data.Manage the ptps ptp configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_fds
 
 Synopsis
 --------
-- List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs   etc). The list of configured forwarding domains on the device.
+- Physical Termination Point (PTP) configuration and operational data. List of PTP objects.
 
 
 
@@ -45,153 +45,14 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>The list of configured forwarding domains on the device.</div>
+                        <div>List of PTP objects.</div>
                 </td>
             </tr>
                                 <tr>
                     <td class="elbow-placeholder"></td>
                 <td colspan="3">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>color</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>green</li>
-                                    <li>yellow</li>
-                                    <li>red</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>For an L2-frame that is initiated/injected via this forwarding domain, this specifies the fixed color value to use when when the policy is fixed.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>cos</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>For an L2-frame that is initiated/injected via this forwarding domain, this specifies the fixed cos value to use when when the policy is fixed.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>cos_queue_map</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Reference to queue-map for hierarchical shaping/scheduling.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>description</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>This is string used to describe the Forwarding Domain.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>flood_containment_profile</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Reference to a Flood Containment Profile definition.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>initiate_cos_to_frame_map</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>For an L2-frame that is initiated/injected via this forwarding domain, this specifies the cos-to-frame map to use for a cos-to-frame map policy of &#x27;mapped&#x27; from the initiate-l2-transform config.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>initiate_frame_to_cos_map</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>For an L2-frame that is initiated/injected via this forwarding domain, this specifies the frame-to-cos map to use for an initiate frame-to-cos map policy of &#x27;mapped&#x27;.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>initiate_frame_to_cos_map_policy</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>outer-tag</li>
-                                    <li>inner-tag</li>
-                                    <li>mpls-tc</li>
-                                    <li>dscp</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>For an L2-frame that is initiated/injected via this forwarding domain, this specifies the frame-to-cos-map sub-policy to use when when the policy is mapped.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>initiate_l2_transform</b>
+                    <b>properties</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
@@ -200,7 +61,7 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>For an L2-frame that is initiated/injected via this forwarding domain, this specifies the l2-transform to be applied to the frame. e.g. an L3-frame injected via this forwarding domain to L2 datapath.</div>
+                        <div>All the configurable and operational data of this PTP instance.</div>
                 </td>
             </tr>
                                 <tr>
@@ -208,17 +69,54 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vlan_stack</b>
+                    <b>forward_error_correction</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=dictionary</span>
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>disabled</li>
+                                    <li>enabled</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Forward error correction.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>parent_id</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>For an L2-frame that is initiated/injected via this forwarding domain, this specifies the VLAN related l2-transform to be applied to the frame.</div>
+                        <div>Reference to the name of the transceiver (XCVR) associated with the PTP. Read-only attribute.</div>
+                </td>
+            </tr>
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>thresholds</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>Common container for PTP threshold configuration data.</div>
                 </td>
             </tr>
                                 <tr>
@@ -227,20 +125,16 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>push_dei</b>
+                    <b>pre_fec_sd_dbq</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">float</span>
                     </div>
                 </td>
                 <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>enabled</li>
-                                    <li>disabled</li>
-                        </ul>
                 </td>
                 <td>
-                        <div>Represents the DEI value of the vlan tag for the tag being pushed.</div>
+                        <div>Pre-FEC Signal Degrade threshold value, expressed in dBQ notation.</div>
                 </td>
             </tr>
             <tr>
@@ -249,159 +143,120 @@ Parameters
                     <td class="elbow-placeholder"></td>
                 <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>push_pcp</b>
+                    <b>pre_fec_sf_dbq</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>pcp-0</li>
-                                    <li>pcp-1</li>
-                                    <li>pcp-2</li>
-                                    <li>pcp-3</li>
-                                    <li>pcp-4</li>
-                                    <li>pcp-5</li>
-                                    <li>pcp-6</li>
-                                    <li>pcp-7</li>
-                                    <li>map</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>Represents the PCP value of the vlan tag for the tag being pushed. When the PCP value is mapped using a cos-to-frame-map, &#x27;map&#x27; is specified.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                    <td class="elbow-placeholder"></td>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>push_tpid</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>tpid-8100</li>
-                                    <li>tpid-88a8</li>
-                                    <li>tpid-9100</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>Represents the TPID value of the vlan tag for the tag being pushed</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                    <td class="elbow-placeholder"></td>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>push_vid</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                         / <span style="color: red">required</span>
+                        <span style="color: purple">float</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Represents the VID value of the vlan tag for the tag being pushed</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                    <td class="elbow-placeholder"></td>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>tag</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                         / <span style="color: red">required</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Dependent on the transform operation, the tag numbers are push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer) (Key for list: vlan-stack)</div>
+                        <div>Pre-FEC Signal Fail threshold value, expressed in dBQ notation.</div>
                 </td>
             </tr>
 
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>transmitter</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>PTP transmitter related config and operational data fields.</div>
+                </td>
+            </tr>
+                                <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>disabled</li>
+                                    <li>enabled</li>
+                                    <li>not-applicable</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Transmitter state (enabled or disabled) of the PTP. PTP Admin State cannot be changed to enabled unless the transmitter state is enabled.</div>
+                </td>
+            </tr>
+
+            <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>xcvr_type</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                    </div>
+                </td>
+                <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>not-available</li>
+                                    <li>unsupported</li>
+                                    <li>QSFPplus</li>
+                                    <li>QSFP28</li>
+                                    <li>WaveLogic 3 Extreme</li>
+                                    <li>WaveLogic Ai</li>
+                                    <li>Sgmii</li>
+                                    <li>CFP</li>
+                                    <li>SFP</li>
+                                    <li>SFPplus</li>
+                                    <li>XFP</li>
+                                    <li>SFPplus tdwdm</li>
+                                    <li>CFP2</li>
+                                    <li>CFP2-DCO</li>
+                                    <li>CFP2-ACO</li>
+                                    <li>CEP001-OC3</li>
+                                    <li>CEP002-OC3-OC12</li>
+                                    <li>CEP003-DS3-E3</li>
+                                    <li>GES101-OC3-STM1</li>
+                                    <li>TDM2GE-E1</li>
+                                    <li>TDM4GE-DS1</li>
+                                    <li>TSOP01-OC3-STM1</li>
+                                    <li>TSOP02-OC12-STM4</li>
+                                    <li>TSOP03-OC48-STM16</li>
+                                    <li>NATIVE-OC3-OC12</li>
+                                    <li>NATIVE-OC48</li>
+                                    <li>QSFP56</li>
+                                    <li>QSFPDD</li>
+                                    <li>SFP28</li>
+                                    <li>Fixed-Copper</li>
+                                    <li>SFPDD</li>
+                                    <li>QSFPDD-AOC</li>
+                                    <li>QSFPDD-DAC</li>
+                                    <li>QSFPDD-WaveLogic-5n</li>
+                                    <li>SFP56</li>
+                        </ul>
+                </td>
+                <td>
+                        <div>Transceiver type of the XCVR that&#x27;s associated with this PTP. Type depends on what is physically plugged in. Read only attribute.</div>
+                </td>
+            </tr>
 
             <tr>
                     <td class="elbow-placeholder"></td>
                 <td colspan="3">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>l2cp_profile</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>Reference to a Layer 2 Control Protocol Tunneling Profile.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>mac_learning</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>enabled</li>
-                                    <li>disabled</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>Enable/disable MAC learning for this forwarding-domain.</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>mode</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                    </div>
-                </td>
-                <td>
-                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>vlan</li>
-                                    <li>vpls</li>
-                                    <li>vpws</li>
-                                    <li>fxc</li>
-                                    <li>tdm-vpls</li>
-                                    <li>tdm-vpws</li>
-                                    <li>evpn-vpws</li>
-                                    <li>evpn-vpls</li>
-                        </ul>
-                </td>
-                <td>
-                        <div>Forwarding mode of the forwarding-domain</div>
-                </td>
-            </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>name</b>
+                    <b>ptp_id</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
@@ -411,57 +266,68 @@ Parameters
                 <td>
                 </td>
                 <td>
-                        <div>An administratively assigned string, which may be used to identify the forwarding domain. (Key for list: fd)</div>
+                        <div>Unique, access identifier string of the PTP (e.g., &#x27;1/1&#x27;). Key value for the PTP list. Read-only attribute. (Key for list: ptp)</div>
                 </td>
             </tr>
             <tr>
                     <td class="elbow-placeholder"></td>
                 <td colspan="3">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>pfg_profile</b>
+                    <b>state</b>
+                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">dictionary</span>
+                    </div>
+                </td>
+                <td>
+                </td>
+                <td>
+                        <div>State information of this PTP instance.</div>
+                </td>
+            </tr>
+                                <tr>
+                    <td class="elbow-placeholder"></td>
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-"></div>
+                    <b>admin_state</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>disabled</li>
+                                    <li>enabled</li>
+                        </ul>
                 </td>
                 <td>
-                        <div>Reference to a Private Forwarding Group Profile.</div>
+                        <div>Administrative state (enabled or disabled) of the PTP. Intended for future use.</div>
                 </td>
             </tr>
             <tr>
                     <td class="elbow-placeholder"></td>
-                <td colspan="3">
+                    <td class="elbow-placeholder"></td>
+                <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>queue_group_indirection</b>
+                    <b>spli_management</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>disabled</li>
+                                    <li>enabled</li>
+                        </ul>
                 </td>
                 <td>
-                        <div>Reference to queue-group-indirection for hierarchical shaping/scheduling.</div>
+                        <div>Whether or not Service Photonic Layer Interoperations management protocol is enabled on this PTP.</div>
                 </td>
             </tr>
-            <tr>
-                    <td class="elbow-placeholder"></td>
-                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-"></div>
-                    <b>vlan_id</b>
-                    <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                    </div>
-                </td>
-                <td>
-                </td>
-                <td>
-                        <div>The id of VLAN associated with forwarding-domain.</div>
-                </td>
-            </tr>
+
 
             <tr>
                 <td colspan="4">

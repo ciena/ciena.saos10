@@ -253,26 +253,26 @@ Parameters
                 </td>
                 <td>
                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                    <li>dscp</li>
-                                    <li>icmp</li>
-                                    <li>ip-protocol</li>
-                                    <li>tcp-flags</li>
-                                    <li>filter-param-type</li>
-                                    <li>internal-cos</li>
-                                    <li>l4-application</li>
-                                    <li>local-termination</li>
                                     <li>ip-version</li>
-                                    <li>destination-ip</li>
-                                    <li>l4-destination-port</li>
-                                    <li>any</li>
-                                    <li>base-etype</li>
-                                    <li>destination-mac</li>
-                                    <li>vtag-stack</li>
-                                    <li>l4-source-port</li>
                                     <li>source-ip</li>
+                                    <li>vtag-stack</li>
                                     <li>ip-fragment</li>
-                                    <li>source-mac</li>
+                                    <li>l4-source-port</li>
                                     <li>mpls-label</li>
+                                    <li>any</li>
+                                    <li>tcp-flags</li>
+                                    <li>internal-cos</li>
+                                    <li>destination-mac</li>
+                                    <li>dscp</li>
+                                    <li>destination-ip</li>
+                                    <li>base-etype</li>
+                                    <li>l4-destination-port</li>
+                                    <li>icmp</li>
+                                    <li>local-termination</li>
+                                    <li>ip-protocol</li>
+                                    <li>l4-application</li>
+                                    <li>source-mac</li>
+                                    <li>filter-param-type</li>
                         </ul>
                 </td>
                 <td>
@@ -990,35 +990,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    # Using merged
-
-    - name: Configure classifier
-      ciena.saos10.saos10_classifiers:
-        config:
-          - name: untagged
-            filter_entry:
-              - filter_parameter: vtag-stack
-                untagged_exclude_priority_tagged: false
-          - name: foo-100
-            filter_entry:
-              - filter_parameter: vtag-stack
-                vtags:
-                  - tag: 1
-                    vlan_id: 100
-        state: merged
-    # Using deleted
-
-    - name: Delete classifier
-      ciena.saos10.saos10_classifiers:
-        config:
-          - name: untagged
-          - name: foo-100
-        state: deleted
 
 
 

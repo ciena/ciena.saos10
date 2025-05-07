@@ -34,8 +34,8 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_ldp
-short_description: Manage ldp on Ciena saos10 devices
-description: Ldp config container.
+short_description: Ldp config container.Manage the ldp instance configuration of a Ciena saos10 device
+description: "Ldp config container.\n Tag is default ldp instance."
 author: Ciena
 options:
   config:
@@ -133,6 +133,7 @@ options:
                 description: 'Refers to L3 interface name. (Key for list: interface)'
                 type: str
                 required: true
+            key: name
       keepalive_interval:
         description: The Keepalive interval determines how often a message is sent over the session to ensure that the keepalive timeout is not
           exceeded.If no LDP traffic is sent over the session in this much time,a keepalive message is sent.
@@ -166,6 +167,7 @@ options:
                 description: Assigns an encrypted MD5 password to an LDP peer
                 type: str
                 required: false
+            key: lsr-id
       pw_status_tlv:
         description: Enabling pw-status-tlv to signal the pseudowire status which is disabled by default.
         type: bool
@@ -197,6 +199,7 @@ options:
                   default value is inherited from global value.
                 type: int
                 required: false
+            key: address
       targeted_hello_holdtime:
         description: The time interval for which an LDP targeted Hello adjacency is maintained in the absence of targeted Hello messages from
           an LDP neighbor
@@ -214,8 +217,10 @@ options:
             description: The transport address advertised in LDP Hello messages.
             type: str
             required: false
+    key: tag
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged
@@ -224,29 +229,6 @@ options:
 
 """
 EXAMPLES = """
-# Using merged
-
-- name: Configure TODO
-  ciena.saos10.saos10_TODO:
-    config:
-      - name: untagged
-        filter_entry:
-          - filter_parameter: vtag-stack
-            untagged_exclude_priority_tagged: false
-      - name: foo-100
-        filter_entry:
-          - filter_parameter: vtag-stack
-            vtags:
-              - tag: 1
-                vlan_id: 100
-    state: merged
-# Using deleted
-
-- name: Delete TODO
-  ciena.saos10.saos10_TODO:
-    config:
-      - name: TODO
-    state: deleted
 """
 
 RETURN = """
