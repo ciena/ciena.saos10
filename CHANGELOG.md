@@ -4,6 +4,7 @@
 ### Added
 - bgp module
 - isis module
+- mpls module
 - logical-ports module
 - array lists of suboptions
 ### Removed
