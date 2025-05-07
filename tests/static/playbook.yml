@@ -12,6 +12,7 @@
           - fds
           - classifiers
           - fps
+          - bgp
       connection: netconf
     - name: Print facts
       ansible.builtin.debug:
@@ -49,7 +50,34 @@
             logical_port: 1
         state: merged
       connection: netconf
-    ##### DELETIONS
+
+    - name: Configure BGP
+      ciena.saos10.saos10_bgp:
+        config:
+          - as: 65001
+            address_family:
+              - afi: ipv4
+                safi: unicast
+                network:
+                  - address: 192.168.1.0/24
+        state: merged
+      connection: netconf
+
+    ##### Print the facts
+    - name: Get device facts for Saos 10
+      ciena.saos10.saos10_facts:
+        gather_subset:
+          - all
+        gather_network_resources:
+          - fds
+          - classifiers
+          - fps
+          - bgp
+      connection: netconf
+    - name: Print facts
+      ansible.builtin.debug:
+        var: ansible_facts
+    #### DELETIONS
     - name: Remove fps
       ciena.saos10.saos10_fps:
         config:
@@ -65,5 +93,11 @@
       ciena.saos10.saos10_classifiers:
         config:
           - name: foo-100
+        state: deleted
+      connection: netconf
+    - name: Delete BGP
+      ciena.saos10.saos10_bgp:
+        config:
+          - as: 65001
         state: deleted
       connection: netconf

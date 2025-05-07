@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -34,9 +34,12 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_classifiers
-short_description: Manage classifiers on Ciena SAOS 10 devices
-description: This module provides declarative management of a classifier on Ciena SAOS 10 devices.
-author: Jeff Groom (@jgroom33)
+short_description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to
+  define their incoming classification.Manage the classifiers classifier configuration of a Ciena saos10 device
+description: "List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define\
+  \ their incoming classification.\n List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow\
+  \ etc.) to define their incoming classification."
+author: Ciena
 options:
   config:
     description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.) to define
@@ -51,8 +54,11 @@ options:
         suboptions:
           any:
             description: Accept any classification. Wide-Open classifier
-            type: str
+            type: list
             required: false
+            elements: str
+            choices:
+            - 'null'
           base_ethertype:
             description: Base Ethernet type.
             type: int
@@ -90,9 +96,30 @@ options:
             type: int
             required: false
           filter_parameter:
-            description: Indicates which filter parameter is used by this filter entry
+            description: 'Indicates which filter parameter is used by this filter entry (Key for list: filter-entry)'
             type: str
-            required: false
+            required: true
+            choices:
+            - dscp
+            - icmp
+            - ip-protocol
+            - tcp-flags
+            - filter-param-type
+            - internal-cos
+            - l4-application
+            - local-termination
+            - ip-version
+            - destination-ip
+            - l4-destination-port
+            - any
+            - base-etype
+            - destination-mac
+            - vtag-stack
+            - l4-source-port
+            - source-ip
+            - ip-fragment
+            - source-mac
+            - mpls-label
           icmp_message_type:
             description: ICMP Message type.
             type: str
@@ -164,25 +191,32 @@ options:
             elements: dict
             suboptions:
               label:
-                description: No description available
+                description: 'No description available (Key for list: mpls-labels)'
                 type: int
-                required: false
+                required: true
               label_any:
                 description: Any value of mpls-label.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               mpls_label:
                 description: A specific value of mpls-label.
                 type: int
                 required: false
               tc_any:
                 description: Any value of mpls TC.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               tc_value:
                 description: A specific value of mpls TC.
                 type: int
                 required: false
+            key: label
           source_address:
             description: Classification on IP source-address (v4/v6) and masking.
             type: str
@@ -205,8 +239,19 @@ options:
             required: false
           tcp_flags:
             description: List of TCP flags.
-            type: str
+            type: list
             required: false
+            elements: str
+            choices:
+            - fin
+            - syn
+            - rst
+            - psh
+            - ack
+            - urg
+            - ece
+            - cwr
+            - ns
           untagged_exclude_priority_tagged:
             description: Untagged exclude priority tagged.
             type: bool
@@ -232,9 +277,9 @@ options:
                 type: int
                 required: false
               tag:
-                description: '''1'' represents outer most tag, ''2'' next outer most, etc'
+                description: '''1'' represents outer most tag, ''2'' next outer most, etc (Key for list: vtags)'
                 type: int
-                required: false
+                required: true
               tpid:
                 description: A specific value of VLAN Tag EtherType.
                 type: str
@@ -251,6 +296,8 @@ options:
                 description: The maximum value of VLAN ID for ranged VLAN-ID values.
                 type: int
                 required: false
+            key: tag
+        key: filter-parameter
       filter_operation:
         description: Choose the scope of application of the rule
         type: str
@@ -259,11 +306,13 @@ options:
         - match-all
         - match-any
       name:
-        description: A unique name for the classifier.
+        description: 'A unique name for the classifier. (Key for list: classifier)'
         type: str
-        required: false
+        required: true
+    key: name
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged

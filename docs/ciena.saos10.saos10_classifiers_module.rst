@@ -5,7 +5,7 @@
 ciena.saos10.saos10_classifiers
 *******************************
 
-**Manage classifiers on Ciena SAOS 10 devices**
+**List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define their incoming classification.Manage the classifiers classifier configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_classifiers
 
 Synopsis
 --------
-- This module provides declarative management of a classifier on Ciena SAOS 10 devices.
+- List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define   their incoming classification. List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow   etc.) to define their incoming classification.
 
 
 
@@ -73,10 +73,14 @@ Parameters
                     <b>any</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Accept any classification. Wide-Open classifier</div>
@@ -244,12 +248,35 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>ip-version</li>
+                                    <li>source-ip</li>
+                                    <li>vtag-stack</li>
+                                    <li>ip-fragment</li>
+                                    <li>l4-source-port</li>
+                                    <li>mpls-label</li>
+                                    <li>any</li>
+                                    <li>tcp-flags</li>
+                                    <li>internal-cos</li>
+                                    <li>destination-mac</li>
+                                    <li>dscp</li>
+                                    <li>destination-ip</li>
+                                    <li>base-etype</li>
+                                    <li>l4-destination-port</li>
+                                    <li>icmp</li>
+                                    <li>local-termination</li>
+                                    <li>ip-protocol</li>
+                                    <li>l4-application</li>
+                                    <li>source-mac</li>
+                                    <li>filter-param-type</li>
+                        </ul>
                 </td>
                 <td>
-                        <div>Indicates which filter parameter is used by this filter entry</div>
+                        <div>Indicates which filter parameter is used by this filter entry (Key for list: filter-entry)</div>
                 </td>
             </tr>
             <tr>
@@ -519,12 +546,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>No description available</div>
+                        <div>No description available (Key for list: mpls-labels)</div>
                 </td>
             </tr>
             <tr>
@@ -536,10 +564,14 @@ Parameters
                     <b>label_any</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Any value of mpls-label.</div>
@@ -572,10 +604,14 @@ Parameters
                     <b>tc_any</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>null</li>
+                        </ul>
                 </td>
                 <td>
                         <div>Any value of mpls TC.</div>
@@ -693,10 +729,22 @@ Parameters
                     <b>tcp_flags</b>
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
-                        <span style="color: purple">string</span>
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>
                     </div>
                 </td>
                 <td>
+                        <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                    <li>fin</li>
+                                    <li>syn</li>
+                                    <li>rst</li>
+                                    <li>psh</li>
+                                    <li>ack</li>
+                                    <li>urg</li>
+                                    <li>ece</li>
+                                    <li>cwr</li>
+                                    <li>ns</li>
+                        </ul>
                 </td>
                 <td>
                         <div>List of TCP flags.</div>
@@ -809,12 +857,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>&#x27;1&#x27; represents outer most tag, &#x27;2&#x27; next outer most, etc</div>
+                        <div>&#x27;1&#x27; represents outer most tag, &#x27;2&#x27; next outer most, etc (Key for list: vtags)</div>
                 </td>
             </tr>
             <tr>
@@ -906,12 +955,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>A unique name for the classifier.</div>
+                        <div>A unique name for the classifier. (Key for list: classifier)</div>
                 </td>
             </tr>
 
@@ -931,7 +981,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>
@@ -940,35 +990,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    # Using merged
-
-    - name: Configure classifier
-      ciena.saos10.saos10_classifiers:
-        config:
-          - name: untagged
-            filter_entry:
-              - filter_parameter: vtag-stack
-                untagged_exclude_priority_tagged: false
-          - name: foo-100
-            filter_entry:
-              - filter_parameter: vtag-stack
-                vtags:
-                  - tag: 1
-                    vlan_id: 100
-        state: merged
-    # Using deleted
-
-    - name: Delete classifier
-      ciena.saos10.saos10_classifiers:
-        config:
-          - name: untagged
-          - name: foo-100
-        state: deleted
 
 
 
@@ -1048,4 +1069,4 @@ Status
 Authors
 ~~~~~~~
 
-- Jeff Groom (@jgroom33)
+- Ciena

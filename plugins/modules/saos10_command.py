@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright: (c) 2020 Ciena Corp
+# Copyright: (c) 2025 Ciena Corp
 # Copyright 2019 Red Hat
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
@@ -17,7 +17,7 @@ description:
   condition before returning or timing out if the condition is not met.
 version_added: 1.0.0
 notes:
-- Tested against SAOS 10-4
+- Tested against SAOS 10-10-01-0182-GA
 options:
   commands:
     description:

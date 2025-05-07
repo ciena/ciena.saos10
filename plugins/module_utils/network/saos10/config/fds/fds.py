@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
@@ -40,6 +40,7 @@ NAMESPACE = "urn:ciena:params:xml:ns:yang:ciena-pn:ciena-mef-fd"
 ROOT_KEY = "fds"
 RESOURCE = "fds"
 XML_ITEMS = "fd"
+XML_ITEMS_KEY = "name"
 
 
 class Fds(ConfigBase):
@@ -77,9 +78,9 @@ class Fds(ConfigBase):
 
         if config_dict:
             config_xml = self._create_xml_config_generic(config_dict)
-            kwargs = {"config": f"<config>{config_xml}</config>", "target": "running"}
+            config = '<nc:config xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">' f"{config_xml}" "</nc:config>"
             try:
-                self._module._connection.edit_config(**kwargs)
+                self._module._connection.edit_config(config=config, target="running")
             except Exception as e:
                 return {"failed": True, "msg": str(e)}
 
@@ -157,7 +158,10 @@ class Fds(ConfigBase):
             if not isinstance(list_item, dict):
                 raise ValueError("List items must be dictionaries.")
             subroot = Element(XML_ITEMS)
+            operation = list_item.pop("operation", None)
             self._populate_xml_subtree(subroot, list_item)
+            if operation:
+                subroot.set("operation", operation)
             root.append(subroot)
         return xml_to_string(root).decode()
 
@@ -190,5 +194,5 @@ class Fds(ConfigBase):
         if not want:
             want = have
         for config in want:
-            response.append({"name": config["name"]})
+            response.append({"name": config["name"], "operation": "delete"})
         return response

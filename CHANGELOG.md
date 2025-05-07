@@ -1,5 +1,18 @@
 # Ciena SAOS 10 Collection Release Notes
 
+## v1.8.0
+### Added
+- bgp module
+- isis module
+- mpls module
+- logical-ports module
+- array lists of suboptions
+### Removed
+- xml_diff module
+### Changes
+- Specify Mandatory fields in the module documentation
+- Specify `key` for lists
+
 ## v1.7.0
 ### Fixed
 - Runtime definitions

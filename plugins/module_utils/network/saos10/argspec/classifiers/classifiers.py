@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -42,11 +42,38 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
             "type": "list",
             "elements": "dict",
             "options": {
+                "name": {"type": "str", "required": True},
                 "filter_entry": {
                     "type": "list",
                     "elements": "dict",
                     "options": {
-                        "any": {"type": "str"},
+                        "filter_parameter": {
+                            "type": "str",
+                            "choices": [
+                                "dscp",
+                                "icmp",
+                                "ip-protocol",
+                                "tcp-flags",
+                                "filter-param-type",
+                                "internal-cos",
+                                "l4-application",
+                                "local-termination",
+                                "ip-version",
+                                "destination-ip",
+                                "l4-destination-port",
+                                "any",
+                                "base-etype",
+                                "destination-mac",
+                                "vtag-stack",
+                                "l4-source-port",
+                                "source-ip",
+                                "ip-fragment",
+                                "source-mac",
+                                "mpls-label",
+                            ],
+                            "required": True,
+                        },
+                        "any": {"type": "list", "elements": "str", "choices": ["null"]},
                         "base_ethertype": {"type": "int"},
                         "destination_address": {"type": "str"},
                         "destination_mac": {"type": "str"},
@@ -56,7 +83,6 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                         "dscp_mask": {"type": "int"},
                         "dscp_max": {"type": "int"},
                         "dscp_min": {"type": "int"},
-                        "filter_parameter": {"type": "str"},
                         "icmp_message_type": {
                             "type": "str",
                             "choices": [
@@ -87,10 +113,10 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
-                                "label": {"type": "int"},
-                                "label_any": {"type": "str"},
+                                "label": {"type": "int", "required": True},
+                                "label_any": {"type": "list", "elements": "str", "choices": ["null"]},
                                 "mpls_label": {"type": "int"},
-                                "tc_any": {"type": "str"},
+                                "tc_any": {"type": "list", "elements": "str", "choices": ["null"]},
                                 "tc_value": {"type": "int"},
                             },
                         },
@@ -99,16 +125,20 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                         "source_mac_mask": {"type": "str"},
                         "source_max": {"type": "int"},
                         "source_min": {"type": "int"},
-                        "tcp_flags": {"type": "str"},
+                        "tcp_flags": {
+                            "type": "list",
+                            "elements": "str",
+                            "choices": ["fin", "syn", "rst", "psh", "ack", "urg", "ece", "cwr", "ns"],
+                        },
                         "untagged_exclude_priority_tagged": {"type": "bool"},
                         "vtags": {
                             "type": "list",
                             "elements": "dict",
                             "options": {
+                                "tag": {"type": "int", "required": True},
                                 "dei": {"type": "str", "choices": ["discard-eligible", "not-discard-eligible"]},
                                 "pcp": {"type": "int"},
                                 "pcp_mask": {"type": "int"},
-                                "tag": {"type": "int"},
                                 "tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
                                 "vlan_id": {"type": "int"},
                                 "vlan_id_max": {"type": "int"},
@@ -117,7 +147,6 @@ class ClassifiersArgs(object):  # pylint: disable=R0903
                     },
                 },
                 "filter_operation": {"type": "str", "choices": ["match-all", "match-any"]},
-                "name": {"type": "str"},
             },
         },
         "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},

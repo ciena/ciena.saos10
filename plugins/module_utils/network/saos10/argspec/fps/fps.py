@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -42,9 +42,10 @@ class FpsArgs(object):  # pylint: disable=R0903
             "type": "list",
             "elements": "dict",
             "options": {
+                "name": {"type": "str", "required": True},
                 "description": {"type": "str"},
                 "admin_state": {"type": "str", "choices": ["enabled", "disabled"]},
-                "classifier_list": {"type": "str"},
+                "classifier_list": {"type": "list", "elements": "str"},
                 "classifier_list_precedence": {"type": "int"},
                 "color": {"type": "str", "choices": ["green", "yellow", "red"]},
                 "cos": {"type": "int"},
@@ -53,7 +54,7 @@ class FpsArgs(object):  # pylint: disable=R0903
                     "type": "list",
                     "elements": "dict",
                     "options": {
-                        "egress_name": {"type": "str"},
+                        "egress_name": {"type": "str", "required": True},
                         "untagged_dei": {"type": "str", "choices": ["enabled", "disabled"]},
                         "untagged_pcp": {
                             "type": "str",
@@ -65,8 +66,10 @@ class FpsArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
-                                "no_op": {"type": "str"},
-                                "pop_type": {"type": "str"},
+                                "push_vid": {"type": "int", "required": True},
+                                "tag": {"type": "int", "required": True},
+                                "no_op": {"type": "list", "elements": "str", "choices": ["null"]},
+                                "pop_type": {"type": "list", "elements": "str", "choices": ["null"]},
                                 "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
                                 "push_pcp": {
                                     "type": "str",
@@ -83,7 +86,6 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     ],
                                 },
                                 "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
-                                "push_vid": {"type": "int", "required": True},
                                 "stamp_dei": {"type": "str", "choices": ["no-op", "enabled", "disabled"]},
                                 "stamp_pcp": {
                                     "type": "str",
@@ -105,12 +107,11 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     "choices": ["no-op", "tpid-8100", "tpid-88a8", "tpid-9100"],
                                 },
                                 "stamp_vid_value": {"type": "int"},
-                                "tag": {"type": "int"},
                             },
                         },
                     },
                 },
-                "egress_l3_mapped": {"type": "str"},
+                "egress_l3_mapped": {"type": "list", "elements": "str", "choices": ["null"]},
                 "egress_remark_dscp_value": {"type": "int"},
                 "fd_name": {"type": "str"},
                 "flood_containment_profile": {"type": "str"},
@@ -119,7 +120,7 @@ class FpsArgs(object):  # pylint: disable=R0903
                     "type": "list",
                     "elements": "dict",
                     "options": {
-                        "ingress_name": {"type": "str"},
+                        "ingress_name": {"type": "str", "required": True},
                         "untagged_dei": {"type": "str", "choices": ["enabled", "disabled"]},
                         "untagged_pcp": {
                             "type": "str",
@@ -131,8 +132,10 @@ class FpsArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
-                                "no_op": {"type": "str"},
-                                "pop_type": {"type": "str"},
+                                "push_vid": {"type": "int", "required": True},
+                                "tag": {"type": "int", "required": True},
+                                "no_op": {"type": "list", "elements": "str", "choices": ["null"]},
+                                "pop_type": {"type": "list", "elements": "str", "choices": ["null"]},
                                 "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
                                 "push_pcp": {
                                     "type": "str",
@@ -149,7 +152,6 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     ],
                                 },
                                 "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
-                                "push_vid": {"type": "int", "required": True},
                                 "stamp_dei": {"type": "str", "choices": ["no-op", "enabled", "disabled"]},
                                 "stamp_pcp": {
                                     "type": "str",
@@ -171,34 +173,45 @@ class FpsArgs(object):  # pylint: disable=R0903
                                     "choices": ["no-op", "tpid-8100", "tpid-88a8", "tpid-9100"],
                                 },
                                 "stamp_vid_value": {"type": "int"},
-                                "tag": {"type": "int"},
                             },
                         },
                     },
                 },
-                "ingress_l3_mapped": {"type": "str"},
+                "ingress_l3_mapped": {"type": "list", "elements": "str", "choices": ["null"]},
                 "ingress_remark_dscp_value": {"type": "int"},
                 "logical_port": {"type": "str"},
                 "mac_learning": {"type": "str", "choices": ["enabled", "disabled"]},
                 "map_policy": {"type": "str", "choices": ["outer-tag", "inner-tag", "mpls-tc", "dscp", "dscp-mpls-tc"]},
                 "meter_profile": {"type": "str"},
-                "mpls_pw": {"type": "str"},
+                "mpls_pw": {"type": "list", "elements": "str", "choices": ["null"]},
                 "mtu_size": {"type": "int"},
-                "name": {"type": "str"},
                 "normalized_vid": {
                     "type": "list",
                     "elements": "dict",
-                    "options": {"tag": {"type": "int"}, "vlan_id": {"type": "int"}},
+                    "options": {"tag": {"type": "int", "required": True}, "vlan_id": {"type": "int"}},
                 },
-                "other": {"type": "str"},
+                "other": {"type": "list", "elements": "str", "choices": ["null"]},
                 "pfg_group": {
                     "type": "str",
-                    "choices": ["leaf", "root", "dynamic", "mesh", "spoke", "group-A", "group-B", "group-C", "group-D"],
+                    "choices": [
+                        "leaf",
+                        "root",
+                        "dynamic",
+                        "mesh",
+                        "spoke",
+                        "group-A",
+                        "group-B",
+                        "group-C",
+                        "group-D",
+                        "hub",
+                        "rx-hub-tx-spoke",
+                        "rx-spoke-tx-hub",
+                    ],
                 },
                 "queue_group_instance": {"type": "str"},
                 "stats_collection": {"type": "str", "choices": ["on", "off"]},
                 "svlan": {"type": "int"},
-                "uni": {"type": "str"},
+                "uni": {"type": "list", "elements": "str", "choices": ["null"]},
             },
         },
         "state": {"type": "str", "default": "merged", "choices": ["merged", "deleted"]},

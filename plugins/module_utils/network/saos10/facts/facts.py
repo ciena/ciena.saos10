@@ -27,8 +27,38 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.
     FpsFacts,
 )
 
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.bgp.bgp import (
+    BgpFacts,
+)
+
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.isis.isis import (
+    IsisFacts,
+)
+
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.ldp.ldp import (
+    LdpFacts,
+)
+
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.logical_ports.logical_ports import (
+    Logical_portsFacts,
+)
+
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.mpls.mpls import (
+    MplsFacts,
+)
+
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.facts.ptps.ptps import (
+    PtpsFacts,
+)
+
 FACT_LEGACY_SUBSETS = dict(default=Default, config=Config)
 FACT_RESOURCE_SUBSETS = dict(
+    ptps=PtpsFacts,
+    mpls=MplsFacts,
+    logical_ports=Logical_portsFacts,
+    ldp=LdpFacts,
+    isis=IsisFacts,
+    bgp=BgpFacts,
     fps=FpsFacts,
     fds=FdsFacts,
     classifiers=ClassifiersFacts,

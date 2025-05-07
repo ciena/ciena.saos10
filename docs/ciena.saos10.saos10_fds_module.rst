@@ -5,7 +5,7 @@
 ciena.saos10.saos10_fds
 ***********************
 
-**Manage Forwarding Domains on Ciena SAOS 10 devices**
+**List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs etc).Manage the fds fd configuration of a Ciena saos10 device**
 
 
 
@@ -16,7 +16,7 @@ ciena.saos10.saos10_fds
 
 Synopsis
 --------
-- This module provides declarative management of a forwarding domain on Ciena SAOS 10 devices.
+- List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs   etc). The list of configured forwarding domains on the device.
 
 
 
@@ -324,12 +324,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>Dependent on the transform operation, the tag numbers are push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer)</div>
+                        <div>Dependent on the transform operation, the tag numbers are push =&gt; &#x27;1&#x27; represents push outermost, &#x27;2&#x27; represents push outermost (always push to outer) (Key for list: vlan-stack)</div>
                 </td>
             </tr>
 
@@ -404,12 +405,13 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
+                         / <span style="color: red">required</span>
                     </div>
                 </td>
                 <td>
                 </td>
                 <td>
-                        <div>An administratively assigned string, which may be used to identify the forwarding domain.</div>
+                        <div>An administratively assigned string, which may be used to identify the forwarding domain. (Key for list: fd)</div>
                 </td>
             </tr>
             <tr>
@@ -477,7 +479,7 @@ Parameters
                         </ul>
                 </td>
                 <td>
-                        <div>The state of the configuration after module completion.</div>
+                        <div>The state of the configuration</div>
                 </td>
             </tr>
     </table>
@@ -486,32 +488,6 @@ Parameters
 
 
 
-Examples
---------
-
-.. code-block:: yaml
-
-    # Using merged
-
-    - name: Configure forwarding domain
-      ciena.saos10.saos10_fds:
-        config:
-          - name: remote-fd
-            mode: vpls
-            initiate-l2-transform:
-              vlan-stack:
-                - tag: 1
-                  push-tpid: tpid-8100
-                  push-pcp: map
-                  push-vid: 127
-        state: merged
-    # Using deleted
-
-    - name: Delete forwading domain
-      ciena.saos10.saos10_fds:
-        config:
-          - name: remote-fd
-        state: deleted
 
 
 
@@ -591,4 +567,4 @@ Status
 Authors
 ~~~~~~~
 
-- Jeff Groom (@jgroom33)
+- Ciena

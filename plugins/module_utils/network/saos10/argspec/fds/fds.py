@@ -1,6 +1,6 @@
 #
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -42,6 +42,7 @@ class FdsArgs(object):  # pylint: disable=R0903
             "type": "list",
             "elements": "dict",
             "options": {
+                "name": {"type": "str", "required": True},
                 "description": {"type": "str"},
                 "color": {"type": "str", "choices": ["green", "yellow", "red"]},
                 "cos": {"type": "int"},
@@ -60,6 +61,8 @@ class FdsArgs(object):  # pylint: disable=R0903
                             "type": "list",
                             "elements": "dict",
                             "options": {
+                                "push_vid": {"type": "int", "required": True},
+                                "tag": {"type": "int", "required": True},
                                 "push_dei": {"type": "str", "choices": ["enabled", "disabled"]},
                                 "push_pcp": {
                                     "type": "str",
@@ -76,8 +79,6 @@ class FdsArgs(object):  # pylint: disable=R0903
                                     ],
                                 },
                                 "push_tpid": {"type": "str", "choices": ["tpid-8100", "tpid-88a8", "tpid-9100"]},
-                                "push_vid": {"type": "int", "required": True},
-                                "tag": {"type": "int"},
                             },
                         }
                     },
@@ -88,7 +89,6 @@ class FdsArgs(object):  # pylint: disable=R0903
                     "type": "str",
                     "choices": ["vlan", "vpls", "vpws", "fxc", "tdm-vpls", "tdm-vpws", "evpn-vpws", "evpn-vpls"],
                 },
-                "name": {"type": "str"},
                 "pfg_profile": {"type": "str"},
                 "queue_group_indirection": {"type": "str"},
                 "vlan_id": {"type": "int"},

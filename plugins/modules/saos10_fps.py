@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright 2023 Ciena
+# Copyright 2025 Ciena
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -34,9 +34,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: saos10_fps
-short_description: Manage Flow Points on Ciena SAOS 10 devices
-description: This module provides declarative management of a flow point on Ciena SAOS 10 devices.
-author: Jeff Groom (@jgroom33)
+short_description: A List of flow-points.Manage the fps fp configuration of a Ciena saos10 device
+description: "A List of flow-points.\n A list of all mef-fp configuration entries."
+author: Ciena
 options:
   config:
     description: A list of all mef-fp configuration entries.
@@ -56,7 +56,8 @@ options:
         - disabled
       classifier_list:
         description: List of classifier templates referenced by flow-point to define their incoming classification.
-        type: str
+        type: list
+        elements: str
       classifier_list_precedence:
         description: A precedence value for the flow-point. Lower values take precedence over higher values.
         type: int
@@ -83,9 +84,10 @@ options:
         elements: dict
         suboptions:
           egress_name:
-            description: Need a key for this list. It cannot be a choice of several objects but objects that will always be specified.
+            description: 'Need a key for this list. It cannot be a choice of several objects but objects that will always be specified. (Key for
+              list: egress-l2-transform)'
             type: str
-            required: false
+            required: true
           untagged_dei:
             description: This enables/disables drop eligibility indicator to indicate untagged frames eligible to be dropped in the presence of
               congestion.
@@ -127,12 +129,18 @@ options:
             suboptions:
               no_op:
                 description: No Operation chosen for swapping vlan identifier.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               pop_type:
                 description: This removes the outermost tag of the frame.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               push_dei:
                 description: This enables/disables pushing drop eligibility indicator to indicate frames eligible to be dropped in the presence
                   of congestion.
@@ -205,15 +213,20 @@ options:
                 type: int
                 required: false
               tag:
-                description: Dependent on the xform operation, the tag numbers are stamp => '1' represents outermost tag, '2' next outermost (next
-                  inner) pop => '1' represents pop outermost, '2' represents pop outermost, (always pop from outer) push => '1' represents push
-                  outermost, '2' represents push outermost (always push to outer)
+                description: 'Dependent on the xform operation, the tag numbers are stamp => ''1'' represents outermost tag, ''2'' next outermost
+                  (next inner) pop => ''1'' represents pop outermost, ''2'' represents pop outermost, (always pop from outer) push => ''1'' represents
+                  push outermost, ''2'' represents push outermost (always push to outer) (Key for list: vlan-stack)'
                 type: int
-                required: false
+                required: true
+            key: tag
+        key: egress-name
       egress_l3_mapped:
         description: For an egress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.
-        type: str
+        type: list
         required: false
+        elements: str
+        choices:
+        - 'null'
       egress_remark_dscp_value:
         description: Remark the egress L2-Switched packet with the DSCP value.
         type: int
@@ -236,9 +249,10 @@ options:
         elements: dict
         suboptions:
           ingress_name:
-            description: Need a key for this list. It cannot be a choice of several objects but objects that will always be specified.
+            description: 'Need a key for this list. It cannot be a choice of several objects but objects that will always be specified. (Key for
+              list: ingress-l2-transform)'
             type: str
-            required: false
+            required: true
           untagged_dei:
             description: This enables/disables drop eligibility indicator to indicate untagged frames eligible to be dropped in the presence of
               congestion.
@@ -280,12 +294,18 @@ options:
             suboptions:
               no_op:
                 description: No Operation chosen for swapping vlan identifier.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               pop_type:
                 description: This removes the outermost tag of the frame.
-                type: str
+                type: list
                 required: false
+                elements: str
+                choices:
+                - 'null'
               push_dei:
                 description: This enables/disables pushing drop eligibility indicator to indicate frames eligible to be dropped in the presence
                   of congestion.
@@ -358,15 +378,20 @@ options:
                 type: int
                 required: false
               tag:
-                description: Dependent on the xform operation, the tag numbers are stamp => '1' represents outermost tag, '2' next outermost (next
-                  inner) pop => '1' represents pop outermost, '2' represents pop outermost, (always pop from outer) push => '1' represents push
-                  outermost, '2' represents push outermost (always push to outer)
+                description: 'Dependent on the xform operation, the tag numbers are stamp => ''1'' represents outermost tag, ''2'' next outermost
+                  (next inner) pop => ''1'' represents pop outermost, ''2'' represents pop outermost, (always pop from outer) push => ''1'' represents
+                  push outermost, ''2'' represents push outermost (always push to outer) (Key for list: vlan-stack)'
                 type: int
-                required: false
+                required: true
+            key: tag
+        key: ingress-name
       ingress_l3_mapped:
         description: For an ingress-l3-transform, map internal-cos and internal-color to dscp based on a cos-to-frame-map.
-        type: str
+        type: list
         required: false
+        elements: str
+        choices:
+        - 'null'
       ingress_remark_dscp_value:
         description: Remark the ingress L2-Switched packet with the DSCP value.
         type: int
@@ -398,19 +423,22 @@ options:
         required: false
       mpls_pw:
         description: The type of flow-point is MPLS pseudowire.
-        type: str
+        type: list
         required: false
+        elements: str
+        choices:
+        - 'null'
       mtu_size:
         description: This object indicates the configured EVC maximum service frame format size. It must be less than or equal to the max-mtu-size.
           Vendors may choose to go beyond this limit.
         type: int
         required: false
       name:
-        description: This object indicates the flow point identifier. The identifier is a text string that is used to identify a flow point. Unique
-          string values are chosen to uniquely identify the flow point. Octet values of 0x00 through 0x1f are illegal. MEF 26.1 restricts the
-          maximum size identifiers to 45 octets.
+        description: 'This object indicates the flow point identifier. The identifier is a text string that is used to identify a flow point.
+          Unique string values are chosen to uniquely identify the flow point. Octet values of 0x00 through 0x1f are illegal. MEF 26.1 restricts
+          the maximum size identifiers to 45 octets. (Key for list: fp)'
         type: str
-        required: false
+        required: true
       normalized_vid:
         description: Used to represent normalized-vid values for EVPN FXC, e.g. MPLS label + vid lookup. The tag number represents the position
           of the normalized-vid. tag '1' represents outer most tag, tag '2' next outer most, etc. Note that the normalized-vid is used in conjunction
@@ -425,30 +453,35 @@ options:
         elements: dict
         suboptions:
           tag:
-            description: The tag number represents the position of the normalized-vid. '1' represents outer most tag, '2' next outer most, etc.
-              Note that the normalized-vid is used in conjunction with an ingress-l2-transform of the same flow-point. That is, an ingress-l2-xform
+            description: 'The tag number represents the position of the normalized-vid. ''1'' represents outer most tag, ''2'' next outer most,
+              etc. Note that the normalized-vid is used in conjunction with an ingress-l2-transform of the same flow-point. That is, an ingress-l2-xform
               operation of push/stamp is generally used to ensure that the frame contains the normalized-vid in flow-point to EVPN service-tunnel
               direction. In the case of the ingress-l2-transform stamp operation; - ingress-l2-transform stamp tag 1 (outer) matches normalized-vid
               tag 1 (outer). - ingress-l2-transform stamp tag 2 (next outer) matches normalized-vid tag 2 (next outer (aka inner)). In the case
               of the ingress-l2-transform push operation; - ingress-l2-transform push tag 1 (outer most) matches normalized-vid tag 1 (outer),
               when 1 tag is being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 2 (next outer most) matches normalized-vid
               tag 1 (outer), when 2 tags are being pushed via the ingress-l2-transform. - ingress-l2-transform push tag 1 (outer most) matches
-              normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform.
+              normalized-vid tag 2 (next outer (aka inner)), when 2 tags are being pushed via the ingress-l2-transform. (Key for list: normalized-vid)'
             type: int
-            required: false
+            required: true
           vlan_id:
             description: No description available
             type: int
             required: false
+        key: tag
       other:
         description: A flow-point with no specific type
-        type: str
+        type: list
         required: false
+        elements: str
+        choices:
+        - 'null'
       pfg_group:
         description: The Private-Forwarding-Group that the flow-point belongs to for the scope of a Private-Forwarding-Group-Profile. Can be leaf/root
           for a PFG-profile with PFG-type of leaf-and-root or spokemesh-and-leafroot. Can be mesh/spoke for a PFG-profile with PFG-type of spoke-and-mesh
           or spokemesh-and-leafroot. Can be groupA/B/C/D for a PFG-profile with PFG-type of pfg-groups. Can be leaf/root/dynamic for a PFG-profile
-          with PFG-type dynamic-leaf-and-root
+          with PFG-type dynamic-leaf-and-root. Can be hub/spoke/dynamic(none/hub/spoke)for a PFG-profile with PFG-type dynamic-hub-and-spoke.
+          Can be hub/spoke/dynamic(none/rx-hub-tx-spoke/rx-spoke-tx-hub/hub/spoke) for a PFG-profile with PFG-type of dynamic-tx-enable-hub-and-spoke.
         type: str
         required: false
         choices:
@@ -461,6 +494,9 @@ options:
         - group-B
         - group-C
         - group-D
+        - hub
+        - rx-hub-tx-spoke
+        - rx-spoke-tx-hub
       queue_group_instance:
         description: A reference to a Queue Group Instance.
         type: str
@@ -478,10 +514,15 @@ options:
         required: false
       uni:
         description: The type of flow-point is uni-port.
-        type: str
+        type: list
         required: false
+        elements: str
+        choices:
+        - 'null'
+    key: name
   state:
-    description: The state of the configuration after module completion.
+    description:
+    - The state of the configuration
     type: str
     choices:
     - merged

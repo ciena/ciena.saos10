@@ -2,7 +2,7 @@
 
 The Ansible Ciena SAOS collection includes a variety of Ansible content to help automate the management of Ciena SAOS 10.x network appliances.
 
-This collection has been tested against saos-10-09-00-0307-GA
+This collection has been tested against saos-10-10-01-0182-GA
 
 <!--start requires_ansible-->
 ## Ansible version compatibility
@@ -36,12 +36,17 @@ Name | Description
 ### Modules
 Name | Description
 --- | ---
-[ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_classifiers_module.rst)|Manage classifiers on Ciena SAOS 10 devices
+[ciena.saos10.saos10_bgp](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_bgp_module.rst)|Top level bgp container for bgp configurationManage the bgp instance configuration of a Ciena saos10 device
+[ciena.saos10.saos10_classifiers](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_classifiers_module.rst)|List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to define their incoming classification.Manage the classifiers classifier configuration of a Ciena saos10 device
 [ciena.saos10.saos10_command](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_command_module.rst)|Run commands on remote devices running Ciena SAOS 10
 [ciena.saos10.saos10_facts](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_facts_module.rst)|Get facts about saos10 devices.
-[ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|Manage Forwarding Domains on Ciena SAOS 10 devices
-[ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|Manage Flow Points on Ciena SAOS 10 devices
-[ciena.saos10.xml_diff](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.xml_diff_module.rst)|return diff for a pair of xml inputs
+[ciena.saos10.saos10_fds](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fds_module.rst)|List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points, MPLS-PWs etc).Manage the fds fd configuration of a Ciena saos10 device
+[ciena.saos10.saos10_fps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_fps_module.rst)|A List of flow-points.Manage the fps fp configuration of a Ciena saos10 device
+[ciena.saos10.saos10_isis](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_isis_module.rst)|List of IS-IS structures.Manage the isis instance configuration of a Ciena saos10 device
+[ciena.saos10.saos10_ldp](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_ldp_module.rst)|Ldp config container.Manage the ldp instance configuration of a Ciena saos10 device
+[ciena.saos10.saos10_logical_ports](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_logical-ports_module.rst)|List of logical-ports.Manage the logical_ports logical_port configuration of a Ciena saos10 device
+[ciena.saos10.saos10_mpls](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_mpls_module.rst)|MPLS config container.Manage the mpls configuration of a Ciena saos10 device
+[ciena.saos10.saos10_ptps](https://github.com/ciena/ciena.saos10/blob/master/docs/ciena.saos10.saos10_ptps_module.rst)|Physical Termination Point (PTP) configuration and operational data.Manage the ptps ptp configuration of a Ciena saos10 device
 
 <!--end collection content-->
 
