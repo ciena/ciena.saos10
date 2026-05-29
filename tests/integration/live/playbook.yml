@@ -165,10 +165,10 @@
 
     # ---------------------------------------------------------------
     # 8. IS-IS
-    #    Note: the module's argspec exposes `admin_state` at the instance
-    #    level, but the live ciena-isis@2025-07-11 YANG only has admin-state
-    #    on the interface. We use a leaf that IS valid at the instance level
-    #    (`dynamic_hostname`). Also exercises the YANG-bool fix.
+    #    Note: `admin_state` is gated by the `admin-control` YANG feature.
+    #    This 3984 build does not advertise that feature, so we exercise
+    #    `dynamic_hostname` (always available at the instance level), which
+    #    also exercises the YANG-bool fix end-to-end.
     # ---------------------------------------------------------------
     - name: isis - merge
       ciena.saos10.saos10_isis:
