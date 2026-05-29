@@ -2,15 +2,13 @@
 
 The Ansible Ciena SAOS collection includes a variety of Ansible content to help automate the management of Ciena SAOS 10.x network appliances.
 
-This collection has been tested against saos-10-10-01-0182-GA
+This collection has been tested against SAOS 10-11-02-0206-RS1. Earlier 10.x releases (down to 10-10-01-0182-GA) are expected to work but are no longer routinely validated.
 
 <!--start requires_ansible-->
 ## Ansible version compatibility
 
-This collection has been tested against following Ansible versions: **>=2.12.0**.
+This collection has been tested against following Ansible versions: **>=2.16.0**.
 
-For collections that support Ansible 2.9, please ensure you update your `network_os` to use the
-fully qualified collection name (for example, `cisco.ios.ios`).
 Plugins and modules within a collection may be tested with only specific Ansible versions.
 A collection may contain metadata that identifies these versions.
 PEP440 is the schema used to describe the versions of Ansible.

@@ -31,7 +31,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: saos10_logical_ports
 short_description: List of logical-ports.Manage the logical_ports logical_port configuration of a Ciena saos10 device
@@ -295,10 +295,10 @@ xml:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.logicalports.logicalports import (
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.argspec.logical_ports.logical_ports import (
     LogicalPortsArgs,
 )
-from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.config.logicalports.logicalports import (
+from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.config.logical_ports.logical_ports import (
     LogicalPorts,
 )
 

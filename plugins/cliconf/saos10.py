@@ -44,8 +44,47 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
 from ansible.plugins.cliconf import CliconfBase
 
 
+# SAOS 10 prompt forms (see plugins/terminal/saos10.py):
+#   - Operator:    "<host>> "                 (top level, the desired "root")
+#   - Config:      "<user>@<host># "          (one or more levels deep)
+#   - Diag shell:  "diag@<host>$ "            (lower-level shell; user-entered)
+# Nested config sub-modes also share the trailing "# " and may add "(...)"
+# context segments. We treat any prompt that does NOT end with "> " (and is not
+# a diag shell "$") as "needs an exit to reach the operator prompt".
+_ROOT_PROMPT_RE = re.compile(rb"[>\$]\s*$")
+
+
 class Cliconf(CliconfBase):
+    def __init__(self, *args, **kwargs):
+        super(Cliconf, self).__init__(*args, **kwargs)
+        self._device_info = {}
+
+    def _ensure_root_prompt(self, max_attempts=4):
+        """Send 'exit' until the prompt is at the SAOS operator level ("> ").
+
+        SAOS logs the user out if 'exit' is issued at the operator prompt, so
+        we never send 'exit' once the prompt already ends with "> ". The diag
+        shell ("$") is treated as root too -- the user explicitly entered it
+        and we should not be sending CLI commands from inside cliconf anyway.
+        """
+        for _attempt in range(max_attempts):
+            prompt = self._connection.get_prompt()
+            if not prompt:
+                return
+            if _ROOT_PROMPT_RE.search(prompt):
+                return
+            self.send_command("exit")
+        prompt = self._connection.get_prompt()
+        if prompt and not _ROOT_PROMPT_RE.search(prompt):
+            raise AnsibleConnectionFailure(
+                "Unable to recover SAOS10 operator prompt after %d 'exit' attempts; "
+                "current prompt=%r" % (max_attempts, prompt)
+            )
+
     def get_device_info(self):
+        if self._device_info:
+            return self._device_info
+        self._ensure_root_prompt()
         device_info = {}
         device_info["network_os"] = "ciena.saos10.saos10"
         reply = self.get("software show")
@@ -62,14 +101,17 @@ class Cliconf(CliconfBase):
         if model_search:
             device_info["network_os_model"] = model_search.group(1)
 
+        self._device_info = device_info
         return device_info
 
     def get_config(self, source="running", flags=None, format="text"):
+        self._ensure_root_prompt()
         cmd = "show running"
         out = self.send_command(cmd)
         return out
 
     def edit_config(self, command):
+        self._ensure_root_prompt()
         for cmd in chain(["config"], to_list(command), ["exit"]):
             self.send_command(cmd)
 
@@ -105,6 +147,7 @@ class Cliconf(CliconfBase):
         if commands is None:
             raise ValueError("'commands' value is required")
 
+        self._ensure_root_prompt()
         responses = list()
         for cmd in to_list(commands):
             if not isinstance(cmd, Mapping):

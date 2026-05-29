@@ -1,8 +1,9 @@
-black==19.3b0 ; python_version > '3.5'
-flake8
-mock
-pexpect
-pytest-xdist
-yamllint
-coverage==4.5.4
-tox
+black>=24.3.0
+flake8>=7.0.0
+mock>=5.1.0
+pexpect>=4.9.0
+pytest-xdist>=3.5.0
+pytest-ansible>=24.0.0
+yamllint>=1.35.0
+coverage>=7.4.0
+tox>=4.14.0

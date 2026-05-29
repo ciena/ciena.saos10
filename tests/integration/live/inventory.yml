@@ -1,0 +1,9 @@
+---
+all:
+  hosts:
+    saos10-test:
+      ansible_host: 10.92.44.49
+      ansible_network_os: ciena.saos10.saos10
+      ansible_user: diag
+      ansible_password: ciena123
+      ansible_python_interpreter: "{{ ansible_playbook_python }}"

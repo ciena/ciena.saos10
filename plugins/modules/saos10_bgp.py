@@ -1317,7 +1317,7 @@ options:
                     required: false
                   as_override:
                     description: Override the Autonomous System Number (ASN) of a site with the ASN of a provider. BGP normally ignores the routes
-                      from the same AS. However, this capability is used to override the customer‘s ASN in BGP, so that the customer CE accepts
+                      from the same AS. However, this capability is used to override the customer's ASN in BGP, so that the customer CE accepts
                       and installs routes from the same AS.
                     type: bool
                     required: false

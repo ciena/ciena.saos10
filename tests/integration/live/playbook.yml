@@ -1,0 +1,279 @@
+---
+# Full-validation playbook against a live SAOS 10.11.x device.
+# Run from this directory:  ansible-playbook -i inventory.yml playbook.yml -vv
+# WARNING: this playbook mutates device configuration. Use a lab device.
+
+- name: SAOS 10 live module validation
+  hosts: all
+  gather_facts: false
+  vars:
+    test_prefix: "ansible-validate"
+
+  tasks:
+    # ---------------------------------------------------------------
+    # 1. Baseline facts
+    # ---------------------------------------------------------------
+    - name: Gather minimal facts
+      ciena.saos10.saos10_facts:
+        gather_subset: [min]
+      connection: netconf
+      tags: [facts, baseline]
+
+    - name: Show running software / model
+      ansible.builtin.debug:
+        msg: >-
+          os_version={{ ansible_net_version | default('?') }}
+          model={{ ansible_net_model | default('?') }}
+      tags: [facts, baseline]
+
+    # ---------------------------------------------------------------
+    # 2. Bug-reproduction: nested config prompt
+    #    Before fix: the FOLLOWING facts task fails with SHELL PARSER FAILURE.
+    #    After fix: the cliconf plugin auto-exits the nested prompt and succeeds.
+    # ---------------------------------------------------------------
+    - name: Repro - enter config mode and DO NOT exit
+      ciena.saos10.saos10_command:
+        commands:
+          - config
+        # No 'exit' at the end - leaves prompt at host(config)#
+      connection: network_cli
+      tags: [bug-repro]
+
+    - name: Repro - immediately run another command (would fail pre-fix because cliconf get_device_info sends 'software show' from inside config mode)
+      ciena.saos10.saos10_command:
+        commands:
+          - software show
+      connection: network_cli
+      tags: [bug-repro]
+
+    # ---------------------------------------------------------------
+    # 3. saos10_command basic
+    # ---------------------------------------------------------------
+    - name: saos10_command - simple show
+      ciena.saos10.saos10_command:
+        commands:
+          - software show
+          - show system components
+      connection: network_cli
+      tags: [command]
+
+    # ---------------------------------------------------------------
+    # 4. Classifiers (merge + delete)
+    # ---------------------------------------------------------------
+    - name: classifiers - create
+      ciena.saos10.saos10_classifiers:
+        config:
+          - name: "{{ test_prefix }}-cls"
+            filter_entry:
+              - filter_parameter: vtag-stack
+                vtags:
+                  - tag: 1
+                    vlan_id: 100
+        state: merged
+      connection: netconf
+      tags: [classifiers]
+
+    - name: classifiers - delete
+      ciena.saos10.saos10_classifiers:
+        config:
+          - name: "{{ test_prefix }}-cls"
+        state: deleted
+      connection: netconf
+      tags: [classifiers, cleanup]
+
+    # ---------------------------------------------------------------
+    # 5. Forwarding domains
+    # ---------------------------------------------------------------
+    - name: fds - create
+      ciena.saos10.saos10_fds:
+        config:
+          - name: "{{ test_prefix }}-fd"
+            mode: vpls
+        state: merged
+      connection: netconf
+      tags: [fds]
+
+    - name: fds - delete
+      ciena.saos10.saos10_fds:
+        config:
+          - name: "{{ test_prefix }}-fd"
+        state: deleted
+      connection: netconf
+      tags: [fds, cleanup]
+
+    # ---------------------------------------------------------------
+    # 6. Flow points (depends on FD existing during merge)
+    # ---------------------------------------------------------------
+    - name: fps - recreate parent FD
+      ciena.saos10.saos10_fds:
+        config:
+          - name: "{{ test_prefix }}-fd"
+            mode: vpls
+        state: merged
+      connection: netconf
+      tags: [fps]
+
+    - name: fps - create
+      ciena.saos10.saos10_fps:
+        config:
+          - name: "{{ test_prefix }}-fp"
+            fd_name: "{{ test_prefix }}-fd"
+            logical_port: "1"
+        state: merged
+      connection: netconf
+      tags: [fps]
+
+    - name: fps - delete
+      ciena.saos10.saos10_fps:
+        config:
+          - name: "{{ test_prefix }}-fp"
+        state: deleted
+      connection: netconf
+      tags: [fps, cleanup]
+
+    - name: fps - delete parent FD
+      ciena.saos10.saos10_fds:
+        config:
+          - name: "{{ test_prefix }}-fd"
+        state: deleted
+      connection: netconf
+      tags: [fps, cleanup]
+
+    # ---------------------------------------------------------------
+    # 7. BGP
+    # ---------------------------------------------------------------
+    - name: bgp - merge
+      ciena.saos10.saos10_bgp:
+        config:
+          - as: 65501
+            address_family:
+              - afi: ipv4
+                safi: unicast
+                network:
+                  - address: 192.0.2.0/24
+        state: merged
+      connection: netconf
+      tags: [bgp]
+
+    - name: bgp - delete
+      ciena.saos10.saos10_bgp:
+        config:
+          - as: 65501
+        state: deleted
+      connection: netconf
+      tags: [bgp, cleanup]
+
+    # ---------------------------------------------------------------
+    # 8. IS-IS  (device may not have IS-IS YANG schema loaded; we ignore-errors
+    #    so a missing-feature reply doesn't block the rest of the validation.)
+    # ---------------------------------------------------------------
+    - name: isis - merge
+      ciena.saos10.saos10_isis:
+        config:
+          - tag: default
+            admin_state: true
+        state: merged
+      connection: netconf
+      ignore_errors: true
+      tags: [isis]
+
+    - name: isis - delete
+      ciena.saos10.saos10_isis:
+        config:
+          - tag: default
+        state: deleted
+      connection: netconf
+      ignore_errors: true
+      tags: [isis, cleanup]
+
+    # ---------------------------------------------------------------
+    # 9. LDP  (SAOS only supports the "default" LDP instance.)
+    # ---------------------------------------------------------------
+    - name: ldp - merge
+      ciena.saos10.saos10_ldp:
+        config:
+          - tag: default
+            control_mode: ordered
+        state: merged
+      connection: netconf
+      ignore_errors: true
+      tags: [ldp]
+
+    - name: ldp - delete
+      ciena.saos10.saos10_ldp:
+        config:
+          - tag: default
+        state: deleted
+      connection: netconf
+      ignore_errors: true
+      tags: [ldp, cleanup]
+
+    # ---------------------------------------------------------------
+    # 10a. Logical-ports (gather only - merges require knowing the device's
+    #      port inventory, which varies per chassis)
+    # ---------------------------------------------------------------
+    - name: logical_ports - facts gather
+      ciena.saos10.saos10_facts:
+        gather_subset: [min]
+        gather_network_resources: [logical_ports]
+      connection: netconf
+      ignore_errors: true
+      tags: [logical_ports]
+
+    # ---------------------------------------------------------------
+    # 10b. PTPs (gather only - chassis-specific)
+    # ---------------------------------------------------------------
+    - name: ptps - facts gather
+      ciena.saos10.saos10_facts:
+        gather_subset: [min]
+        gather_network_resources: [ptps]
+      connection: netconf
+      ignore_errors: true
+      tags: [ptps]
+
+    # ---------------------------------------------------------------
+    # 11. MPLS
+    # ---------------------------------------------------------------
+    - name: mpls - merge
+      ciena.saos10.saos10_mpls:
+        config:
+          label_management:
+            allocation_mode:
+              all_vrfs:
+                address_family:
+                  - af_type: ipv4
+        state: merged
+      connection: netconf
+      ignore_errors: true
+      tags: [mpls]
+
+    - name: mpls - delete (no-op clean state)
+      ciena.saos10.saos10_mpls:
+        config: {}
+        state: deleted
+      connection: netconf
+      ignore_errors: true
+      tags: [mpls, cleanup]
+
+    # ---------------------------------------------------------------
+    # 11. Final facts gather (all resources)
+    # ---------------------------------------------------------------
+    - name: Gather full network-resource facts (modules known to crash on this device excluded - see TROUBLESHOOTING.md)
+      ciena.saos10.saos10_facts:
+        gather_subset: [min]
+        gather_network_resources:
+          - classifiers
+          - fds
+          - fps
+          - bgp
+          - ldp
+          - logical_ports
+          - ptps
+      connection: netconf
+      ignore_errors: true
+      tags: [facts, final]
+
+    - name: Show final ansible_network_resources keys
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts.get('ansible_network_resources', {}).keys() | list }}"
+      tags: [facts, final]
