@@ -23,8 +23,5 @@ Bugfixes
 - saos10_command - fix latent ``AttributeError`` in check-mode (``str.contains`` does not exist; replaced with a Pythonic ``in`` membership test).
 - saos10_facts - fix ``ImportError`` raised on every gather attempt: ``facts.py`` imported a non-existent ``Logical_portsFacts`` class. Renamed to ``LogicalPortsFacts`` to match the actual class definition.
 - Config builders for all nine resource modules (bgp, classifiers, fds, fps, isis, ldp, logical_ports, mpls, ptps) used ``str(value)`` when populating XML, serializing Python ``True`` / ``False`` as the YANG-invalid strings ``"True"`` / ``"False"`` instead of ``"true"`` / ``"false"``. Bool-typed fields are now lowercased to match RFC 7950 §9.5. Caught while investigating an ISIS ``unknown object`` failure on SAOS 10.11.
-
-Known Issues
-------------
-
-- saos10_mpls - `state: merged` and `state: deleted` raise ``IndexError: list index out of range`` on SAOS 10.11.x. Suspected bug in the config builder under ``plugins/module_utils/network/saos10/config/mpls``. Tracked for a follow-up fix; the module currently cannot apply MPLS configuration.
+- saos10_mpls (facts) - guard ``data.xpath("//mpls")[0]`` against an empty result. On any device with no MPLS subtree configured the facts gather raised ``IndexError: list index out of range`` before the module could even compose an edit-config, breaking both ``state: merged`` and ``state: deleted``.
+- saos10_mpls (config) - MPLS is a singleton YANG container, but the code-generation template assumed it was a list of keyed items (the file shipped with ``XML_ITEMS = "None"`` and ``XML_ITEMS_KEY = "None"`` as literal strings, and ``_state_deleted`` did ``config["None"]``). Rewrote ``_state_deleted`` so that an empty ``config:`` removes the whole ``<mpls>`` subtree (and is a no-op when nothing is configured) and taught ``create_xml_config_from_dict`` to honour an ``_operation`` sentinel that promotes itself to ``operation="..."`` on the root element.

@@ -80,13 +80,16 @@ class MplsFacts(object):
         stripped = remove_namespaces(xml_to_string(data))
         data = fromstring(to_bytes(stripped, errors="surrogate_then_replace"))
 
-        resource = data.xpath("//mpls")[0]
-        obj = self.render_config(self.generated_spec, resource)
+        matches = data.xpath("//mpls")
+        # MPLS is a singleton YANG container, so the device returns either one
+        # <mpls/> element or nothing at all. Treat "nothing" as an empty config
+        # rather than raising IndexError on the [0] dereference.
+        obj = self.render_config(self.generated_spec, matches[0]) if matches else {}
 
         facts = {}
         facts["mpls"] = {}
         params = utils.validate_config(self.argument_spec, {"config": obj})
-        facts["mpls"] = params["config"]
+        facts["mpls"] = params["config"] or {}
 
         ansible_facts["ansible_network_resources"].update(facts)
         return ansible_facts

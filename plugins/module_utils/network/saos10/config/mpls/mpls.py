@@ -39,8 +39,16 @@ from ansible_collections.ciena.saos10.plugins.module_utils.network.saos10.utils.
 NAMESPACE = "http://ciena.com/ns/yang/ciena-mpls"
 ROOT_KEY = "mpls"
 RESOURCE = "mpls"
-XML_ITEMS = "None"
-XML_ITEMS_KEY = "None"
+# MPLS is a YANG singleton container (no per-item key). The two constants
+# below exist for symmetry with the list-based resource modules (bgp, fds,
+# fps, etc.) generated from the same template, but are never referenced
+# during normal operation.
+XML_ITEMS = None
+XML_ITEMS_KEY = None
+
+# Sentinel key understood by ``create_xml_config_from_dict`` to set the
+# NETCONF ``operation`` attribute on the root ``<mpls>`` element.
+_ROOT_OPERATION_KEY = "_operation"
 
 
 class Mpls(ConfigBase):
@@ -148,7 +156,14 @@ class Mpls(ConfigBase):
         return Element("{%s}%s" % (NAMESPACE, ROOT_KEY), nsmap={None: NAMESPACE})
 
     def create_xml_config_from_dict(self, config_dict: dict) -> str:
+        # Honour an optional ``_operation`` sentinel that promotes itself to
+        # an ``operation="..."`` attribute on the root <mpls> element. This
+        # is how ``_state_deleted`` asks for the singleton container to be
+        # removed wholesale.
+        root_operation = config_dict.pop(_ROOT_OPERATION_KEY, None)
         root = self._init_xml_root()
+        if root_operation:
+            root.set("operation", root_operation)
         self._populate_xml_subtree(root, config_dict)
         return xml_to_string(root).decode()
 
@@ -190,9 +205,9 @@ class Mpls(ConfigBase):
         return response
 
     def _state_deleted(self, want, have):
-        response = []
-        if not want:
-            want = have
-        for config in want:
-            response.append({"None": config["None"], "operation": "delete"})
-        return response
+        # MPLS is a singleton container, so deletion is "remove the whole
+        # <mpls> subtree". If no MPLS is configured on the device we treat
+        # the call as a no-op rather than sending a stray delete RPC.
+        if not have:
+            return {}
+        return {_ROOT_OPERATION_KEY: "delete"}

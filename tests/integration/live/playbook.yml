@@ -233,8 +233,17 @@
       tags: [ptps]
 
     # ---------------------------------------------------------------
-    # 11. MPLS
+    # 11. MPLS  (YANG singleton container; gather works on any device,
+    #    merge writes the requested leaves, deleted removes the whole
+    #    <mpls> subtree.)
     # ---------------------------------------------------------------
+    - name: mpls - facts gather
+      ciena.saos10.saos10_facts:
+        gather_subset: [min]
+        gather_network_resources: [mpls]
+      connection: netconf
+      tags: [mpls]
+
     - name: mpls - merge
       ciena.saos10.saos10_mpls:
         config:
@@ -245,21 +254,19 @@
                   - af_type: ipv4
         state: merged
       connection: netconf
-      ignore_errors: true
       tags: [mpls]
 
-    - name: mpls - delete (no-op clean state)
+    - name: mpls - delete (removes the whole <mpls> subtree)
       ciena.saos10.saos10_mpls:
         config: {}
         state: deleted
       connection: netconf
-      ignore_errors: true
       tags: [mpls, cleanup]
 
     # ---------------------------------------------------------------
     # 11. Final facts gather (all resources)
     # ---------------------------------------------------------------
-    - name: Gather full network-resource facts (modules known to crash on this device excluded - see TROUBLESHOOTING.md)
+    - name: Gather full network-resource facts
       ciena.saos10.saos10_facts:
         gather_subset: [min]
         gather_network_resources:
@@ -268,10 +275,10 @@
           - fps
           - bgp
           - ldp
+          - mpls
           - logical_ports
           - ptps
       connection: netconf
-      ignore_errors: true
       tags: [facts, final]
 
     - name: Show final ansible_network_resources keys

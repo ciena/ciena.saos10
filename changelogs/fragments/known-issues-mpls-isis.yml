@@ -1,8 +1,0 @@
----
-known_issues:
-  - >-
-    saos10_mpls - `state: merged` and `state: deleted` raise
-    ``IndexError: list index out of range`` on SAOS 10.11.x. Suspected bug in
-    the config builder under ``plugins/module_utils/network/saos10/config/mpls``.
-    Tracked for a follow-up fix; the module currently cannot apply MPLS
-    configuration.
