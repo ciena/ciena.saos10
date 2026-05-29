@@ -1,0 +1,95 @@
+objects:
+  role: {}
+plugins:
+  become: {}
+  cache: {}
+  callback: {}
+  cliconf:
+    saos10:
+      description: Use saos10 cliconf to run command on Ciena saos10 platform
+      name: saos10
+      version_added: null
+  connection: {}
+  filter: {}
+  httpapi: {}
+  inventory: {}
+  lookup: {}
+  module:
+    saos10_bgp:
+      description: Top level bgp container for bgp configurationManage the bgp instance
+        configuration of a Ciena saos10 device
+      name: saos10_bgp
+      namespace: ''
+      version_added: null
+    saos10_classifiers:
+      description: List of classifier templates. Classifiers can be referenced by
+        various entities (flow-point/access-flow/qos-flow etc.), to define their incoming
+        classification.Manage the classifiers classifier configuration of a Ciena
+        saos10 device
+      name: saos10_classifiers
+      namespace: ''
+      version_added: null
+    saos10_command:
+      description: Run commands on remote devices running Ciena SAOS 10
+      name: saos10_command
+      namespace: ''
+      version_added: 1.0.0
+    saos10_facts:
+      description: Get facts about saos10 devices.
+      name: saos10_facts
+      namespace: ''
+      version_added: 1.0.0
+    saos10_fds:
+      description: List of forwarding-domains. Forwarding domains are layer 2 forwarding
+        domains to which various entities attach (flow-points, MPLS-PWs etc).Manage
+        the fds fd configuration of a Ciena saos10 device
+      name: saos10_fds
+      namespace: ''
+      version_added: null
+    saos10_fps:
+      description: A List of flow-points.Manage the fps fp configuration of a Ciena
+        saos10 device
+      name: saos10_fps
+      namespace: ''
+      version_added: null
+    saos10_isis:
+      description: List of IS-IS structures.Manage the isis instance configuration
+        of a Ciena saos10 device
+      name: saos10_isis
+      namespace: ''
+      version_added: null
+    saos10_ldp:
+      description: Ldp config container.Manage the ldp instance configuration of a
+        Ciena saos10 device
+      name: saos10_ldp
+      namespace: ''
+      version_added: null
+    saos10_logical_ports:
+      description: List of logical-ports.Manage the logical_ports logical_port configuration
+        of a Ciena saos10 device
+      name: saos10_logical_ports
+      namespace: ''
+      version_added: null
+    saos10_mpls:
+      description: MPLS config container.Manage the mpls configuration of a Ciena
+        saos10 device
+      name: saos10_mpls
+      namespace: ''
+      version_added: null
+    saos10_ptps:
+      description: Physical Termination Point (PTP) configuration and operational
+        data.Manage the ptps ptp configuration of a Ciena saos10 device
+      name: saos10_ptps
+      namespace: ''
+      version_added: null
+  netconf:
+    saos10:
+      description: Use saos10 netconf plugin to run netconf commands on Ciena saos10
+        platform
+      name: saos10
+      version_added: 1.0.0
+  shell: {}
+  strategy: {}
+  test: {}
+  vars: {}
+version: 1.9.0

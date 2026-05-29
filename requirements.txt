@@ -1,6 +1,5 @@
-ansible
+ansible-core>=2.16
 paramiko
-xmldiff
 lxml
 ncclient
 xmltodict

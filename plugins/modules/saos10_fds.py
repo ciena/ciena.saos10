@@ -31,7 +31,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: saos10_fds
 short_description: List of forwarding-domains. Forwarding domains are layer 2 forwarding domains to which various entities attach (flow-points,

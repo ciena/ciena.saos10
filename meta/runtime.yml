@@ -1,14 +1,41 @@
 ---
-requires_ansible: '>=2.12.0'
+requires_ansible: '>=2.16.0'
+
+action_groups:
+  saos10:
+    - saos10_bgp
+    - saos10_classifiers
+    - saos10_command
+    - saos10_facts
+    - saos10_fds
+    - saos10_fps
+    - saos10_isis
+    - saos10_ldp
+    - saos10_logical_ports
+    - saos10_mpls
+    - saos10_ptps
+
 plugin_routing:
   action:
+    saos10_bgp:
+      redirect: ciena.saos10.saos10
+    saos10_classifiers:
+      redirect: ciena.saos10.saos10
     saos10_command:
       redirect: ciena.saos10.saos10
     saos10_facts:
       redirect: ciena.saos10.saos10
-    saos10_classifiers:
-      redirect: ciena.saos10.saos10
     saos10_fds:
       redirect: ciena.saos10.saos10
     saos10_fps:
+      redirect: ciena.saos10.saos10
+    saos10_isis:
+      redirect: ciena.saos10.saos10
+    saos10_ldp:
+      redirect: ciena.saos10.saos10
+    saos10_logical_ports:
+      redirect: ciena.saos10.saos10
+    saos10_mpls:
+      redirect: ciena.saos10.saos10
+    saos10_ptps:
       redirect: ciena.saos10.saos10

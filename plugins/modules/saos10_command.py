@@ -17,7 +17,7 @@ description:
   condition before returning or timing out if the condition is not met.
 version_added: 1.0.0
 notes:
-- Tested against SAOS 10-10-01-0182-GA
+- Tested against SAOS 10-11-02-0206-RS1
 options:
   commands:
     description:
@@ -137,7 +137,12 @@ def parse_commands(module, warnings):
     commands = transform_commands(module)
     if module.check_mode:
         for item in list(commands):
-            if not item["command"].contains(" show "):
+            # SAOS show commands take either of two forms:
+            #   - "show <subject>"     (e.g. "show version")
+            #   - "<subject> show"     (e.g. "software show")
+            # Match "show" as a whole word so we accept both without false
+            # positives on identifiers like "software-show" or "showme".
+            if "show" not in item["command"].split():
                 warnings.append(
                     "Only show commands are supported when using check mode, not executing %s" % item["command"]
                 )

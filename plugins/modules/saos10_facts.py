@@ -20,6 +20,8 @@ description:
   facts module will always collect a base set of facts from the device and can enable
   or disable collection of additional facts.
 version_added: 1.0.0
+notes:
+- Tested against SAOS 10-11-02-0206-RS1.
 author:
   - Jeff Groom (@jgroom33)
 options:
@@ -58,7 +60,7 @@ options:
     required: false
     type: list
     elements: str
-    version_added: "0.0.1"
+    version_added: 1.0.0
 """
 
 EXAMPLES = """
@@ -139,8 +141,6 @@ def main():
     module = AnsibleModule(argument_spec=FactsArgs.argument_spec, supports_check_mode=True)
 
     warnings = []
-    if module.params["gather_subset"] == "!config":
-        warnings.append("default value for `gather_subset` will be changed to `min` from `!config` v2.11 onwards")
 
     result = Facts(module).get_facts()
 

@@ -31,7 +31,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: saos10_classifiers
 short_description: List of classifier templates. Classifiers can be referenced by various entities (flow-point/access-flow/qos-flow etc.), to
