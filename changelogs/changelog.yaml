@@ -3,14 +3,25 @@ releases:
   1.9.0:
     changes:
       bugfixes:
-      - 'cliconf/saos10 - automatically return to the root prompt before sending ``software
-        show`` / ``show system components`` / any ``run_commands`` / ``get_config``
-        call. Previously, when a task left the CLI in a nested config-mode prompt
-        (for example ``host(config)(license-management-config)#``), the next module
-        invocation failed with ``SHELL PARSER FAILURE``, forcing users to insert ``meta:
-        reset_connection`` between tasks. The plugin now inspects the current prompt
-        and issues just enough ``exit`` commands to return to the root prompt, avoiding
-        the destructive ``exit`` that would log the session out from the root.'
+      - 'cliconf/saos10 - automatically return to the operator prompt before sending
+        ``software show`` / ``show system components`` / any ``run_commands`` /
+        ``get_config`` call. Previously, when a task left the CLI in a nested
+        config-mode prompt (for example ``host(config)(license-management-config)#``),
+        the next module invocation failed with ``SHELL PARSER FAILURE``, forcing
+        users to insert ``meta: reset_connection`` between tasks. The plugin now
+        inspects the current prompt and issues just enough ``exit`` commands to
+        return to the operator prompt, avoiding the destructive ``exit`` that
+        would log the session out from the root. NOTE: this is a behaviour
+        change for playbooks that intentionally chained ``saos10_command`` tasks
+        relying on the prompt persisting in config mode -- those should now use
+        a single task that includes the closing ``exit`` commands.'
+      - 'cliconf/saos10 - refuse to run SAOS CLI commands when the session is in
+        the diag (bash) shell, and only cache ``get_device_info`` on a fully
+        populated result. The previous patch silently dispatched ``software
+        show`` into bash when the prompt ended in ``$``, and would cache an
+        incomplete ``{network_os: ...}`` dict if either show command returned
+        unexpected output -- both states stuck for the life of the persistent
+        connection.'
       - cliconf/saos10 - cache ``get_device_info`` results per persistent connection
         so ``software show`` is only invoked once per session instead of once per
         task.

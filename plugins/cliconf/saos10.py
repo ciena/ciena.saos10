@@ -47,11 +47,14 @@ from ansible.plugins.cliconf import CliconfBase
 # SAOS 10 prompt forms (see plugins/terminal/saos10.py):
 #   - Operator:    "<host>> "                 (top level, the desired "root")
 #   - Config:      "<user>@<host># "          (one or more levels deep)
-#   - Diag shell:  "diag@<host>$ "            (lower-level shell; user-entered)
-# Nested config sub-modes also share the trailing "# " and may add "(...)"
-# context segments. We treat any prompt that does NOT end with "> " (and is not
-# a diag shell "$") as "needs an exit to reach the operator prompt".
-_ROOT_PROMPT_RE = re.compile(rb"[>\$]\s*$")
+#   - Diag shell:  "diag@<host>$ "            (Linux shell; user-entered)
+# We treat ONLY the operator prompt ("> ") as the safe place to issue SAOS CLI
+# commands. The diag shell is a bash session; running "software show" in there
+# returns "command not found", so we refuse to operate from inside it. Nested
+# config sub-modes share the trailing "# " and may add "(...)" context
+# segments; we unwind them with "exit".
+_OPERATOR_PROMPT_RE = re.compile(rb">\s*$")
+_DIAG_SHELL_PROMPT_RE = re.compile(rb"\$\s*$")
 
 
 class Cliconf(CliconfBase):
@@ -63,19 +66,33 @@ class Cliconf(CliconfBase):
         """Send 'exit' until the prompt is at the SAOS operator level ("> ").
 
         SAOS logs the user out if 'exit' is issued at the operator prompt, so
-        we never send 'exit' once the prompt already ends with "> ". The diag
-        shell ("$") is treated as root too -- the user explicitly entered it
-        and we should not be sending CLI commands from inside cliconf anyway.
+        we never send 'exit' once the prompt already ends with "> ". If we
+        find the session at the diag (bash) shell we raise rather than send
+        CLI commands into bash. If the prompt buffer is empty mid-session we
+        send a single newline probe before giving up -- empties can happen
+        transiently after a paged or truncated response.
         """
+        empty_probed = False
         for _attempt in range(max_attempts):
             prompt = self._connection.get_prompt()
             if not prompt:
-                return
-            if _ROOT_PROMPT_RE.search(prompt):
+                if empty_probed:
+                    return
+                self.send_command("")
+                empty_probed = True
+                continue
+            if _DIAG_SHELL_PROMPT_RE.search(prompt):
+                raise AnsibleConnectionFailure(
+                    "Refusing to run SAOS CLI commands from the diag shell "
+                    "(prompt=%r). Exit the diag shell before invoking saos10 "
+                    "modules, or use 'meta: reset_connection' to start a new "
+                    "session." % prompt
+                )
+            if _OPERATOR_PROMPT_RE.search(prompt):
                 return
             self.send_command("exit")
         prompt = self._connection.get_prompt()
-        if prompt and not _ROOT_PROMPT_RE.search(prompt):
+        if prompt and not _OPERATOR_PROMPT_RE.search(prompt):
             raise AnsibleConnectionFailure(
                 "Unable to recover SAOS10 operator prompt after %d 'exit' attempts; "
                 "current prompt=%r" % (max_attempts, prompt)
@@ -101,7 +118,12 @@ class Cliconf(CliconfBase):
         if model_search:
             device_info["network_os_model"] = model_search.group(1)
 
-        self._device_info = device_info
+        # Only cache a fully-populated dict. A partial cache (for example,
+        # when an unexpected banner truncates one of the two show responses)
+        # would otherwise stick for the life of the persistent connection
+        # and require a manual ``meta: reset_connection`` to clear.
+        if "network_os_version" in device_info and "network_os_model" in device_info:
+            self._device_info = device_info
         return device_info
 
     def get_config(self, source="running", flags=None, format="text"):

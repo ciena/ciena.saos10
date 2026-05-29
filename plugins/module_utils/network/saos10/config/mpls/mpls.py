@@ -159,12 +159,14 @@ class Mpls(ConfigBase):
         # Honour an optional ``_operation`` sentinel that promotes itself to
         # an ``operation="..."`` attribute on the root <mpls> element. This
         # is how ``_state_deleted`` asks for the singleton container to be
-        # removed wholesale.
-        root_operation = config_dict.pop(_ROOT_OPERATION_KEY, None)
+        # removed wholesale. We deliberately do NOT mutate the caller's dict
+        # so the same config can be re-serialised (e.g. for diff/render).
+        root_operation = config_dict.get(_ROOT_OPERATION_KEY)
+        body = {k: v for k, v in config_dict.items() if k != _ROOT_OPERATION_KEY}
         root = self._init_xml_root()
         if root_operation:
             root.set("operation", root_operation)
-        self._populate_xml_subtree(root, config_dict)
+        self._populate_xml_subtree(root, body)
         return xml_to_string(root).decode()
 
     def create_xml_config_from_list(self, config_list: list) -> str:

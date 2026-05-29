@@ -86,12 +86,8 @@ class MplsFacts(object):
         # rather than raising IndexError on the [0] dereference.
         obj = self.render_config(self.generated_spec, matches[0]) if matches else {}
 
-        facts = {}
-        facts["mpls"] = {}
         params = utils.validate_config(self.argument_spec, {"config": obj})
-        facts["mpls"] = params["config"] or {}
-
-        ansible_facts["ansible_network_resources"].update(facts)
+        ansible_facts["ansible_network_resources"]["mpls"] = params["config"] or {}
         return ansible_facts
 
     def get_xml_value(self, xml_obj, xpath):
