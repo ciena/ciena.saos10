@@ -137,7 +137,12 @@ def parse_commands(module, warnings):
     commands = transform_commands(module)
     if module.check_mode:
         for item in list(commands):
-            if " show " not in item["command"]:
+            # SAOS show commands take either of two forms:
+            #   - "show <subject>"     (e.g. "show version")
+            #   - "<subject> show"     (e.g. "software show")
+            # Match "show" as a whole word so we accept both without false
+            # positives on identifiers like "software-show" or "showme".
+            if "show" not in item["command"].split():
                 warnings.append(
                     "Only show commands are supported when using check mode, not executing %s" % item["command"]
                 )
