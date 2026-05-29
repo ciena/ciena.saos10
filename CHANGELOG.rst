@@ -22,9 +22,10 @@ Bugfixes
 - cliconf/saos10 - cache ``get_device_info`` results per persistent connection so ``software show`` is only invoked once per session instead of once per task.
 - saos10_command - fix latent ``AttributeError`` in check-mode (``str.contains`` does not exist; replaced with a Pythonic ``in`` membership test).
 - saos10_facts - fix ``ImportError`` raised on every gather attempt: ``facts.py`` imported a non-existent ``Logical_portsFacts`` class. Renamed to ``LogicalPortsFacts`` to match the actual class definition.
+- Config builders for all nine resource modules (bgp, classifiers, fds, fps, isis, ldp, logical_ports, mpls, ptps) used ``str(value)`` when populating XML, serializing Python ``True`` / ``False`` as the YANG-invalid strings ``"True"`` / ``"False"`` instead of ``"true"`` / ``"false"``. Bool-typed fields are now lowercased to match RFC 7950 §9.5. Caught while investigating an ISIS ``unknown object`` failure on SAOS 10.11.
 
 Known Issues
 ------------
 
-- saos10_isis - SAOS 10.11.x without an IS-IS feature license returns ``unknown object`` on edit-config. Confirmed on Ciena 3984. Module works against routers with IS-IS enabled (not validated here).
+- saos10_isis - the argspec exposes ``admin_state`` directly under the instance, but ``ciena-isis@2025-07-11`` only defines ``admin-state`` under ``instance/interfaces/interface`` (via the ``admin-control`` grouping). Passing ``admin_state`` at the instance level therefore returns ``unknown object`` from netconf. Use leaves that ARE valid directly under the instance (``dynamic_hostname``, ``distance``, ``level_type``, ``net``, ``lsp_refresh``, ``lsp_lifetime`` etc.) until the argspec is regenerated against the current YANG.
 - saos10_mpls - `state: merged` and `state: deleted` raise ``IndexError: list index out of range`` on SAOS 10.11.x. Suspected bug in the config builder under ``plugins/module_utils/network/saos10/config/mpls``. Tracked for a follow-up fix; the module currently cannot apply MPLS configuration.

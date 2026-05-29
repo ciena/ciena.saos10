@@ -29,7 +29,7 @@ ansible-playbook -i inventory.yml playbook.yml --tags bug-repro,classifiers
 | `saos10_fps` | OK | OK | OK | Parent FD must exist before merge |
 | `saos10_bgp` | OK | OK | OK | |
 | `saos10_ldp` | OK | OK | OK | SAOS only supports `tag: default` |
-| `saos10_isis` | FAIL | FAIL | n/a | Device returned `unknown object` — IS-IS schema not loaded on this 3984. Likely OK on routers that have IS-IS enabled. |
+| `saos10_isis` | FAIL | FAIL | n/a | Module argspec puts `admin_state` under `<instance>`, but `ciena-isis@2025-07-11` only allows it under `instance/interfaces/interface` — device returns `unknown object`. Use a valid instance-level leaf (e.g. `dynamic_hostname: true`) until the argspec is regenerated. |
 | `saos10_mpls` | FAIL | FAIL | n/a | Module raises `list index out of range`; real code bug in `plugins/module_utils/network/saos10/config/mpls/mpls.py`. Needs follow-up. |
 | `saos10_logical_ports` | not exercised | not exercised | OK | merge requires chassis-specific port id |
 | `saos10_ptps` | not exercised | not exercised | OK | merge requires chassis-specific ptp-id |
@@ -37,5 +37,5 @@ ansible-playbook -i inventory.yml playbook.yml --tags bug-repro,classifiers
 ## Known follow-ups
 
 1. **`saos10_mpls`** — `list index out of range` regardless of input shape. Reproduce with the `mpls` tag. Probably an indexing bug introduced during the 1.8.0 array-suboptions rework.
-2. **`saos10_isis`** — needs reproduction on a routing-licensed device to distinguish a device-feature gap from a module-schema gap.
+2. **`saos10_isis`** — regenerate the argspec against the live `ciena-isis@2025-07-11` schema so `admin_state` is nested under the interface, not the instance.
 3. **`saos10_logical_ports` / `saos10_ptps`** — extend this playbook with a chassis-aware merge test (read first PTP id, then merge a no-op change).

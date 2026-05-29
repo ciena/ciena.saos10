@@ -164,26 +164,27 @@
       tags: [bgp, cleanup]
 
     # ---------------------------------------------------------------
-    # 8. IS-IS  (device may not have IS-IS YANG schema loaded; we ignore-errors
-    #    so a missing-feature reply doesn't block the rest of the validation.)
+    # 8. IS-IS
+    #    Note: the module's argspec exposes `admin_state` at the instance
+    #    level, but the live ciena-isis@2025-07-11 YANG only has admin-state
+    #    on the interface. We use a leaf that IS valid at the instance level
+    #    (`dynamic_hostname`). Also exercises the YANG-bool fix.
     # ---------------------------------------------------------------
     - name: isis - merge
       ciena.saos10.saos10_isis:
         config:
-          - tag: default
-            admin_state: true
+          - tag: "{{ test_prefix }}-isis"
+            dynamic_hostname: true
         state: merged
       connection: netconf
-      ignore_errors: true
       tags: [isis]
 
     - name: isis - delete
       ciena.saos10.saos10_isis:
         config:
-          - tag: default
+          - tag: "{{ test_prefix }}-isis"
         state: deleted
       connection: netconf
-      ignore_errors: true
       tags: [isis, cleanup]
 
     # ---------------------------------------------------------------

@@ -132,7 +132,7 @@ class Isis(ConfigBase):
                     parent.append(subelem)
             else:
                 subelem = Element(sanitized_key)
-                subelem.text = str(value)
+                subelem.text = "true" if value is True else "false" if value is False else str(value)
                 if value is not None:
                     parent.append(subelem)
 
