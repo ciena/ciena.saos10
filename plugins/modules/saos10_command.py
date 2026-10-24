@@ -53,7 +53,7 @@ options:
     - all
   retries:
     description:
-    - Specifies the number of retries a command should by tried before it is considered
+    - Specifies the number of retries a command should be tried before it is considered
       failed. The command is run on the target device every retry and evaluated against
       the I(wait_for) conditions.
     default: 10
